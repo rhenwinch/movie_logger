@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+<!--    <com.google.android.material.bottomappbar.BottomAppBar-->
+<!--        android:id="@+id/bottomAppBar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="bottom"-->
+<!--        android:backgroundTint="?attr/colorPrimaryVariant"-->
+<!--        app:contentInsetStart="0dp"-->
+<!--        app:fabAnimationMode="scale">-->
+
+<!--        <com.google.android.material.bottomnavigation.BottomNavigationView-->
+<!--            android:id="@+id/bottomNavBar"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@android:color/transparent"-->
+<!--            app:elevation="0dp"-->
+<!--            app:itemIconSize="30dp"-->
+<!--            app:labelVisibilityMode="unlabeled"-->
+<!--            app:menu="@menu/main_nav_menu" />-->
+
+<!--    </com.google.android.material.bottomappbar.BottomAppBar>-->
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <fragment
+            android:id="@+id/main_host_fragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/main_navigation" />
+
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavBar"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/rounded_card"
+            app:contentInsetStart="0dp"
+            app:elevation="0dp"
+            app:itemIconSize="30dp"
+            app:itemIconTint="?attr/colorOnPrimary"
+            app:labelVisibilityMode="unlabeled"
+            app:menu="@menu/main_nav_menu"
+            app:navigationIcon="@drawable/nav_home" />
+
+    </RelativeLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingAddButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="?attr/colorSecondary"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/nav_add"
+        app:elevation="0dp"
+        app:fabCustomSize="70dp"
+        app:backgroundTint="?attr/colorPrimaryVariant"
+        app:borderWidth="5dp"
+        app:layout_anchor="@id/bottomNavBar"
+        app:layout_anchorGravity="top|center"
+        app:maxImageSize="30dp" />
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
