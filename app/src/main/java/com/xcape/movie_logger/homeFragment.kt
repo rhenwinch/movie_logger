@@ -6,9 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.Toast
+import com.google.gson.GsonBuilder
+import com.xcape.movie_logger.database.MovieDatabase
+import com.xcape.movie_logger.database.MovieDatabaseDao
 import com.xcape.movie_logger.databinding.FragmentHomeBinding
+import okhttp3.*
+import java.io.IOException
 
 class homeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -44,24 +48,44 @@ class homeFragment : Fragment() {
     // Misc functions
     private fun homeGridView() {
         val recyclerView = _binding?.homeGridView
-        movies = createMovieList()
+        createMovieList("django")
 
-        recyclerView?.adapter = GridAdapter(movies) { item ->
-            Toast.makeText(ctx, item.title, Toast.LENGTH_SHORT).show()
-        }
+        //val dataSource = MovieDatabase.getInstance(ctx).movieDatabaseDao
+        //dataSource.addMovie()
+
+        //recyclerView?.adapter = GridAdapter(dataSource) { item ->
+        //    Toast.makeText(ctx, item.title, Toast.LENGTH_SHORT).show()
+        //}
     }
 
-    private fun createMovieList(): ArrayList<GridItem> {
-        val movieList: ArrayList<GridItem> = ArrayList()
+    private fun createMovieList(movieKeyword: String): SuggestedMovie? {
+        val searchFor = movieKeyword.replace(" ", "_")
+        var movieList: SuggestedMovie? = null
 
-        movieList.add(GridItem("Django Unchained (2012)", R.drawable.django))
-        movieList.add(GridItem("Pulp Fiction (1994)", R.drawable.pulp_fiction))
-        movieList.add(GridItem("Hitman's Wife Bodyguard", R.drawable.hitman_wife_bodyguard))
-        movieList.add(GridItem("The Adam Project (2022)", R.drawable.the_adam_project))
-        movieList.add(GridItem("Avengers: Endgame (2019)", R.drawable.avengers_endgame))
-        movieList.add(GridItem("The Northman (2022)", R.drawable.the_northman))
+        // Get movie id in IMDB
+        val IMDBSuggestionURL = "https://v2.sg.media-imdb.com/suggestion/${searchFor[0]}/${searchFor}.json"
+        val request = Request.Builder().url(IMDBSuggestionURL).build()
+
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object: Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                println("Failed to execute request!")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+
+                val gson = GsonBuilder().create()
+                val parsedJson = gson.fromJson(body, JSONSuggestedMovie::class.java)
+
+                movieList = parsedJson.d[0]
+            }
+        })
 
         return movieList
     }
+    class JSONSuggestedMovie(val d: List<SuggestedMovie>)
 
+    // l is for title in the JSON body
+    class SuggestedMovie(val id: String, val l: String)
 }
