@@ -10,7 +10,7 @@ import android.widget.AdapterView
 import android.widget.Toast
 import com.xcape.movie_logger.databinding.FragmentHomeBinding
 
-class homeFragment : Fragment(), AdapterView.OnItemClickListener {
+class homeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -43,11 +43,12 @@ class homeFragment : Fragment(), AdapterView.OnItemClickListener {
 
     // Misc functions
     private fun homeGridView() {
-        val gridView = _binding?.homeGridView
+        val recyclerView = _binding?.homeGridView
         movies = createMovieList()
 
-        gridView?.adapter = GridAdapter(ctx, movies)
-        gridView?.onItemClickListener = this
+        recyclerView?.adapter = GridAdapter(movies) { item ->
+            Toast.makeText(ctx, item.title, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun createMovieList(): ArrayList<GridItem> {
@@ -61,11 +62,6 @@ class homeFragment : Fragment(), AdapterView.OnItemClickListener {
         movieList.add(GridItem("The Northman (2022)", R.drawable.the_northman))
 
         return movieList
-    }
-
-    override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        val item: GridItem = movies[position]
-        Toast.makeText(ctx, item.title, Toast.LENGTH_SHORT).show()
     }
 
 }

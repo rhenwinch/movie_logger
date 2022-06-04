@@ -7,16 +7,20 @@
     >
     
     <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:scaleType="centerCrop"
-        android:id="@+id/itemImage" />
+        android:id="@+id/itemImage"
+        android:layout_marginTop="18dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        android:layout_width="412px"
+        android:layout_height="688px"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/itemTitle"
-        android:textSize="26sp"
+        android:textSize="15sp"
         android:text="@string/sample_item"
         android:layout_marginTop="6dp" />
     
