@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeFragment">
+    tools:context=".homeFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -44,13 +44,16 @@
         android:scrollbars="none"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-        <ListView
-            android:id="@+id/homeListView"
+        <GridView
+            android:id="@+id/homeGridView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"
+            android:numColumns="auto_fit"
+            android:horizontalSpacing="15dp"
+            android:verticalSpacing="15dp"
             >
-        </ListView>
+        </GridView>
 
     </androidx.core.widget.NestedScrollView>
 
