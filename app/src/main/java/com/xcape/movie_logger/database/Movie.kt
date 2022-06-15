@@ -2,15 +2,19 @@ package com.xcape.movie_logger.database
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "movie_database")
+@Entity(tableName = "movie_database", indices = [Index(value = ["movie_title", "movie_token_id"], unique = true)])
 data class Movie(
     @PrimaryKey(autoGenerate = true)
-    var movieId: Long = 0L,
+    var movieKey: Long = 0L,
+
+    @ColumnInfo(name = "movie_token_id")
+    var movieTokenID: String? = null,
 
     @ColumnInfo(name = "watched_on")
-    var dateWatched: Long = 0L,
+    var dateWatched: String? = null,
 
     @ColumnInfo(name = "movie_title")
     var movieTitle: String? = null,

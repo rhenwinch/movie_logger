@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.xcape.movie_logger.homeFragment"
+        android:name="com.xcape.movie_logger.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home" >
         <action

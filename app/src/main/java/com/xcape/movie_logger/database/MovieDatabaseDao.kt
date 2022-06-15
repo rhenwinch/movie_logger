@@ -1,31 +1,29 @@
 package com.xcape.movie_logger.database
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MovieDatabaseDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addMovie(movie: Movie)
 
     @Update
     fun updateMovie(movie: Movie)
 
-    @Query("SELECT * from movie_database WHERE movieId = :id")
-    fun getMovie(id: Long)
+    //@Delete
+    //fun removeMovie(id: Long)
+
+    @Query("SELECT * from movie_database WHERE movieKey = :id")
+    fun getMovie(id: Long): Movie?
 
     @Query("DELETE FROM movie_database")
     fun clearMovies()
 
-    @Query("DELETE FROM movie_database WHERE movieId = :id")
-    fun removeMovie(id: Long)
-
-    @Query("SELECT * FROM movie_database ORDER BY movieId DESC LIMIT 1")
+    @Query("SELECT * FROM movie_database ORDER BY movieKey DESC LIMIT 1")
     fun getLatestMovie(): Movie?
 
-    @Query("SELECT * FROM movie_database ORDER BY movieId DESC")
-    fun getAllMovies(): LiveData<List<Movie>>
+    @Query("SELECT * FROM movie_database ORDER BY movieKey DESC")
+    fun getAllMovies(): Flow<List<Movie>>
 }
