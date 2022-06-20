@@ -4,34 +4,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeFragment">
+    tools:context=".fragment.HomeFragment">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
         android:theme="@style/Theme.Movie_logger">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/homeToolbarParent"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/homeToolbarChild"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleGravity="center"
-            app:expandedTitleTextColor="?attr/colorOnPrimary"
-            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
-            app:title="Home">
-
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/homeToolbarChild"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_gravity="start"
-                app:layout_collapseMode="pin"
-                app:titleTextColor="?attr/colorOnPrimary" />
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="start"
+            android:background="?attr/colorPrimary"
+            app:title="Home"
+            app:titleTextColor="?attr/colorOnPrimary" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -47,6 +36,7 @@
             android:id="@+id/homeGridView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="50dp"
             android:scrollbars="vertical"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             tools:listitem="@layout/grid_item"

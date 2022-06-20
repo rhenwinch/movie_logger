@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.xcape.movie_logger.HomeFragment"
+        android:name="com.xcape.movie_logger.fragment.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.xcape.movie_logger.searchFragment"
+        android:name="com.xcape.movie_logger.fragment.SearchFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:label="Search"

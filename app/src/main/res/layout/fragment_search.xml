@@ -6,7 +6,7 @@
     android:layout_gravity="bottom"
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
-    tools:context=".searchFragment">
+    tools:context=".fragment.SearchFragment">
 
     <EditText
         android:id="@+id/movieSearch"

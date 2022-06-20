@@ -19,13 +19,15 @@
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/nav_remove.xml" value="0.2615" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/nav_search.xml" value="0.3465" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/rounded_bottomappbar.xml" value="0.359" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/rounded_card.xml" value="0.3555" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/rounded_nav_bar.xml" value="0.3555" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/search_field.xml" value="0.359" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/textfield_search.xml" value="0.3555" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout-v23/grid_item.xml" value="0.3614583333333333" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/activity_main.xml" value="0.35260416666666666" />
-        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/fragment_home.xml" value="0.36666666666666664" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/fragment_home.xml" value="0.16250291851505955" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/fragment_search.xml" value="0.36666666666666664" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/fragment_settings.xml" value="0.18541666666666667" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/grid_item.xml" value="0.3614583333333333" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/menu/main_nav_menu.xml" value="0.36666666666666664" />
       </map>

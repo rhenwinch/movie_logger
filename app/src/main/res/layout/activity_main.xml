@@ -6,27 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-<!--    <com.google.android.material.bottomappbar.BottomAppBar-->
-<!--        android:id="@+id/bottomAppBar"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="bottom"-->
-<!--        android:backgroundTint="?attr/colorPrimaryVariant"-->
-<!--        app:contentInsetStart="0dp"-->
-<!--        app:fabAnimationMode="scale">-->
-
-<!--        <com.google.android.material.bottomnavigation.BottomNavigationView-->
-<!--            android:id="@+id/bottomNavBar"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="@android:color/transparent"-->
-<!--            app:elevation="0dp"-->
-<!--            app:itemIconSize="30dp"-->
-<!--            app:labelVisibilityMode="unlabeled"-->
-<!--            app:menu="@menu/main_nav_menu" />-->
-
-<!--    </com.google.android.material.bottomappbar.BottomAppBar>-->
-
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
@@ -40,6 +19,18 @@
             app:defaultNavHost="true"
             app:navGraph="@navigation/main_navigation" />
 
+    </RelativeLayout>
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:backgroundTint="?attr/colorPrimary"
+        app:hideOnScroll="true"
+        app:contentInsetStart="0dp"
+        app:fabAnimationMode="scale"
+        app:fabAlignmentMode="center">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavBar"
@@ -55,7 +46,7 @@
             app:menu="@menu/main_nav_menu"
             app:navigationIcon="@drawable/nav_home" />
 
-    </RelativeLayout>
+    </com.google.android.material.bottomappbar.BottomAppBar>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingAddButton"
@@ -64,12 +55,11 @@
         android:backgroundTint="?attr/colorSecondary"
         android:contentDescription="@string/app_name"
         android:src="@drawable/nav_add"
-        app:elevation="0dp"
-        app:fabCustomSize="70dp"
         app:backgroundTint="?attr/colorPrimaryVariant"
         app:borderWidth="5dp"
-        app:layout_anchor="@id/bottomNavBar"
-        app:layout_anchorGravity="top|center"
+        app:fabCustomSize="70dp"
+        app:layout_behavior=".behavior.FabBehavior"
+        app:layout_anchor="@id/bottomAppBar"
         app:maxImageSize="30dp" />
 
 

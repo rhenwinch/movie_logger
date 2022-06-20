@@ -5,14 +5,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.FrameLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.shape.CornerFamily
+import com.google.android.material.shape.MaterialShapeDrawable
+import com.xcape.movie_logger.behavior.OnScrollListener
 import com.xcape.movie_logger.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnScrollListener {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,16 +29,15 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    //override fun onSupportNavigateUp(): Boolean {
-    //    return findNavController(R.id.main_host_fragment).navigateUp()
-    //}
-
+    // Start of setting up navigation view \\
     private fun setupNav() {
+        designNavBar()
+
         val navBar = binding.bottomNavBar
         val navController = findNavController(R.id.main_host_fragment)
-
         NavigationUI.setupWithNavController(navBar, navController)
 
+        // Hide the navigation bar when user clicked on search
         navController.addOnDestinationChangedListener { _, destination, _ ->
             if(destination.id == R.id.searchFragment)
                 hideBottomNav()
@@ -47,14 +46,32 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun designNavBar() {
+        val bottomAppBar = binding.bottomAppBar
+        val radius = resources.getDimension(R.dimen.bottomAppBarRadius)
+
+        // Insert a corner radius to the bottom navigation bar using MaterialShapeDrawable
+        val bottomAppBarBackground = bottomAppBar.background as MaterialShapeDrawable
+        bottomAppBarBackground.shapeAppearanceModel =
+            bottomAppBarBackground.shapeAppearanceModel
+            .toBuilder()
+            .setTopRightCorner(CornerFamily.ROUNDED, radius)
+            .setTopLeftCorner(CornerFamily.ROUNDED, radius)
+            .build()
+    }
+
     private fun showBottomNav() {
-        binding.bottomNavBar.visibility = View.VISIBLE
-        binding.floatingAddButton.visibility = View.VISIBLE
+        binding.bottomAppBar.performShow()
+        binding.floatingAddButton.show()
     }
 
     private fun hideBottomNav() {
-        binding.bottomNavBar.visibility = View.GONE
-        binding.floatingAddButton.visibility = View.GONE
+        binding.bottomAppBar.performHide()
+        binding.floatingAddButton.hide()
     }
 
+    override fun onScrolled() {
+        hideBottomNav()
+    }
+    // End of setting up navigation view \\
 }
