@@ -9,14 +9,14 @@ android {
 
     defaultConfig {
         applicationId "com.xcape.movie_logger"
-        minSdk 21
+        minSdk 26
         targetSdk 32
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    buildFeatures{
+    buildFeatures {
         dataBinding = true
         viewBinding = true
     }
@@ -39,13 +39,16 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.4.2'
 
+    // List handler libraries
+    implementation 'javax.inject:javax.inject:1'
+    implementation "androidx.paging:paging-runtime:3.1.1"
+
     // UI components
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation "androidx.navigation:navigation-fragment-ktx:2.4.2"
     implementation "androidx.navigation:navigation-ui-ktx:2.4.2"
     implementation 'androidx.databinding:databinding-runtime:7.2.1'
-    // implementation 'com.michalsvec:single-row-calednar:1.0.0'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
     // 3rd party libraries

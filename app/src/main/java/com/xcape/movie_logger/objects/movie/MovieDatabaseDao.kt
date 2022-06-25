@@ -1,6 +1,5 @@
-package com.xcape.movie_logger.database
+package com.xcape.movie_logger.objects.movie
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 

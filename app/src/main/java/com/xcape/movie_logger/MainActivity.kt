@@ -4,15 +4,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.view.View
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
-import com.xcape.movie_logger.behavior.OnScrollListener
 import com.xcape.movie_logger.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity(), OnScrollListener {
+class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +42,7 @@ class MainActivity : AppCompatActivity(), OnScrollListener {
             else
                 showBottomNav()
         }
+
     }
 
     private fun designNavBar() {
@@ -68,10 +67,6 @@ class MainActivity : AppCompatActivity(), OnScrollListener {
     private fun hideBottomNav() {
         binding.bottomAppBar.performHide()
         binding.floatingAddButton.hide()
-    }
-
-    override fun onScrolled() {
-        hideBottomNav()
     }
     // End of setting up navigation view \\
 }

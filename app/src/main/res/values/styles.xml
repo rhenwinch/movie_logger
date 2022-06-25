@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--  Home Calendar De/Selected Colors  -->
+    <style name="HorizontalCalendar" />
+
+    <style name="HorizontalCalendar.SelectedDayNumber">
+        <item name="android:fontFamily">@string/font_black</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+    </style>
+
+    <style name="HorizontalCalendar.SelectedDayWord">
+        <item name="android:fontFamily">@string/font_medium</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+    </style>
+
+    <style name="HorizontalCalendar.DeselectedDayNumber">
+        <item name="android:fontFamily">@string/font_regular</item>
+        <item name="android:textColor">?attr/colorOnBackground</item>
+    </style>
+
+    <style name="HorizontalCalendar.DeselectedDayWord">
+        <item name="android:fontFamily">@string/font_light</item>
+        <item name="android:textColor">?attr/colorOnBackground</item>
+    </style>
+</resources>

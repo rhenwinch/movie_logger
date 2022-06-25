@@ -1,12 +1,12 @@
-package com.xcape.movie_logger.imdbapi
+package com.xcape.movie_logger.objects.imdbapi
 
 import com.google.gson.GsonBuilder
 import okhttp3.*
 import java.io.IOException
-import com.xcape.movie_logger.imdbapi.JsonObject.Companion.JSONSuggestedMovie
-import com.xcape.movie_logger.imdbapi.JsonObject.Companion.SuggestedMovie
-import com.xcape.movie_logger.imdbapi.JsonObject.Companion.JSONMovie
-import com.xcape.movie_logger.imdbapi.JsonObject.Companion.MovieProduction
+import com.xcape.movie_logger.objects.imdbapi.JsonObject.Companion.JSONSuggestedMovie
+import com.xcape.movie_logger.objects.imdbapi.JsonObject.Companion.SuggestedMovie
+import com.xcape.movie_logger.objects.imdbapi.JsonObject.Companion.JSONMovie
+import com.xcape.movie_logger.objects.imdbapi.JsonObject.Companion.MovieProduction
 
 class ApiObject {
     companion object {

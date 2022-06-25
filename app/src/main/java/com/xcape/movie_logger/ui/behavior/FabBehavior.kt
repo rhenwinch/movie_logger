@@ -1,4 +1,4 @@
-package com.xcape.movie_logger.behavior
+package com.xcape.movie_logger.ui.behavior
 
 import android.content.Context
 import android.util.AttributeSet

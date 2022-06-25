@@ -1,8 +1,8 @@
 package com.xcape.movie_logger
 
 import android.app.Application
-import com.xcape.movie_logger.database.MovieDatabase
-import com.xcape.movie_logger.repository.MovieRepository
+import com.xcape.movie_logger.objects.movie.MovieDatabase
+import com.xcape.movie_logger.objects.movie.MovieRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 

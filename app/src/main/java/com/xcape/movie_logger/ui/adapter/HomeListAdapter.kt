@@ -9,9 +9,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import com.xcape.movie_logger.database.Movie
+import com.xcape.movie_logger.objects.movie.Movie
 
-class GridAdapter :  ListAdapter<Movie, GridAdapter.MovieViewHolder>(MOVIES_COMPARATOR) {
+class HomeListAdapter : ListAdapter<Movie, HomeListAdapter.MovieViewHolder>(MOVIES_COMPARATOR) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         return MovieViewHolder.create(parent)
     }
@@ -53,7 +53,7 @@ class GridAdapter :  ListAdapter<Movie, GridAdapter.MovieViewHolder>(MOVIES_COMP
         companion object {
             fun create(parent: ViewGroup): MovieViewHolder {
                 val view: View = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.grid_item, parent, false)
+                    .inflate(R.layout.item_grid, parent, false)
                 return MovieViewHolder(view)
             }
         }

@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:backgroundTint="?attr/colorPrimary"
+        android:theme="@style/Theme.Movie_logger.BottomAppBar"
         app:hideOnScroll="true"
         app:contentInsetStart="0dp"
         app:fabAnimationMode="scale"
@@ -38,13 +38,12 @@
             android:layout_height="75dp"
             android:layout_alignParentBottom="true"
             android:background="@drawable/rounded_card"
+            android:theme="@style/ThemeOverlay.BottomNavBar"
             app:contentInsetStart="0dp"
             app:elevation="0dp"
             app:itemIconSize="30dp"
-            app:itemIconTint="?attr/colorOnPrimary"
             app:labelVisibilityMode="unlabeled"
-            app:menu="@menu/main_nav_menu"
-            app:navigationIcon="@drawable/nav_home" />
+            app:menu="@menu/main_nav_menu" />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 
@@ -58,7 +57,7 @@
         app:backgroundTint="?attr/colorPrimaryVariant"
         app:borderWidth="5dp"
         app:fabCustomSize="70dp"
-        app:layout_behavior=".behavior.FabBehavior"
+        app:layout_behavior=".ui.behavior.FabBehavior"
         app:layout_anchor="@id/bottomAppBar"
         app:maxImageSize="30dp" />
 

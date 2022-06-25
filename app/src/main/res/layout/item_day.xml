@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="55dp"
+    android:layout_height="85dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:padding="1dp"
+    app:cardCornerRadius="0dp"
+    app:cardElevation="5dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/selectedDateBackground"
+            android:layout_width="45dp"
+            android:layout_height="65dp"
+            android:backgroundTint="?attr/colorSecondary"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/dayNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@string/font_black"
+            android:text="17"
+            android:textColor="?attr/colorOnBackground"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/dayWord"
+            app:layout_constraintEnd_toEndOf="@id/selectedDateBackground"
+            app:layout_constraintStart_toStartOf="@id/selectedDateBackground"
+            app:layout_constraintTop_toTopOf="@id/selectedDateBackground" />
+
+
+        <TextView
+            android:id="@+id/dayWord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@string/font_medium"
+            android:text="THU"
+            android:textColor="?attr/colorOnBackground"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@id/selectedDateBackground"
+            app:layout_constraintEnd_toEndOf="@id/selectedDateBackground"
+            app:layout_constraintStart_toStartOf="@id/selectedDateBackground"
+            app:layout_constraintTop_toBottomOf="@id/dayNumber" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

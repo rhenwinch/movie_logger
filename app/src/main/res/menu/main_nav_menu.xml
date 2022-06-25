@@ -5,9 +5,9 @@
     <item
         android:id="@+id/homeFragment"
         android:icon="@drawable/nav_home"
-        android:title="Home" />
+        android:title="@string/home" />
     <item
         android:id="@+id/searchFragment"
         android:icon="@drawable/nav_search"
-        android:title="Search" />
+        android:title="@string/search" />
 </menu>

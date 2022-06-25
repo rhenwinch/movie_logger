@@ -1,4 +1,4 @@
-package com.xcape.movie_logger.imdbapi
+package com.xcape.movie_logger.objects.imdbapi
 
 class JsonObject {
     companion object {

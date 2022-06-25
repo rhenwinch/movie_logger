@@ -1,7 +1,16 @@
 <resources>
     <string name="app_name">movie_logger</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_world">Hello World!</string>
+    <!-- Navigation Strings -->
     <string name="search">Search</string>
+    <string name="home">Home</string>
+    <string name="calendar">Calendar</string>
+    <string name="settings">Settings</string>
+
+    <!-- List Items Strings -->
     <string name="sample_item">Sample Item</string>
+
+    <!-- Dialog Confirmation Strings -->
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
 </resources>

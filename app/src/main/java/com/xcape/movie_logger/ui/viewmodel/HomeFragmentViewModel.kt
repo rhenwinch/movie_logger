@@ -1,10 +1,8 @@
-package com.xcape.movie_logger.viewmodel
+package com.xcape.movie_logger.ui.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.*
-import com.xcape.movie_logger.database.Movie
-import com.xcape.movie_logger.database.MovieDatabase
-import com.xcape.movie_logger.repository.MovieRepository
+import com.xcape.movie_logger.objects.movie.Movie
+import com.xcape.movie_logger.objects.movie.MovieRepository
 import kotlinx.coroutines.launch
 import java.lang.IllegalArgumentException
 

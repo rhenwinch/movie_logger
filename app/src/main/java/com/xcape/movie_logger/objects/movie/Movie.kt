@@ -1,4 +1,4 @@
-package com.xcape.movie_logger.database
+package com.xcape.movie_logger.objects.movie
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
