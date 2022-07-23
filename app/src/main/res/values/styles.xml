@@ -23,4 +23,60 @@
         <item name="android:fontFamily">@string/font_light</item>
         <item name="android:textColor">?attr/colorOnBackground</item>
     </style>
+
+    <style name="page_title">
+        <item name="android:textSize">24sp</item>
+        <item name="android:letterSpacing">0.01</item>
+        <item name="android:textColor">#DEFFFFFF</item>
+    </style>
+
+    <!-- Bottom Nav Bar -->
+    <style name="Theme.Movie_logger.BottomAppBar" parent="Theme.Movie_logger">
+        <item name="android:backgroundTint">@color/colorPrimary</item>
+    </style>
+
+    <style name="ThemeOverlay.BottomNavBar" parent="">
+        <item name="colorPrimary">@color/colorSecondary</item>
+        <item name="colorOnSurface">@color/colorOnPrimary</item>
+    </style>
+
+    <!-- CARDS -->
+    <style name="HomeCardView" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/HomeCardViewCustomCorners</item>
+    </style>
+
+    <style name="HomeCardViewCustomCorners" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">0dp</item>
+        <item name="cornerSizeTopLeft">50dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">50dp</item>
+    </style>
+
+    <style name="SearchCardView" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/SearchCardViewCustomCorners</item>
+    </style>
+
+    <style name="SearchCardViewCustomCorners" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">0dp</item>
+        <item name="cornerSizeTopLeft">65dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+
+    <!-- RatingBar -->
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/colorSecondaryLight</item>
+        <item name="colorControlActivated">@color/colorSecondaryLight</item>
+    </style>
+
+
+    <!-- Toolbar Title -->
+    <style name="MovieLoggerToolbarTitle">
+        <item name="android:fontFamily">@string/font_black</item>
+        <item name="android:textColor">@color/colorOnPrimary</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:letterSpacing">0.01</item>
+    </style>
 </resources>

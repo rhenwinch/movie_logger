@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".presentation.MainActivity">
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
@@ -21,45 +21,15 @@
 
     </RelativeLayout>
 
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomAppBar"
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="68dp"
         android:layout_gravity="bottom"
-        android:theme="@style/Theme.Movie_logger.BottomAppBar"
-        app:hideOnScroll="true"
-        app:contentInsetStart="0dp"
-        app:fabAnimationMode="scale"
-        app:fabAlignmentMode="center">
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottomNavBar"
-            android:layout_width="match_parent"
-            android:layout_height="75dp"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/rounded_card"
-            android:theme="@style/ThemeOverlay.BottomNavBar"
-            app:contentInsetStart="0dp"
-            app:elevation="0dp"
-            app:itemIconSize="30dp"
-            app:labelVisibilityMode="unlabeled"
-            app:menu="@menu/main_nav_menu" />
-
-    </com.google.android.material.bottomappbar.BottomAppBar>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingAddButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="?attr/colorSecondary"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/nav_add"
-        app:backgroundTint="?attr/colorPrimaryVariant"
-        app:borderWidth="5dp"
-        app:fabCustomSize="70dp"
-        app:layout_behavior=".ui.behavior.FabBehavior"
-        app:layout_anchor="@id/bottomAppBar"
-        app:maxImageSize="30dp" />
+        android:theme="@style/ThemeOverlay.BottomNavBar"
+        app:itemIconSize="20dp"
+        app:labelVisibilityMode="unlabeled"
+        app:menu="@menu/main_nav_menu" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="19dp"
+    android:columnCount="2">
+
+    <TextView
+        android:id="@+id/recentlyAddedTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_columnWeight="1"
+        android:layout_marginStart="25dp"
+        android:fontFamily="@string/font_medium"
+        android:text="@string/top_box_office"
+        android:textColor="@color/colorOnPrimary"
+        android:textSize="@dimen/textSizeFragmentHeaders" />
+
+    <include
+        android:id="@+id/viewAllRecentlyAdded"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="25dp"
+        android:layout_columnWeight="1"
+        android:layout_gravity="bottom|end"
+        layout="@layout/view_all" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="255dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="25dp"
+        android:layout_columnSpan="2">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/trendingBoxOfficeViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </RelativeLayout>
+
+    <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+        android:id="@+id/dotsIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="35dp"
+        android:layout_columnSpan="2"
+        app:dotsColor="@color/colorOnMediumEmphasis"
+        app:dotsCornerRadius="8dp"
+        app:dotsSize="5dp"
+        app:dotsSpacing="4dp"
+        app:dotsWidthFactor="2.5"
+        app:selectedDotColor="@color/colorSecondary"
+        app:progressMode="false"
+        />
+
+<!--    <com.google.android.material.tabs.TabLayout-->
+<!--        android:id="@+id/trendingBoxOfficeVPIndicator"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_columnSpan="2"-->
+<!--        app:tabBackground="@drawable/tab_selector"-->
+<!--        app:tabGravity="center"-->
+<!--        app:tabIndicatorHeight="0dp"-->
+<!--        app:tabIndicatorFullWidth="false"-->
+<!--        app:tabMaxWidth="7.5dp"-->
+<!--        />-->
+
+</GridLayout>

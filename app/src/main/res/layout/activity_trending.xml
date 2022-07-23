@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/trendingToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="0dp"
+        android:paddingEnd="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/left_arrow_2"
+        app:navigationIconTint="@color/colorOnMediumEmphasis">
+
+        <TextView
+            android:id="@+id/page_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@string/font_black"
+            android:text="@string/trending_now"
+            android:textAppearance="@style/page_title" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/trendingLoadingContainer"
+            layout="@layout/item_loading_layout" />
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refreshTrending"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.core.widget.NestedScrollView
+                android:id="@+id/nestedTrendingScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <include
+                        android:id="@+id/trendingBoxOfficeLayout"
+                        layout="@layout/trending_box_office"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="@dimen/movieMargin"
+                        app:layout_constraintBottom_toTopOf="@id/trendingMovieLayout"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <include
+                        android:id="@+id/trendingMovieLayout"
+                        layout="@layout/trending_movie"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/movieMargin"
+                        app:layout_constraintBottom_toTopOf="@id/trendingTVLayout"
+                        app:layout_constraintTop_toBottomOf="@id/trendingBoxOfficeLayout" />
+
+                    <include
+                        android:id="@+id/trendingTVLayout"
+                        layout="@layout/trending_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/movieMargin"
+                        app:layout_constraintBottom_toTopOf="@id/trendingTopMovieLayout"
+                        app:layout_constraintTop_toBottomOf="@id/trendingMovieLayout" />
+
+                    <include
+                        android:id="@+id/trendingTopMovieLayout"
+                        layout="@layout/trending_top_movie"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/movieMargin"
+                        app:layout_constraintBottom_toTopOf="@id/trendingTopTVLayout"
+                        app:layout_constraintTop_toBottomOf="@id/trendingTVLayout" />
+
+                    <include
+                        android:id="@+id/trendingTopTVLayout"
+                        layout="@layout/trending_top_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toTopOf="@id/trendingTopTVLayout"
+                        app:layout_constraintTop_toBottomOf="@id/trendingTopMovieLayout" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

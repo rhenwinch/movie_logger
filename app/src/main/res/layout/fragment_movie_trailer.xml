@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/movieMargin"
+        android:layout_marginTop="@dimen/movieMargin"
+        android:layout_marginBottom="12dp"
+        android:fontFamily="@string/font_medium"
+        android:text="@string/trailer"
+        android:textColor="@color/colorOnPrimary"
+        android:textSize="@dimen/textSizeMovieLabels" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/trailerPreviewContainer"
+        android:layout_width="match_parent"
+        android:layout_height="173dp"
+        android:layout_marginHorizontal="@dimen/movieMargin"
+        android:clickable="true"
+        app:cardCornerRadius="10dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:elevation="1dp"
+                android:src="@drawable/play"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/trailerPlayerPreview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:foreground="#5C000000"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

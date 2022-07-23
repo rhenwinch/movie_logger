@@ -13,4 +13,52 @@
     <!-- Dialog Confirmation Strings -->
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
+
+
+    <!-- Header/Label Strings -->
+    <string name="top_movies">Top movies</string>
+    <string name="youve_rated">\ you\'ve rated</string>
+    <string name="favorite">Favorites</string>
+    <string name="trending_now">Trending Now!</string>
+    <string name="trending">Trending</string>
+    <string name="profile">Profile</string>
+    <string name="statistics">Statistics</string>
+    <string name="recently_added">Recently Added</string>
+    <string name="top_box_office">Top Box Office</string>
+    <string name="action">Action</string>
+    <string name="horror">Horror</string>
+    <string name="sypnosis">Sypnosis</string>
+    <string name="read_more">Read more…</string>
+    <string name="comments">Comments</string>
+    <string name="trailer">Trailer</string>
+    <string name="director">Directors</string>
+    <string name="writer">Writers</string>
+    <string name="stars">Stars</string>
+    <string name="genre">Genre</string>
+    <string name="popular_movies">Most Popular Movies</string>
+    <string name="most_popular_tv_series">Most Popular TV Shows</string>
+
+
+    <string name="sample_title">Jake and Jack</string>
+    <string name="sample_sypnosis">With Spider-Man\'s identity now revealed, our friendly neighborhood web-slinger is unmasked and no longer able to separate his normal life as Peter Parker from the high stakes of being a superhero. When Peter asks for help from Doctor Strange, the stakes become even more dangerous, forcing him to discover what it truly means to be Spider-Man.</string>
+    <string name="sample_year">2022</string>
+    <string name="sample_day">22</string>
+    <string name="sample_dayofweek">THU</string>
+    <string name="sample_month">Jun</string>
+    <string name="sample_date">July 6, 2022</string>
+    <string name="sample_duration">1h 38m | July 28, 2012</string>
+    <string name="ave_personal_rating">Ave. Personal Rating</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="imdb">IMDb</string>
+    <string name="sample_imdbrating">7.1</string>
+    <string name="sample_overall_imdbrating">/10</string>
+    <string name="sample_comment_rate">Gave 5 stars!</string>
+    <string name="add">Add</string>
+    <string name="top_250_movies">IMDB Top 250 Movies</string>
+    <string name="movieimage">movieImage</string>
+    <string name="top_250_tv">IMDB Top 250 TV Shows</string>
+    <string name="error_message_1">Something went wrong!</string>
+    <string name="retry">Retry</string>
+    <string name="add_to_favorites">Add to Favorites</string>
 </resources>

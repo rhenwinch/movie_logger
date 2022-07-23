@@ -7,19 +7,28 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="red">#F83729</color>
+    <color name="green">#4CAF50</color>
+    <color name="grey">#9C9C9C</color>
 
     <!--  For the app theme!  -->
-    <color name="blue_grey_500">#607d8b</color>
-    <color name="blue_grey_700">#455a64</color>
-    <color name="blue_grey_200">#b0bec5</color>
-    <color name="yellow_700">#fbc02d</color>
-    <color name="yellow_500">#ffeb3b</color>
-    <color name="yellow_200">#fff59d</color>
+    <color name="colorPrimary">#0E1824</color>
+    <color name="colorPrimaryLight">#343E4C</color>
+    <color name="colorPrimaryDark">@color/black</color>
+    <color name="colorSecondary">#FC8536</color>
+    <color name="colorSecondaryLight">#FFB665</color>
+    <color name="colorSecondaryDark">#C35600</color>
 
     <!-- Card colors -->
     <color name="transparent">#00FFFFFF</color>
+    <color name="placeholder">#343E4C</color>
     <color name="black_71alpha">#B5383838</color>
     <color name="black_43alpha">#6E383838</color>
     <color name="black_90alpha">#E6383838</color>
+
+    <!-- Font Colors -->
+    <color name="colorOnMediumEmphasis">#99FFFFFF</color>
+    <color name="colorOnPrimary">@color/white</color>
+    <color name="colorOnSecondary">@color/black</color>
 
 </resources>

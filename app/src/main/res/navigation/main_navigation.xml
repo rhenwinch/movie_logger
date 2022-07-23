@@ -7,28 +7,87 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.xcape.movie_logger.fragment.HomeFragment"
-        android:label="Home"
-        tools:layout="@layout/fragment_home" >
+        android:label=""
+        tools:layout="@layout/fragment_home"
+        android:name="com.xcape.movie_logger.presentation.home.HomeFragment">
         <action
             android:id="@+id/action_homeFragment_to_searchFragment"
-            app:destination="@id/searchFragment" />
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out" />
+        <action
+            android:id="@+id/action_homeFragment_to_favoritesFragment"
+            app:destination="@id/favoritesFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out" />
     </fragment>
+
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.xcape.movie_logger.fragment.SearchFragment"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:label="Search"
-        tools:layout="@layout/fragment_search" >
+        android:name="com.xcape.movie_logger.presentation.fragment.SearchFragment"
+        android:label=""
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.xcape.movie_logger.presentation.fragment.FavoritesFragment"
+        android:label=""
+        tools:layout="@layout/fragment_favorites" >
         <action
-            android:id="@+id/action_searchFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            android:id="@+id/action_favoritesFragment_to_searchFragment"
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out" />
+        <action
+            android:id="@+id/action_favoritesFragment_to_movieFragment"
+            app:destination="@id/movieActivity" />
     </fragment>
-<!--    <fragment-->
-<!--        android:id="@+id/settingsFragment"-->
-<!--        android:name="com.xcape.movie_logger.settingsFragment"-->
-<!--        android:label="fragment_settings"-->
-<!--        tools:layout="@layout/fragment_settings" />-->
+
+    <fragment
+        android:id="@+id/trendingActivity"
+        android:name="com.xcape.movie_logger.presentation.trending.TrendingActivity"
+        android:label=""
+        tools:layout="@layout/activity_trending" >
+        <action
+            android:id="@+id/action_trendingFragment_to_searchFragment2"
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/slide_out" />
+        <action
+            android:id="@+id/action_trendingFragment_to_movieFragment"
+            app:destination="@id/movieActivity" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.xcape.movie_logger.presentation.fragment.CalendarFragment"
+        android:label=""
+        tools:layout="@layout/fragment_calendar" >
+        <action
+            android:id="@+id/action_calendarFragment_to_movieFragment"
+            app:destination="@id/movieActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/movieActivity"
+        android:name="com.xcape.movie_logger.presentation.movie_details.MovieActivity"
+        android:label=""
+        tools:layout="@layout/fragment_movie" >
+        <argument
+            android:name="movieId"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="movieImage"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 
 </navigation>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:paddingStart="25dp"
+    android:paddingEnd="0dp"
+    android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/movieImageCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="2dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rankChangeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:elevation="2dp">
+
+            <ImageView
+                android:id="@+id/rankChangeIndicator"
+                android:layout_width="20dp"
+                android:layout_height="24dp"
+                android:paddingHorizontal="5dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/flat_arrow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/rankChangeNumber"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/rankChangeNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/font_light"
+                android:text="3"
+                android:textColor="@color/colorOnPrimary"
+                android:textSize="@dimen/textSizeBody"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/rankChangeIndicator"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <ImageView
+            android:id="@+id/movieImage"
+            android:layout_width="146dp"
+            android:layout_height="216dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/movieimage"
+            android:src="@drawable/spoderman"
+            android:scaleType="fitXY"
+            android:foreground="@drawable/item_movie_overlay_light" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/movieTitle"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginTop="10dp"
+        android:gravity="center|top"
+        android:fontFamily="@string/font_regular"
+        android:text="Spiderman (2019)"
+        android:textColor="@color/colorOnPrimary"
+        android:textSize="13sp" />
+
+</LinearLayout>

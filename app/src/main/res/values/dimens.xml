@@ -2,4 +2,18 @@
 <resources>
     <dimen name="bottomAppBarRadius">65dp</dimen>
     <dimen name="horizontalCalendarTextSize">65dp</dimen>
+    <dimen name="itemCalendarMargins">9dp</dimen>
+    <dimen name="textSizeMovieLabels">16sp</dimen>
+    <dimen name="textSizeFragmentHeaders">18sp</dimen>
+    <dimen name="textSizeSmallest">11sp</dimen>
+    <dimen name="textSizeBody">12sp</dimen>
+
+    <!-- Movie Item Fragment Margin -->
+    <dimen name="movieMargin">33dp</dimen>
+
+
+    <!-- ViewPager2 Margin -->
+    <dimen name="viewpager_next_item_visible">30dp</dimen>
+    <dimen name="viewpager_current_item_horizontal_margin">42dp</dimen>
+
 </resources>

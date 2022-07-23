@@ -1,56 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="55dp"
+    android:layout_width="40dp"
     android:layout_height="85dp"
+    android:layout_marginHorizontal="@dimen/itemCalendarMargins"
     android:foreground="?android:attr/selectableItemBackground"
     android:clickable="true"
-    android:padding="1dp"
-    app:cardCornerRadius="0dp"
-    app:cardElevation="5dp">
+    android:padding="1dp" >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/selectedDateBackground"
-            android:layout_width="45dp"
-            android:layout_height="65dp"
-            android:backgroundTint="?attr/colorSecondary"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/selectedDayOfMonth"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="5dp"
+            android:backgroundTint="@color/colorSecondaryLight"
+            app:cardCornerRadius="360dp"
+            app:layout_constraintBottom_toBottomOf="@id/dayOfMonth"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/dayNumber"
+            android:id="@+id/dayOfMonth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@string/font_black"
-            android:text="17"
-            android:textColor="?attr/colorOnBackground"
+            android:fontFamily="@string/font_regular"
+            android:text="@string/sample_day"
+            android:textColor="@color/colorOnSecondary"
             android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@id/dayWord"
-            app:layout_constraintEnd_toEndOf="@id/selectedDateBackground"
-            app:layout_constraintStart_toStartOf="@id/selectedDateBackground"
-            app:layout_constraintTop_toTopOf="@id/selectedDateBackground" />
+            android:elevation="2dp"
+            app:layout_constraintBottom_toBottomOf="@id/selectedDayOfMonth"
+            app:layout_constraintEnd_toEndOf="@id/selectedDayOfMonth"
+            app:layout_constraintStart_toStartOf="@id/selectedDayOfMonth"
+            app:layout_constraintTop_toTopOf="@id/selectedDayOfMonth" />
 
 
         <TextView
-            android:id="@+id/dayWord"
+            android:id="@+id/dayOfWeek"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@string/font_medium"
-            android:text="THU"
-            android:textColor="?attr/colorOnBackground"
-            android:textSize="11sp"
-            app:layout_constraintBottom_toBottomOf="@id/selectedDateBackground"
-            app:layout_constraintEnd_toEndOf="@id/selectedDateBackground"
-            app:layout_constraintStart_toStartOf="@id/selectedDateBackground"
-            app:layout_constraintTop_toBottomOf="@id/dayNumber" />
+            android:fontFamily="@string/font_light"
+            android:text="@string/sample_dayofweek"
+            android:textColor="@color/colorSecondaryLight"
+            android:textSize="@dimen/textSizeSmallest"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/selectedDayOfMonth" />
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/selectedDayOfWeek"
+            android:layout_width="3dp"
+            android:layout_height="3dp"
+            android:backgroundTint="@color/colorSecondaryLight"
+            app:cardCornerRadius="360dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dayOfWeek" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

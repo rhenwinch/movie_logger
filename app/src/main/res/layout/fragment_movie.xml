@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/movieToolbarLayout"
+        layout="@layout/fragment_movie_toolbar" />
+
+    <include
+        android:id="@+id/movieLoadingContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        layout="@layout/item_loading_layout"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/movieItemContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/item_movie_overlay_labeled_reversed">
+
+            <include
+                android:id="@+id/movieTitleLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                layout="@layout/fragment_movie_title"
+                app:layout_constraintBottom_toTopOf="@id/movieCommentsLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <include
+                android:id="@+id/movieCommentsLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                layout="@layout/fragment_movie_comments"
+                app:layout_constraintBottom_toTopOf="@id/movieTrailerLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/movieTitleLayout" />
+
+            <include
+                android:id="@+id/movieTrailerLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                layout="@layout/fragment_movie_trailer"
+                app:layout_constraintBottom_toTopOf="@id/movieCommentsLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/movieCommentsLayout" />
+
+            <include
+                android:id="@+id/movieDetailsLayout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/movieMargin"
+                layout="@layout/fragment_movie_details"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/movieTrailerLayout" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
