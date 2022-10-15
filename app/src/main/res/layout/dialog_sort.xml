@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/rounded_bottom_sheet"
+    android:paddingHorizontal="25dp"
+    android:paddingBottom="20dp">
+
+    <ImageView
+        style="@style/DragIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@string/font_light"
+        android:text="@string/sort_type"
+        android:textColor="@color/colorOnPrimary"
+        android:textSize="@dimen/textSizeBody" />
+
+    <RadioGroup
+        android:id="@+id/sortRadioButtonGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/sortDescending"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="25dp"
+            android:checked="true"
+            android:text="@string/descending"
+            android:textColor="@color/colorOnPrimary" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/sortAscending"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ascending"
+            android:textColor="@color/colorOnPrimary" />
+
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@string/font_light"
+        android:text="@string/filter_type"
+        android:textColor="@color/colorOnPrimary"
+        android:textSize="@dimen/textSizeBody" />
+
+    <RadioGroup
+        android:id="@+id/filterRadioButtonGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/filterPopularity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="25dp"
+            android:text="@string/popularity"
+            android:textColor="@color/colorOnPrimary" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/filterDateReleased"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/date_released"
+            android:textColor="@color/colorOnPrimary" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/filterDateAdded"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/date_added"
+            android:textColor="@color/colorOnPrimary" />
+
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@string/font_light"
+        android:text="@string/view_type"
+        android:textColor="@color/colorOnPrimary"
+        android:textSize="@dimen/textSizeBody" />
+
+    <RadioGroup
+        android:id="@+id/viewTypeRadioButtonGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/viewTypeDetailed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="25dp"
+            android:checked="true"
+            android:text="@string/detailed"
+            android:textColor="@color/colorOnPrimary" />
+
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:id="@+id/viewTypeCompact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/compact"
+            android:textColor="@color/colorOnPrimary" />
+
+    </RadioGroup>
+
+</LinearLayout>

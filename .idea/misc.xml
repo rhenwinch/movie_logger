@@ -5,12 +5,20 @@
       <map>
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.333" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/active_nav.xml" value="0.359" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/add_button.xml" value="0.2715" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/added_button.xml" value="0.2785" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/barcode.xml" value="0.333" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/bookmark.xml" value="0.333" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/bookmark_black.xml" value="0.2785" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/bookmark_white.xml" value="0.2785" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/calendar_dialog_foreground.xml" value="0.3595" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/cross.xml" value="0.2715" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/custom_rating_bar.xml" value="0.3595" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/delete.xml" value="0.2715" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/divider.xml" value="0.2905" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/down_arrow.xml" value="0.22" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/down_arrow_2.xml" value="0.2005" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/drag_line.xml" value="0.2785" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/dragger.xml" value="0.3595" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/effect_ripple.xml" value="0.3555" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/ellipse.xml" value="0.3595" />
@@ -35,8 +43,10 @@
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/item_movie_overlay_background.xml" value="0.2155" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/item_movie_overlay_labeled.xml" value="0.3365" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/item_movie_overlay_labeled_black.xml" value="0.2905" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/item_movie_overlay_labeled_radial.xml" value="0.2785" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/item_movie_overlay_labeled_reversed.xml" value="0.2905" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/item_movie_overlay_light.xml" value="0.2155" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/item_movie_overlay_single.xml" value="0.2785" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/item_movie_overlay_strong.xml" value="0.3555" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/item_movie_small_overlay.xml" value="0.3555" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/item_overlay.xml" value="0.3555" />
@@ -54,22 +64,30 @@
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/nav_remove.xml" value="0.2615" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/nav_search.xml" value="0.3465" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/nav_settings.xml" value="0.333" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/no_fill_bookmark.xml" value="0.2715" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/no_fill_heart.xml" value="0.3595" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/people.xml" value="0.333" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/play.xml" value="0.2715" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/plus.xml" value="0.3555" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/rating_star_empty.xml" value="0.3595" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/rating_star_filled.xml" value="0.3595" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/ratingbar_custom_material.xml" value="0.22" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/restore.xml" value="0.2715" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/rewind.xml" value="0.2715" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/right_arrow.xml" value="0.3555" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/right_gradient.xml" value="0.2785" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/rounded_bottom_sheet.xml" value="0.2785" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/rounded_bottom_sheet_card.xml" value="0.2785" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/rounded_bottomappbar.xml" value="0.359" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/rounded_card.xml" value="0.3555" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/rounded_nav_bar.xml" value="0.3555" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/rounded_video_view.xml" value="0.3555" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/search.xml" value="0.333" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/search_field.xml" value="0.359" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/search_items_card.xml" value="0.2905" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/sort.xml" value="0.2715" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/star.xml" value="0.333" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/star_empty.xml" value="0.25" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/tab_nonselected_dot.xml" value="0.2155" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/tab_selected_dot.xml" value="0.2" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/tab_selector.xml" value="0.2155" />
@@ -78,13 +96,34 @@
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/up_arrow.xml" value="0.3555" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/up_arrow_2.xml" value="0.2005" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/video_preview_layout.xml" value="0.2715" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/drawable/watched_indicator_border.xml" value="0.22" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/font/impact.xml" value="0.32492518170158186" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout-land/activity_auth_prompt.xml" value="0.25" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout-v23/grid_item.xml" value="0.3614583333333333" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout-v28/fragment_movie_details.xml" value="0.3625" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout-v31/fragment_movie_trailer.xml" value="0.3625" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/activity_auth_prompt.xml" value="0.33" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/activity_favorites.xml" value="0.2681904761904762" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/activity_main.xml" value="0.33" />
-        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/activity_trending.xml" value="0.3009833262077811" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/activity_movie.xml" value="0.3009833262077811" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/activity_movie_comments.xml" value="0.3009833262077811" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/activity_movie_title.xml" value="0.3009833262077811" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/activity_movie_toolbar.xml" value="0.3009833262077811" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/activity_search.xml" value="0.3009833262077811" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/activity_sign_in_prompt.xml" value="0.33" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/activity_sign_up.xml" value="0.5" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/activity_trending.xml" value="0.35826972010178115" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/activity_viewall.xml" value="0.3009833262077811" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/activity_watchlist.xml" value="0.26258858634837745" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/add.xml" value="1.0" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/day_item.xml" value="0.75" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/dialog_add_watched.xml" value="0.5172667156502572" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/dialog_calendar.xml" value="0.3083765752409192" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/dialog_media_settings.xml" value="0.3009833262077811" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/dialog_search_items.xml" value="0.5" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/dialog_sort.xml" value="0.30012825994014536" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/dialog_trailer.xml" value="0.3009833262077811" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/dialog_ympicker.xml" value="0.18541666666666667" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/fav_action.xml" value="0.3625" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/fav_horror.xml" value="0.3625" />
@@ -95,26 +134,46 @@
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/fragment_movie.xml" value="0.35519677093844604" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/fragment_movie_comments.xml" value="0.3614583333333333" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/fragment_movie_details.xml" value="0.3614583333333333" />
-        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/fragment_movie_title.xml" value="0.5" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/fragment_movie_title.xml" value="0.3175021987686895" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/fragment_movie_toolbar.xml" value="0.3625" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/fragment_movie_trailer.xml" value="0.3881720430107527" />
-        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/fragment_search.xml" value="0.36666666666666664" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/fragment_profile.xml" value="0.33" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/fragment_search.xml" value="0.5" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/fragment_settings.xml" value="0.18541666666666667" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/fragment_trailer.xml" value="0.5" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/fragment_trending.xml" value="0.2593390804597701" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/fragment_watched_medias.xml" value="0.25" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/grid_item.xml" value="0.3614583333333333" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/home_buttons.xml" value="0.3614583333333333" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/home_headliner.xml" value="0.3625" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_day.xml" value="0.9" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_friend.xml" value="1.0" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_friend_card.xml" value="1.1" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_grid.xml" value="0.3625" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_loading_layout.xml" value="0.3009833262077811" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_loading_layout_no_bg.xml" value="0.3009833262077811" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_media_calendar.xml" value="0.3009833262077811" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_media_category.xml" value="0.3009833262077811" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_media_compact.xml" value="0.3009833262077811" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_media_detailed.xml" value="0.3009833262077811" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_media_large.xml" value="0.3009833262077811" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_media_partial_detailed.xml" value="0.3009833262077811" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_media_small.xml" value="0.7098039215686275" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_month.xml" value="1.25" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_movie_detailed.xml" value="0.5" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_movie_large.xml" value="0.6191304347826087" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_movie_large_back.xml" value="0.5" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_movie_list.xml" value="0.36666666666666664" />
-        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_movie_small.xml" value="0.9144893111638955" />
-        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_reactions.xml" value="0.4035608308605341" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_movie_partial_detailed.xml" value="0.3009833262077811" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_movie_small.xml" value="0.827262044653349" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_reactions.xml" value="0.47846441947565543" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_recently_rated.xml" value="0.5536294691224268" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_reviews.xml" value="0.75" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_search.xml" value="0.5" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_suggested_keyword.xml" value="0.30012825994014536" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_viewall_detailed.xml" value="0.5" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_vp_media.xml" value="0.3009833262077811" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/item_vp_media_detailed.xml" value="0.33" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/movie_card_back.xml" value="0.3625" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/movie_card_font.xml" value="0.3625" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/movie_card_front.xml" value="0.3625" />
@@ -123,16 +182,28 @@
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/placeholder_trending.xml" value="0.36666666666666664" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/trending_box_office.xml" value="0.67" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/trending_movie.xml" value="0.36666666666666664" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/trending_pop_movie.xml" value="0.3009833262077811" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/trending_top.xml" value="0.36666666666666664" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/trending_top_movie.xml" value="0.3009833262077811" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/trending_top_tv.xml" value="0.3009833262077811" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/trending_tv.xml" value="0.36666666666666664" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/view_all.xml" value="0.3614583333333333" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/layout/ym_picker_dialog.xml" value="0.3625" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/menu/back_menu.xml" value="0.3614583333333333" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/menu/favorite_liked_menu.xml" value="0.3009833262077811" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/menu/favorite_menu.xml" value="0.36666666666666664" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/menu/favorite_not_liked_menu.xml" value="0.3009833262077811" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/menu/home_nav_menu.xml" value="0.3614583333333333" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/menu/liked_menu.xml" value="0.3009833262077811" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/menu/main_nav_menu.xml" value="0.36666666666666664" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/menu/not_watched_menu.xml" value="1.0" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/menu/search_collapsible_menu.xml" value="0.3009833262077811" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/menu/search_filtered_menu.xml" value="0.3009833262077811" />
         <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/menu/search_menu.xml" value="0.33" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/menu/search_plain_menu.xml" value="0.3009833262077811" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/menu/search_sort_menu.xml" value="0.3009833262077811" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/menu/viewall_menu.xml" value="0.3009833262077811" />
+        <entry key="..\:/dont_touch/android_studio/movie_logger/app/src/main/res/menu/watched_menu.xml" value="0.67" />
       </map>
     </option>
   </component>

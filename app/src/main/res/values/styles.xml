@@ -53,6 +53,7 @@
         <item name="cornerSizeBottomLeft">50dp</item>
     </style>
 
+    <!-- Search Bottom Sheet Card View -->
     <style name="SearchCardView" parent="@style/Widget.MaterialComponents.CardView">
         <item name="shapeAppearanceOverlay">@style/SearchCardViewCustomCorners</item>
     </style>
@@ -65,18 +66,50 @@
         <item name="cornerSizeBottomLeft">0dp</item>
     </style>
 
+    <!-- Bottom Sheet Card View -->
+    <style name="BottomSheetCardView" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/BottomSheetCardViewCustomCorners</item>
+    </style>
+
+    <style name="BottomSheetCardViewCustomCorners" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">35dp</item>
+        <item name="cornerSizeTopLeft">35dp</item>
+    </style>
+
     <!-- RatingBar -->
     <style name="RatingBar" parent="Theme.AppCompat">
         <item name="colorControlNormal">@color/colorSecondaryLight</item>
         <item name="colorControlActivated">@color/colorSecondaryLight</item>
     </style>
 
+    <!-- Time/Duration Icon Style -->
+    <style name="DurationIcon">
+        <item name="android:src">@drawable/time</item>
+        <item name="android:contentDescription">Movie Duration</item>
+    </style>
 
-    <!-- Toolbar Title -->
-    <style name="MovieLoggerToolbarTitle">
-        <item name="android:fontFamily">@string/font_black</item>
-        <item name="android:textColor">@color/colorOnPrimary</item>
-        <item name="android:textSize">24sp</item>
-        <item name="android:letterSpacing">0.01</item>
+    <!-- Time/Duration Icon Style -->
+    <style name="PersonIcon">
+        <item name="android:src">@drawable/person</item>
+        <item name="android:contentDescription">Person</item>
+    </style>
+
+    <!-- AddToWatchlist icon -->
+    <style name="AddIcon">
+        <item name="android:src">@drawable/plus</item>
+        <item name="android:contentDescription">@string/add</item>
+    </style>
+
+    <!-- Bottom Sheet Drag icon -->
+    <style name="DragIcon">
+        <item name="android:src">@drawable/dragger</item>
+        <item name="android:contentDescription">DragIcon</item>
+    </style>
+
+    <!-- Profile picture placeholder icon -->
+    <style name="ProfilePicturePlaceholderIcon">
+        <item name="android:src">@drawable/profile_placeholder</item>
+        <item name="android:contentDescription">ProfilePicturePlaceholder</item>
     </style>
 </resources>

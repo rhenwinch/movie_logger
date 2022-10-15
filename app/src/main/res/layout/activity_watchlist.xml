@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".presentation.watchlist.WatchlistActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/watchlistToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="0dp"
+        android:paddingEnd="10dp"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:menu="@menu/search_sort_menu"
+        app:navigationIcon="@drawable/left_arrow_2"
+        app:navigationIconTint="@color/colorOnMediumEmphasis">
+
+        <TextView
+            android:id="@+id/page_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@string/font_black"
+            android:text="@string/watch_list"
+            android:textAppearance="@style/page_title" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <TextView
+        android:id="@+id/emptyListIndicator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:gravity="center"
+        android:text="@string/empty_list_message"
+        android:textSize="@dimen/textSizeFragmentHeaders"
+        android:textColor="@color/colorOnMediumEmphasis" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <LinearLayout
+            android:id="@+id/watchlistDataContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="15dp"
+                android:layout_marginStart="5dp">
+
+                <TextView
+                    android:id="@+id/sortedByLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@string/font_medium"
+                    android:letterSpacing="0.4"
+                    android:text="@string/sorted_by_with_colon"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorOnPrimary"
+                    android:textSize="@dimen/textSizeSmallest"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/filterTypeChosen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:fontFamily="@string/font_regular"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:letterSpacing="0.4"
+                    android:text="@string/date_added"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorOnPrimary"
+                    android:textSize="@dimen/textSizeSmallest"
+                    app:layout_constraintStart_toEndOf="@id/sortedByLabel"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/sortTypeChosen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="2dp"
+                    android:rotation="180"
+                    android:src="@drawable/up_arrow_2"
+                    app:layout_constraintBottom_toBottomOf="@id/filterTypeChosen"
+                    app:layout_constraintStart_toEndOf="@id/filterTypeChosen"
+                    app:layout_constraintTop_toTopOf="@id/filterTypeChosen"
+                    app:tint="@color/colorOnPrimary" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/watchlistRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_media_compact" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

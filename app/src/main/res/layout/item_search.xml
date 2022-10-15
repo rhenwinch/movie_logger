@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/movieMargin">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/searchCardBase"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="12dp"
+        android:padding="65dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/searchMovieThumbnailContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="18dp"
+        android:clickable="true"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="@id/searchCardBase"
+        app:layout_constraintEnd_toStartOf="@id/searchMovieDetailsContainer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/searchMovieThumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/spoderman" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+        android:id="@+id/searchMovieDetailsContainer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="35dp"
+        android:layout_marginHorizontal="13dp"
+        android:backgroundTint="@color/colorSecondary"
+        android:elevation="2dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@id/searchCardBase"
+        app:layout_constraintEnd_toEndOf="@id/searchCardBase"
+        app:layout_constraintStart_toEndOf="@id/searchMovieThumbnailContainer"
+        app:layout_constraintTop_toTopOf="@id/searchCardBase">
+
+        <TextView
+            android:id="@+id/searchMovieTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:fontFamily="@string/font_black"
+            android:textColor="@color/colorOnPrimary"
+            android:textSize="14sp"
+            tools:text="@string/sample_title" />
+
+        <TextView
+            android:id="@+id/searchMovieExtraDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:fontFamily="@string/font_light"
+            android:textColor="@color/colorOnPrimary"
+            android:textSize="12sp"
+            tools:text="PG-13 | 3h 1m | 2019" />
+
+        <RatingBar
+            android:id="@+id/searchMovieRatingBar"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:rating="4.5"
+            android:theme="@style/RatingBar" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

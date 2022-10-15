@@ -10,12 +10,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.xcape.movie_logger.R
-import com.xcape.movie_logger.domain.model.Media
+import com.xcape.movie_logger.domain.model.media.MediaInfo
 
 
 class TopMoviesAdapter(
     private val context: Context?,
-    private val listOfMovies: MutableList<Media>
+    private val listOfMovies: MutableList<MediaInfo>
 ) : RecyclerView.Adapter<TopMoviesAdapter.TopMoviesViewHolder>() {
 
     class TopMoviesViewHolder(
@@ -30,7 +30,7 @@ class TopMoviesAdapter(
         private val frontView: MaterialCardView = itemView.findViewById(R.id.itemMovieLargeFront)
         private val backView: MaterialCardView = itemView.findViewById(R.id.itemMovieLargeBack)
 
-        fun bind(item: Media) {
+        fun bind(item: MediaInfo) {
             val animation = AnimationUtils.loadAnimation(context, R.anim.slide_out)
             itemView.startAnimation(animation)
 
@@ -44,7 +44,7 @@ class TopMoviesAdapter(
             bindImages(item)
         }
 
-        private fun bindTexts(item: Media) {
+        private fun bindTexts(item: MediaInfo) {
             //movieTitleTextView.text = item.movieTitle
             //movieSypnosisTextView.text = item.movieSypnosis.let {
             //    val splittedStrings = it?.split(" ")
@@ -53,7 +53,7 @@ class TopMoviesAdapter(
             //}.toString()
         }
 
-        private fun bindImages(item: Media) {
+        private fun bindImages(item: MediaInfo) {
             //Picasso
             //    .get()
             //    .load(item.movieImagePoster)
@@ -77,7 +77,7 @@ class TopMoviesAdapter(
         companion object {
             fun create(context: Context?, parent: ViewGroup): TopMoviesViewHolder {
                 val view: View = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_movie_large, parent, false)
+                    .inflate(R.layout.item_media_large, parent, false)
                 return TopMoviesViewHolder(context, view)
             }
         }

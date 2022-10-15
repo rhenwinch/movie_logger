@@ -1,10 +1,11 @@
 package com.xcape.movie_logger.data.remote
 
-import com.xcape.movie_logger.domain.model.Media
-import com.xcape.movie_logger.domain.model.MediaMetadata
-import com.xcape.movie_logger.domain.model.PopularChart
-import com.xcape.movie_logger.domain.model.ZuluCredentials
-import com.xcape.movie_logger.domain.model.SuggestedMovie
+import com.xcape.movie_logger.data.dto.MediaMetadata
+import com.xcape.movie_logger.data.dto.SearchResultsDto
+import com.xcape.movie_logger.domain.model.auth.Credentials
+import com.xcape.movie_logger.domain.model.media.MediaInfo
+import com.xcape.movie_logger.domain.model.media.PopularChartMedia
+import com.xcape.movie_logger.domain.model.media.SuggestedMedia
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.Query
@@ -17,7 +18,7 @@ interface IMDBApi {
         @Query("s_key") secretKey: String,
         @Query("s_token") sessionToken: String,
         @Query("type") type: String
-    ) : List<PopularChart>
+    ) : List<PopularChartMedia>
 
     @Headers("Cache-control: no-cache")
     @GET("index.php?type=boxoffice")
@@ -43,7 +44,7 @@ interface IMDBApi {
         @Query("s_key") secretKey: String,
         @Query("s_token") sessionToken: String,
         @Query("id") movieId: String
-    ): Media
+    ): MediaInfo
 
     @Headers("Cache-control: no-cache")
     @GET("index.php?type=batch")
@@ -56,11 +57,22 @@ interface IMDBApi {
 
     @Headers("Cache-control: no-cache")
     @GET("index.php?type=suggest")
-    suspend fun getSuggestedMovies(
-        @Query("id") movieKeyword: String
-    ): List<SuggestedMovie>
+    suspend fun getSuggestedMedias(
+        @Query("id") mediaKeyword: String
+    ): List<SuggestedMedia>
+
+    @Headers("Cache-control: no-cache")
+    @GET("index.php?type=search")
+    suspend fun searchMedia(
+        @Query("a_key") accessKey: String,
+        @Query("s_key") secretKey: String,
+        @Query("s_token") sessionToken: String,
+        @Query("id") mediaKeyword: String,
+        @Query("page") page: Int? = null,
+        @Query("limit") limit: Int? = null,
+    ): SearchResultsDto
 
     @Headers("Cache-control: no-cache")
     @GET("index.php?type=credentials")
-    suspend fun getCredentials(): ZuluCredentials
+    suspend fun getCredentials(): Credentials
 }

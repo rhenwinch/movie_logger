@@ -2,100 +2,79 @@ package com.xcape.movie_logger.presentation.movie_details
 
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.transition.Fade
-import android.transition.Slide
-import android.view.MenuItem
-import android.view.View
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.view.Menu
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ActivityCompat.startPostponedEnterTransition
-import androidx.core.content.ContextCompat
-import androidx.core.view.*
+import androidx.core.view.ViewCompat
 import androidx.lifecycle.lifecycleScope
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import com.xcape.movie_logger.R
-import com.xcape.movie_logger.databinding.FragmentMovieBinding
-import com.xcape.movie_logger.domain.model.Media
-import com.xcape.movie_logger.presentation.components.OnLoadingProgressListener
-import com.xcape.movie_logger.presentation.components.activate
-import com.xcape.movie_logger.presentation.components.deactivate
-
-import com.xcape.movie_logger.presentation.trailer_dialog.TrailerFragment
-import com.xcape.movie_logger.utils.Functions.parseCast
-import com.xcape.movie_logger.utils.Functions.parseDate
-import com.xcape.movie_logger.utils.Functions.toBitmap
+import com.xcape.movie_logger.databinding.ActivityMovieBinding
+import com.xcape.movie_logger.domain.model.media.MediaInfo
+import com.xcape.movie_logger.presentation.components.custom_extensions.OnLoadingProgressListener
+import com.xcape.movie_logger.presentation.components.custom_extensions.activate
+import com.xcape.movie_logger.presentation.components.custom_extensions.deactivate
+import com.xcape.movie_logger.domain.utils.Functions.parseCast
+import com.xcape.movie_logger.domain.utils.Functions.parseDate
+import com.xcape.movie_logger.domain.utils.Functions.toBitmap
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-
-const val MOVIE_ID = "movie_id"
-const val MOVIE_BITMAP = "movie_bitmap"
-const val MOVIE_CATEGORY = "movie_category"
+const val MEDIA_ID = "media_id"
+const val MEDIA_ITEM = "media_item"
+const val MEDIA_BITMAP = "media_bitmap"
+const val MEDIA_CATEGORY = "media_category"
 
 @AndroidEntryPoint
 class MovieActivity : AppCompatActivity(), OnLoadingProgressListener {
-    private val movieViewModel: MovieViewModel by viewModels()
-    private var _binding: FragmentMovieBinding? = null
-    private val binding: FragmentMovieBinding
+    private var _binding: ActivityMovieBinding? = null
+    private val binding: ActivityMovieBinding
         get() = _binding!!
 
-    private var media: Media? = null
+    // View models
+    private val movieViewModel: MovieViewModel by viewModels()
 
-    private lateinit var loadingBar: ProgressBar
-    private lateinit var loadingContainer: View
+    private var isMediaAlreadyAdded: MenuState? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         postponeEnterTransition()
 
         // Inflate the layout for this fragment
-        _binding = FragmentMovieBinding.inflate(layoutInflater)
-        loadingBar = binding.movieLoadingContainer.loadingBar
-        loadingContainer = binding.movieLoadingContainer.root
-        val movieToolbar = binding.movieToolbarLayout.movieToolbar
-
-        setContentView(binding.root)
-        movieToolbar.setNavigationOnClickListener {
-            finishAfterTransition()
-        }
+        _binding = ActivityMovieBinding.inflate(layoutInflater)
 
         intent?.let { it ->
-            val mediaImageBitmap = it.getByteArrayExtra(MOVIE_BITMAP)?.toBitmap()
-            val mediaId = it.getStringExtra(MOVIE_ID)
-            val mediaCategory = it.getStringExtra(MOVIE_CATEGORY)
+            val mediaImageBitmap = it.getByteArrayExtra(MEDIA_BITMAP)?.toBitmap()
+            val mediaId = it.getStringExtra(MEDIA_ID)
+            val mediaCategory = it.getStringExtra(MEDIA_CATEGORY)
+            val mediaItem = it.getSerializableExtra(MEDIA_ITEM)
+            val data = if(mediaItem == null) movieViewModel.mediaData else flowOf(mediaItem as MediaInfo)
 
-            setSupportActionBar(movieToolbar)
+            setSupportActionBar(binding.movieToolbarLayout.movieToolbar)
             // Get a support ActionBar corresponding to this toolbar and enable the Up button
             supportActionBar?.setDisplayShowTitleEnabled(false)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-            bindItemImage(
+            binding.bindItemImage(
                 mediaId = mediaId!!,
                 mediaBitmap = mediaImageBitmap,
                 mediaCategory = mediaCategory!!
             )
+
+            binding.bindState(
+                uiState = movieViewModel.state,
+                mediaData = data,
+                uiActions = movieViewModel.accept
+            )
         }
-
-        loadUiState()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
-    override fun onResume() {
-        super.onResume()
-        loadingBar.activate(loadingContainer)
+        setContentView(binding.root)
     }
 
     override fun onRetry() {
-        movieViewModel.retryMovieRequest()
+        retryFetchingData(onRetry = movieViewModel.accept)
     }
 
     override fun onBackPressed() {
@@ -103,59 +82,100 @@ class MovieActivity : AppCompatActivity(), OnLoadingProgressListener {
         finishAfterTransition()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-                true
-            }
-            R.id.addToFavorite -> {
-                // Change the icon of the heart to filled heart
-                binding.movieToolbarLayout.movieToolbar.menu[0].icon =
-                    ContextCompat.getDrawable(this@MovieActivity, R.drawable.heart)
-
-                movieViewModel.movieTitle.observe(this@MovieActivity) {
-                    Toast.makeText(
-                        this@MovieActivity,
-                        "\"$it\" was added to favorites!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
-    private fun loadUiState() {
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        if(isMediaAlreadyAdded == MenuState.ON_WATCHLIST) {
+            menuInflater.inflate(R.menu.on_watchlist_menu, menu)
+        }
+        else if(isMediaAlreadyAdded == null || isMediaAlreadyAdded == MenuState.NOT_ON_ANY) {
+            menuInflater.inflate(R.menu.not_watched_menu, menu)
+        }
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun ActivityMovieBinding.bindState(
+        uiState: StateFlow<MediaUIState>,
+        mediaData: Flow<MediaInfo?>,
+        uiActions: (MediaUIAction) -> Unit
+    ) {
+        val isInWatchlist = uiState
+            .map { it.isAlreadyInDatabase }
+            .distinctUntilChanged()
+
         lifecycleScope.launch {
-            movieViewModel.state.collect { state ->
-                if (state.mediaData != null) {
-                    media = state.mediaData
-                    bindItemText(media)
-                    loadingBar.deactivate(loadingContainer)
-                } else if (state.errorMessage != null) {
-                    loadingBar.deactivate(
-                        loadingContainer,
-                        true,
-                        this@MovieActivity
-                    )
+            isInWatchlist.collectLatest {
+                isMediaAlreadyAdded = it
+                invalidateOptionsMenu()
+            }
+        }
+
+        bindMenu(itemClickCallback = uiActions)
+        bindData(data = mediaData)
+    }
+    
+    private fun ActivityMovieBinding.bindMenu(itemClickCallback: (MediaUIAction) -> Unit) {
+        val toolbar = movieToolbarLayout.movieToolbar
+
+        toolbar.setOnMenuItemClickListener {
+            when(it.itemId) {
+                R.id.addToWatchlist -> {
+                    // Remove click state first from Remove action
+                    removeFromWatchlist(isClicked = false, onRemove = itemClickCallback)
+                    addToWatchlist(onAdd = itemClickCallback)
+                    true
+                }
+                R.id.onWatchlist -> {
+                    // Remove click state first from Add action
+                    addToWatchlist(isClicked = false, onAdd = itemClickCallback)
+                    removeFromWatchlist(onRemove = itemClickCallback)
+                    true
+                }
+                else -> super.onOptionsItemSelected(it)
+            }
+        }
+    }
+
+    private fun ActivityMovieBinding.bindData(data: Flow<MediaInfo?>) {
+        val loadingBar = movieLoadingContainer.loadingBar
+        val loadingContainer = movieLoadingContainer.root
+        loadingBar.activate(container = loadingContainer)
+
+        lifecycleScope.launch {
+            // Bind data
+            launch {
+                data.collect { media ->
+                    if(media == null) {
+                        loadingBar.deactivate(
+                            container = loadingContainer,
+                            causeIsError = true,
+                            listener = this@MovieActivity
+                        )
+                    }
+                    else {
+                        binding.bindItemText(media)
+                        loadingBar.deactivate(container = loadingContainer)
+                    }
                 }
             }
         }
     }
 
-    private fun bindItemImage(
+    private fun ActivityMovieBinding.bindItemImage(
         mediaCategory: String,
         mediaBitmap: Bitmap? = null,
         mediaId: String
     ) {
         ViewCompat.setTransitionName(
-            binding.movieToolbarLayout.movieImage,
+            movieToolbarLayout.mediaImage,
             "${mediaId}-${mediaCategory}"
         )
 
-        val imageView = binding.movieToolbarLayout.movieImage
+        val imageView = movieToolbarLayout.mediaImage
 
         mediaBitmap?.let {
             imageView.setImageBitmap(mediaBitmap)
@@ -163,33 +183,30 @@ class MovieActivity : AppCompatActivity(), OnLoadingProgressListener {
         startPostponedEnterTransition()
     }
 
-    private fun bindItemText(mediaData: Media?) {
-        mediaData?.let {
-            val titleView = binding.movieTitleLayout.movieTitle
-            val durationView = binding.movieTitleLayout.movieDuration
-            val imdbRatingView = binding.movieTitleLayout.movieRatingImdb
-            val ratingView = binding.movieTitleLayout.movieRating
+    private fun ActivityMovieBinding.bindItemText(mediaInfoData: MediaInfo?) {
+        mediaInfoData?.let {
+            val titleView = movieTitleLayout.movieTitle
+            val durationView = movieTitleLayout.movieDuration
+            val imdbRatingView = movieTitleLayout.movieRatingImdb
+            val ratingView = movieTitleLayout.mediaRating
+            val ratingLabel = movieTitleLayout.movieRatingLabel
 
-            val genreView = binding.movieDetailsLayout.movieGenre
-            val sypnosisView = binding.movieDetailsLayout.movieSypnosis
-            val directorView = binding.movieDetailsLayout.movieDirector
-            val writerView = binding.movieDetailsLayout.movieWriter
-            val actorView = binding.movieDetailsLayout.movieCast
+            val genreView = movieDetailsLayout.movieGenre
+            val sypnosisView = movieDetailsLayout.movieSypnosis
+            val directorView = movieDetailsLayout.movieDirector
+            val writerView = movieDetailsLayout.movieWriter
+            val actorView = movieDetailsLayout.movieCast
 
-            val trailerPreview = binding.movieTrailerLayout.trailerPlayerPreview
+            val trailerPreview = movieTrailerLayout.trailerPlayerPreview
+
+            val duration = if (it.type.substring(0, 2) == "tv") {
+                val year = if (it.year.length == 5) it.year + "present" else it.year
+                "${it.duration} | $year"
+            } else
+                "${it.duration} | ${parseDate(it.dateReleased)}"
 
             titleView.text = it.title
-            durationView.text =
-                if (it.type.substring(0, 2) == "tv") {
-                    val year =
-                        if (it.year.length == 5) {
-                            it.year + "present"
-                        } else {
-                            it.year
-                        }
-                    "${it.duration} | $year"
-                } else
-                    "${it.duration} | ${parseDate(it.dateReleased)}"
+            durationView.text = duration
 
             imdbRatingView.text = it.rating.toString()
             ratingView.rating = 0F
@@ -200,26 +217,42 @@ class MovieActivity : AppCompatActivity(), OnLoadingProgressListener {
             writerView.text = it.writers.joinToString(", ")
             actorView.text = parseCast(it.casts)
 
-            it.gallery.thumbnail.let { url ->
-                Picasso.get()
-                    .load(url.replace("_V1_", "_SL350_"))
-                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-                    .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
-                    .fit()
-                    .centerCrop()
-                    .into(trailerPreview)
 
-                binding.movieTrailerLayout.trailerPreviewContainer.setOnClickListener { view ->
-                    val trailerFragment =
-                        TrailerFragment.newInstance(it.gallery.trailer.encodings[0].playUrl)
-                    trailerFragment.show(
+            val imageUrl = it.gallery.thumbnail ?: it.gallery.poster
+
+            Picasso.get()
+                .load(imageUrl.replace("_V1_", "_SL350_"))
+                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
+                .fit()
+                .centerCrop()
+                .into(trailerPreview)
+
+            it.gallery.trailer?.let {
+                movieTrailerLayout.trailerPreviewContainer.setOnClickListener { _ ->
+                    val trailerDialog =
+                        TrailerDialog.newInstance(it.encodings[0].playUrl)
+                    trailerDialog.show(
                         supportFragmentManager,
-                        TrailerFragment.TAG
+                        TrailerDialog.TRAILER_DIALOG_TAG
                     )
                 }
             }
 
-
         }
     }
+
+    private fun retryFetchingData(
+        onRetry: (MediaUIAction.Retry) -> Unit
+    ) = onRetry(MediaUIAction.Retry(isClicked = true))
+
+    private fun addToWatchlist(
+        isClicked: Boolean = true,
+        onAdd: (MediaUIAction.AddToWatchlist) -> Unit
+    ) = onAdd(MediaUIAction.AddToWatchlist(isClicked = isClicked))
+
+    private fun removeFromWatchlist(
+        isClicked: Boolean = true,
+        onRemove: (MediaUIAction.RemoveFromWatchlist) -> Unit
+    ) = onRemove(MediaUIAction.RemoveFromWatchlist(isClicked = isClicked))
 }

@@ -7,60 +7,63 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.transition.Fade
 import android.transition.Slide
-import android.util.Log
 import android.view.Gravity
-import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.paging.PagingData
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.card.MaterialCardView
-import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+import com.google.android.material.snackbar.Snackbar
 import com.xcape.movie_logger.R
 import com.xcape.movie_logger.databinding.ActivityTrendingBinding
-import com.xcape.movie_logger.domain.model.MediaMetadata
-import com.xcape.movie_logger.domain.model.PopularChart
-import com.xcape.movie_logger.presentation.components.HorizontalMarginItemDecoration
-import com.xcape.movie_logger.presentation.components.OnLoadingProgressListener
-import com.xcape.movie_logger.presentation.components.activate
-import com.xcape.movie_logger.presentation.components.deactivate
-import com.xcape.movie_logger.presentation.movie_details.MOVIE_BITMAP
-import com.xcape.movie_logger.presentation.movie_details.MOVIE_CATEGORY
-import com.xcape.movie_logger.presentation.movie_details.MOVIE_ID
+import com.xcape.movie_logger.domain.factory.ChartMediaTypeFactory
+import com.xcape.movie_logger.domain.model.base.BaseChartMedia
+import com.xcape.movie_logger.presentation.common.OnMediaClickListener
+import com.xcape.movie_logger.presentation.common.OnMediaLongClickListener
+import com.xcape.movie_logger.presentation.components.custom_components.HorizontalMarginItemDecoration
+import com.xcape.movie_logger.presentation.components.custom_extensions.OnLoadingProgressListener
+import com.xcape.movie_logger.presentation.components.custom_extensions.activate
+import com.xcape.movie_logger.presentation.components.custom_extensions.deactivate
+import com.xcape.movie_logger.presentation.movie_details.MEDIA_BITMAP
+import com.xcape.movie_logger.presentation.movie_details.MEDIA_CATEGORY
+import com.xcape.movie_logger.presentation.movie_details.MEDIA_ID
 import com.xcape.movie_logger.presentation.movie_details.MovieActivity
-import com.xcape.movie_logger.utils.Constants.TAG
-import com.xcape.movie_logger.utils.Functions.toByteArray
+import com.xcape.movie_logger.presentation.trending.adapters.TrendingBoxOfficeAdapter
+import com.xcape.movie_logger.presentation.trending.adapters.TrendingPagingAdapter
+import com.xcape.movie_logger.domain.utils.Functions.toByteArray
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.math.abs
-import kotlin.math.round
 
 
 @AndroidEntryPoint
-class TrendingActivity : AppCompatActivity(), OnMovieClickListener, OnLoadingProgressListener {
+class TrendingActivity : AppCompatActivity(), OnMediaClickListener, OnLoadingProgressListener,
+    OnMediaLongClickListener {
     private var _binding: ActivityTrendingBinding? = null
     private val binding: ActivityTrendingBinding
         get() = _binding!!
+
+    // View Model
     private val trendingViewModel: TrendingViewModel by viewModels()
-    private val popularMoviesAdapter: TrendingPopularAdapter = TrendingPopularAdapter(this)
-    private val popularTVAdapter: TrendingPopularAdapter = TrendingPopularAdapter(this)
-    private val topMoviesAdapter: TrendingTopAdapter = TrendingTopAdapter(this)
-    private val topTVAdapter: TrendingTopAdapter = TrendingTopAdapter(this)
-    private val boxOfficeAdapter: TrendingBoxOfficeAdapter = TrendingBoxOfficeAdapter(this)
+
+    // Factory to determine the media type
+    @Inject
+    lateinit var chartMediaTypeFactory: ChartMediaTypeFactory
+
+    // Views
     private lateinit var loadingBar: ProgressBar
     private lateinit var loadingBarContainer: View
-    private lateinit var boxOfficeVP: ViewPager2
-    private lateinit var boxOfficeVPIndicator: DotsIndicator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,45 +73,18 @@ class TrendingActivity : AppCompatActivity(), OnMovieClickListener, OnLoadingPro
         _binding = ActivityTrendingBinding.inflate(layoutInflater)
         loadingBar = binding.trendingLoadingContainer.loadingBar
         loadingBarContainer = binding.trendingLoadingContainer.root
-        boxOfficeVP = binding.trendingBoxOfficeLayout.trendingBoxOfficeViewPager
-        boxOfficeVPIndicator = binding.trendingBoxOfficeLayout.dotsIndicator
 
         setContentView(binding.root)
 
-        setSupportActionBar(binding.trendingToolbar)
         // Get a support ActionBar corresponding to this toolbar and enable the Up button
+        setSupportActionBar(binding.trendingToolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-
-        // RecyclerViews/ViewPager2/TabLayout/RefreshLayout
-        val popularMoviesRV = binding.trendingMovieLayout.trendingPopMovieRecyclerView
-        val popularTVRV = binding.trendingTVLayout.trendingPopTVRecyclerView
-        val topMovieRV = binding.trendingTopMovieLayout.trendingTopMovieRecyclerView
-        val topTopRV = binding.trendingTopTVLayout.trendingTopTVRecyclerView
-        val refreshLayout = binding.refreshTrending
-
-        // Set adapters
-        popularMoviesRV.adapter = popularMoviesAdapter
-        popularTVRV.adapter = popularTVAdapter
-        topMovieRV.adapter = topMoviesAdapter
-        topTopRV.adapter = topTVAdapter
-        boxOfficeVP.adapter = boxOfficeAdapter
-
-        setupViewPager()
-
-        // Load the items
-        loadUiStates(popularType = "moviemeter")
-        loadUiStates(popularType = "tvmeter")
-        loadUiStates(topType = "movie")
-        loadUiStates(topType = "tv")
-        loadUiStates(boxOfficeState = true)
-
-        // Setup refresh/loading progress bars
-        refreshLayout.setOnRefreshListener {
-            updateTrendingCharts()
-        }
-        setupLoadingBar()
+        binding.bindState(
+            uiState = trendingViewModel.trendingUIState,
+            uiActions = trendingViewModel.accept
+        )
     }
 
     override fun onDestroy() {
@@ -116,45 +92,22 @@ class TrendingActivity : AppCompatActivity(), OnMovieClickListener, OnLoadingPro
         _binding = null
     }
 
+    override fun onStop() {
+        super.onStop()
+        binding.refreshTrending.isRefreshing = false
+    }
+
     override fun onBackPressed() {
         super.onBackPressed()
-        // Remove all item decorations on the view pager to avoid glitches
-        while (boxOfficeVP.itemDecorationCount > 0) {
-            boxOfficeVP.removeItemDecorationAt(0)
-        }
         finish()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
-            android.R.id.home -> {
-                onBackPressed()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
-    override fun onResume() {
-        super.onResume()
-        trendingViewModel.dataProgress.observe(this) {
-            if(round(it) < MAX_PROGRESS)
-                loadingBar.activate(loadingBarContainer)
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        loadingBar.deactivate(loadingBarContainer)
-    }
-
-    override fun finish() {
-        super.finish()
-        overridePendingTransition(R.anim.slide_in, R.anim.slide_out)
-    }
-
-    override fun onMovieClick(
-        mediaPosition: Int,
+    override fun onMediaClick(
         mediaCategory: String,
         mediaId: String,
         mediaImageView: ImageView,
@@ -165,9 +118,9 @@ class TrendingActivity : AppCompatActivity(), OnMovieClickListener, OnLoadingPro
 
         mediaImage?.let { bitmap ->
             val intent = Intent(this, MovieActivity::class.java)
-            intent.putExtra(MOVIE_ID, mediaId)
-            intent.putExtra(MOVIE_CATEGORY, mediaCategory)
-            intent.putExtra(MOVIE_BITMAP, bitmap)
+            intent.putExtra(MEDIA_ID, mediaId)
+            intent.putExtra(MEDIA_CATEGORY, mediaCategory)
+            intent.putExtra(MEDIA_BITMAP, bitmap)
 
             val options = ActivityOptions.makeSceneTransitionAnimation(this, mediaImageCard,"${mediaId}-${mediaCategory}")
 
@@ -180,65 +133,144 @@ class TrendingActivity : AppCompatActivity(), OnMovieClickListener, OnLoadingPro
         trendingViewModel.refreshData(needsRetry = true)
     }
 
-    private fun loadUiStates(
-        popularType: String? = null,
-        topType: String? = null,
-        boxOfficeState: Boolean = false
+    override fun onMediaLongClick(
+        position: Int?,
+        mediaId: String
     ) {
-        popularType?.let {
-            lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    trendingViewModel.listOfPopularStates[popularType]!!.collect { state ->
-                        if (state.errorMessage != null) {
-                            Log.e(TAG, state.errorMessage)
-                            loadingBar.deactivate(
-                                container = loadingBarContainer,
-                                causeIsError = true,
-                                this@TrendingActivity
-                            )
-                        }
-                        else if (state.flowPagingData != null) {
-                            attachToAdapter(popularState = state)
-                        }
+        TODO("Not yet implemented")
+    }
+
+    private fun ActivityTrendingBinding.bindState(
+        uiState: StateFlow<TrendingUIState>,
+        uiActions: (TrendingUIAction) -> Unit
+    ) {
+        val popularMoviesAdapter = TrendingPagingAdapter(chartMediaTypeFactory, this@TrendingActivity)
+        val popularTVAdapter = TrendingPagingAdapter(chartMediaTypeFactory, this@TrendingActivity)
+        val topMoviesAdapter = TrendingPagingAdapter(chartMediaTypeFactory, this@TrendingActivity)
+        val topTVAdapter = TrendingPagingAdapter(chartMediaTypeFactory, this@TrendingActivity)
+        val boxOfficeAdapter = TrendingBoxOfficeAdapter(this@TrendingActivity)
+
+        // Set adapters
+        trendingMovieLayout.popularMoviesRV.adapter = popularMoviesAdapter
+        trendingTVLayout.popularTVRV.adapter = popularTVAdapter
+        trendingTopMovieLayout.topMovieRV.adapter = topMoviesAdapter
+        trendingTopTVLayout.topTopRV.adapter = topTVAdapter
+        trendingBoxOfficeLayout.boxOfficeVP.adapter = boxOfficeAdapter
+
+        bindViewPager()
+
+        bindCharts(
+            uiState = uiState,
+            eventCallback = uiActions,
+            popularMoviesAdapter = popularMoviesAdapter,
+            popularTVAdapter = popularTVAdapter,
+            topMoviesAdapter = topMoviesAdapter,
+            topTVAdapter = topTVAdapter,
+            boxOfficeAdapter = boxOfficeAdapter
+        )
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private fun ActivityTrendingBinding.bindCharts(
+        uiState: StateFlow<TrendingUIState>,
+        eventCallback: (TrendingUIAction) -> Unit,
+        popularMoviesAdapter: TrendingPagingAdapter,
+        popularTVAdapter: TrendingPagingAdapter,
+        topMoviesAdapter: TrendingPagingAdapter,
+        topTVAdapter: TrendingPagingAdapter,
+        boxOfficeAdapter: TrendingBoxOfficeAdapter
+    ) {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    uiState.collect { state ->
+                        (state.popularChartData[POPULAR_MOVIE] as? Flow<PagingData<BaseChartMedia>>)?.collectLatest(
+                            popularMoviesAdapter::submitData
+                        )
+                    }
+                }
+
+                launch {
+                    uiState.collect { state ->
+                        (state.popularChartData[POPULAR_TV] as? Flow<PagingData<BaseChartMedia>>)?.collectLatest(
+                            popularTVAdapter::submitData
+                        )
+                    }
+                }
+
+                launch {
+                    uiState.collect { state ->
+                        (state.topChartData[TOP_MOVIE] as? Flow<PagingData<BaseChartMedia>>)?.collectLatest(
+                            topMoviesAdapter::submitData
+                        )
+                    }
+                }
+
+                launch {
+                    uiState.collect { state ->
+                        (state.topChartData[TOP_TV] as? Flow<PagingData<BaseChartMedia>>)?.collectLatest(
+                            topTVAdapter::submitData
+                        )
+                    }
+                }
+
+                launch {
+                    uiState.collect { state ->
+                        state.boxOfficeData?.collectLatest(boxOfficeAdapter::submitList)
                     }
                 }
             }
         }
 
-        topType?.let {
-            lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    trendingViewModel.listOfTopStates[topType]!!.collect { state ->
-                        if (state.errorMessage != null) {
-                            Log.e(TAG, state.errorMessage)
-                            loadingBar.deactivate(
-                                container = loadingBarContainer,
-                                causeIsError = true,
-                                this@TrendingActivity
-                            )
+        val isNotLoading = uiState
+            .map { it.hasFinishedFetching }
+            .distinctUntilChanged()
+
+        val hasErrors = uiState
+            .map { it.hasErrors }
+            .distinctUntilChanged()
+
+        val isRefreshing = uiState
+            .map { it.isRefreshing }
+            .distinctUntilChanged()
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                // Progress Bar
+                launch {
+                    isNotLoading.collect { isNotLoading ->
+                        if(!isNotLoading) {
+                            loadingBar.activate(loadingBarContainer)
                         }
-                        else if (state.flowPagingData != null) {
-                            attachToAdapter(topState = state)
+                        else {
+                            refreshTrending.setOnRefreshListener { onSwipeRefresh(eventCallback) }
+                            loadingBar.deactivate(loadingBarContainer)
                         }
                     }
                 }
-            }
-        }
 
-        if(boxOfficeState) {
-            lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    trendingViewModel.boxOfficeState.collect { state ->
-                        if (state.errorMessage != null) {
-                            Log.e(TAG, state.errorMessage)
+                // Error Progress Bar
+                launch {
+                    hasErrors.collect {
+                        if(it) {
+                            trendingViewModel.cancelAllDataFetchJobs()
                             loadingBar.deactivate(
                                 container = loadingBarContainer,
                                 causeIsError = true,
                                 this@TrendingActivity
                             )
                         }
-                        else if (state.flowListData != null) {
-                            attachToAdapter(boxOfficeState = state)
+                    }
+                }
+
+                // Refresh listener
+                launch {
+                    isRefreshing.collectLatest {
+                        if(it && !refreshTrending.isRefreshing) {
+                            binding.root.doOnPreDraw { _ ->
+                                refreshTrending.isRefreshing = it
+                                onSwipeRefresh(eventCallback)
+                            }
                         }
                     }
                 }
@@ -246,56 +278,12 @@ class TrendingActivity : AppCompatActivity(), OnMovieClickListener, OnLoadingPro
         }
     }
 
-    private fun attachToAdapter(
-        popularState: TrendingUIState<PopularChart>? = null,
-        topState: TrendingUIState<MediaMetadata>? = null,
-        boxOfficeState: TrendingUIState<MediaMetadata>? = null
-    ) {
-        popularState?.let { state ->
-            lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    state.flowPagingData?.collectLatest { pagedData ->
-                        when(state.type) {
-                            "moviemeter" -> popularMoviesAdapter.submitData(pagedData)
-                            "tvmeter" -> popularTVAdapter.submitData(pagedData)
-                        }
-                    }
-                }
-            }
-        }
-
-        topState?.let { state ->
-            lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    state.flowPagingData?.collectLatest { pagedData ->
-                        when(state.type) {
-                            "movie" -> topMoviesAdapter.submitData(pagedData)
-                            "tv" -> topTVAdapter.submitData(pagedData)
-                        }
-                    }
-                }
-            }
-        }
-
-        boxOfficeState?.let { state ->
-            lifecycleScope.launch {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    state.flowListData?.collectLatest { pagedData ->
-                       boxOfficeAdapter.submitList(pagedData)
-                    }
-                    trendingViewModel.viewPagerPosition.observe(this@TrendingActivity) {
-                        binding.trendingBoxOfficeLayout.trendingBoxOfficeViewPager.currentItem = it
-                    }
-                }
-            }
-        }
-    }
-
-    private fun setupViewPager() {
+    private fun ActivityTrendingBinding.bindViewPager() {
         // Setup ViewPager2 behavior
-        // Implement dot indicators; and
-        // Page transformer to preview next and previous pages in a view pager
-        // TabLayoutMediator(boxOfficeTabLayout, boxOfficeVP) { _, _ -> }.attach()
+        // Implement dot indicators; and Page transformer
+        // to preview next and previous pages in a view pager
+        val boxOfficeVP = trendingBoxOfficeLayout.boxOfficeVP
+        val boxOfficeVPIndicator = trendingBoxOfficeLayout.dotsIndicator
         boxOfficeVPIndicator.attachTo(boxOfficeVP)
         boxOfficeVP.apply {
             offscreenPageLimit = 1
@@ -316,35 +304,24 @@ class TrendingActivity : AppCompatActivity(), OnMovieClickListener, OnLoadingPro
 
             addItemDecoration(HorizontalMarginItemDecoration(context, R.dimen.viewpager_current_item_horizontal_margin))
         }
-
-        boxOfficeVP.registerOnPageChangeCallback(
-            object: ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    trendingViewModel.setViewPagerLastPosition(position)
-                }
-            }
-        )
     }
 
-    private fun setupLoadingBar() {
-        trendingViewModel.dataProgress.observe(this) {
-            if(round(it) == MAX_PROGRESS.toDouble()) {
-                loadingBar.deactivate(loadingBarContainer)
+    private fun ActivityTrendingBinding.onSwipeRefresh(onRefresh: (TrendingUIAction.Refresh) -> Unit) {
+        onRefresh(TrendingUIAction.Refresh(triggerRefresh = true))
+        val message =
+            if(trendingViewModel.refreshData()) {
+                "Everything has been updated!"
             }
-        }
-    }
+            else {
+                "Everything has already been updated!"
+            }
 
-    private fun updateTrendingCharts() {
-        val message = if(trendingViewModel.refreshData()) {
-            "Charts are now updated!"
-        }
-        else {
-            "Charts are already updated!"
-        }
         Handler(Looper.getMainLooper()).postDelayed({
-            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-            binding.refreshTrending.isRefreshing = false
+            Snackbar.make(root, message, Snackbar.LENGTH_SHORT)
+                .setAction(R.string.ok) {}
+                .show()
+            refreshTrending.isRefreshing = false
+            onRefresh(TrendingUIAction.Refresh(triggerRefresh = false))
         }, 1500)
     }
 
@@ -353,5 +330,6 @@ class TrendingActivity : AppCompatActivity(), OnMovieClickListener, OnLoadingPro
         slide.duration = 200
 
         window.enterTransition = slide
+        window.exitTransition = slide
     }
 }

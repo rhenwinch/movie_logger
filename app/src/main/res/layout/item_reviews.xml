@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="71dp"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginTop="1dp"
+    android:clickable="true"
+    android:background="?attr/selectableItemBackground"
+    android:backgroundTint="@color/primary_1dp_elevation"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="25dp"
+    app:cardPreventCornerOverlap="false"
+    android:layout_marginVertical="8dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/mediaImage"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="5dp"
+                android:foreground="@drawable/right_gradient"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/reviewLabels"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/spoderman_blurred" />
+
+
+            <LinearLayout
+                android:id="@+id/reviewLabels"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="75dp"
+                android:layout_marginEnd="46dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/reviewCommentHeadline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@string/font_medium"
+                    android:textColor="@color/colorOnPrimary"
+                    android:textSize="16sp"
+                    tools:text="@string/sample_comment_rate" />
+
+                <TextView
+                    android:id="@+id/reviewTitleSubHeadline"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@string/font_thin"
+                    android:textColor="@color/colorOnPrimary"
+                    android:textSize="@dimen/textSizeSmallest"
+                    tools:text="Spiderman (2019)" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleX="1.4"
+                android:scaleY="1.4"
+                android:src="@drawable/right_arrow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/reviewLabels"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

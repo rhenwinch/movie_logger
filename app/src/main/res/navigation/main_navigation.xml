@@ -7,87 +7,26 @@
 
     <fragment
         android:id="@+id/homeFragment"
+        android:name="com.xcape.movie_logger.presentation.home.HomeFragment"
         android:label=""
-        tools:layout="@layout/fragment_home"
-        android:name="com.xcape.movie_logger.presentation.home.HomeFragment">
-        <action
-            android:id="@+id/action_homeFragment_to_searchFragment"
-            app:destination="@id/searchFragment"
-            app:enterAnim="@anim/slide_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_out" />
-        <action
-            android:id="@+id/action_homeFragment_to_favoritesFragment"
-            app:destination="@id/favoritesFragment"
-            app:enterAnim="@anim/slide_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_out" />
-    </fragment>
+        tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/searchFragment"
-        android:name="com.xcape.movie_logger.presentation.fragment.SearchFragment"
+        android:id="@+id/notificationsFragment"
+        android:name="com.xcape.movie_logger.presentation.notifications.NotificationsFragment"
         android:label=""
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_notifications" />
 
     <fragment
-        android:id="@+id/favoritesFragment"
-        android:name="com.xcape.movie_logger.presentation.fragment.FavoritesFragment"
+        android:id="@+id/friendRequestsFragment"
+        android:name="com.xcape.movie_logger.presentation.friend_requests.FriendRequestsFragment"
         android:label=""
-        tools:layout="@layout/fragment_favorites" >
-        <action
-            android:id="@+id/action_favoritesFragment_to_searchFragment"
-            app:destination="@id/searchFragment"
-            app:enterAnim="@anim/slide_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_out" />
-        <action
-            android:id="@+id/action_favoritesFragment_to_movieFragment"
-            app:destination="@id/movieActivity" />
-    </fragment>
+        tools:layout="@layout/fragment_friend_requests" />
 
     <fragment
-        android:id="@+id/trendingActivity"
-        android:name="com.xcape.movie_logger.presentation.trending.TrendingActivity"
+        android:id="@+id/profileFragment"
+        android:name="com.xcape.movie_logger.presentation.profile.ProfileFragment"
         android:label=""
-        tools:layout="@layout/activity_trending" >
-        <action
-            android:id="@+id/action_trendingFragment_to_searchFragment2"
-            app:destination="@id/searchFragment"
-            app:enterAnim="@anim/slide_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/slide_out" />
-        <action
-            android:id="@+id/action_trendingFragment_to_movieFragment"
-            app:destination="@id/movieActivity" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/calendarFragment"
-        android:name="com.xcape.movie_logger.presentation.fragment.CalendarFragment"
-        android:label=""
-        tools:layout="@layout/fragment_calendar" >
-        <action
-            android:id="@+id/action_calendarFragment_to_movieFragment"
-            app:destination="@id/movieActivity" />
-    </fragment>
-    <fragment
-        android:id="@+id/movieActivity"
-        android:name="com.xcape.movie_logger.presentation.movie_details.MovieActivity"
-        android:label=""
-        tools:layout="@layout/fragment_movie" >
-        <argument
-            android:name="movieId"
-            app:argType="string"
-            app:nullable="true" />
-        <argument
-            android:name="movieImage"
-            app:argType="string"
-            app:nullable="true" />
-    </fragment>
+        tools:layout="@layout/fragment_profile" />
 
 </navigation>

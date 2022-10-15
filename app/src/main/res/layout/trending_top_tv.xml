@@ -8,6 +8,7 @@
     android:columnCount="2">
 
     <TextView
+        android:id="@+id/chartHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_columnWeight="1"
@@ -28,13 +29,13 @@
         layout="@layout/view_all"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/trendingTopTVRecyclerView"
+        android:id="@+id/topTopRV"
         android:layout_width="match_parent"
         android:layout_height="261dp"
         android:layout_marginTop="13dp"
         android:layout_columnSpan="2"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_movie_small" />
+        tools:listitem="@layout/item_media_small" />
 
 </GridLayout>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bottomContainer"
+        android:drawable="@drawable/bookmark_white"
+        android:gravity="center" />
+
+    <item
+        android:drawable="@drawable/plus"
+        android:width="7dp"
+        android:height="7dp"
+        android:gravity="center"
+        android:bottom="3dp"/>
+
+</layer-list>

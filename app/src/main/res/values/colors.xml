@@ -18,9 +18,12 @@
     <color name="colorSecondary">#FC8536</color>
     <color name="colorSecondaryLight">#FFB665</color>
     <color name="colorSecondaryDark">#C35600</color>
+    <color name="colorOnError">#FF6565</color>
+    <color name="colorOnSuccess">#36FC71</color>
 
     <!-- Card colors -->
     <color name="transparent">#00FFFFFF</color>
+    <color name="primary_1dp_elevation">#1A232F</color>
     <color name="placeholder">#343E4C</color>
     <color name="black_71alpha">#B5383838</color>
     <color name="black_43alpha">#6E383838</color>
@@ -28,6 +31,7 @@
 
     <!-- Font Colors -->
     <color name="colorOnMediumEmphasis">#99FFFFFF</color>
+    <color name="colorOnProfilePlaceholder">#E1E1E1</color>
     <color name="colorOnPrimary">@color/white</color>
     <color name="colorOnSecondary">@color/black</color>
 

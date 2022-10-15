@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/bottomNavBarHeight">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/profileCardView"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="25dp"
+                    android:backgroundTint="@color/colorOnMediumEmphasis"
+                    app:cardCornerRadius="65dp"
+                    app:cardElevation="26dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:strokeColor="@color/colorSecondaryDark"
+                    app:strokeWidth="2dp">
+
+                    <ImageView
+                        style="@style/ProfilePicturePlaceholderIcon"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/viewProfileCardView"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginVertical="10dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:backgroundTint="@color/primary_1dp_elevation"
+                    android:clickable="true"
+                    android:elevation="7dp"
+                    app:cardCornerRadius="0dp"
+                    app:cardElevation="25dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/profileCardView" />
+
+                <TextView
+                    android:id="@+id/usernameLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginTop="15dp"
+                    android:elevation="26dp"
+                    android:fontFamily="@string/font_medium"
+                    android:textColor="@color/colorOnPrimary"
+                    android:textSize="@dimen/textSizeFragmentHeaders"
+                    app:layout_constraintBottom_toTopOf="@id/userSubHeadline"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/profileCardView"
+                    app:layout_constraintTop_toTopOf="@id/viewProfileCardView"
+                    tools:text="@string/guest" />
+
+                <TextView
+                    android:id="@+id/userSubHeadline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:elevation="26dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@string/font_medium"
+                    android:maxLines="1"
+                    android:text="@string/view_profile_statistics"
+                    android:textColor="@color/colorOnMediumEmphasis"
+                    android:textSize="@dimen/textSizeSmallest"
+                    app:layout_constraintBottom_toBottomOf="@id/viewProfileCardView"
+                    app:layout_constraintStart_toEndOf="@id/profileCardView"
+                    app:layout_constraintTop_toBottomOf="@id/usernameLabel" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Recently Rated -->
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="25dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:elevation="2dp"
+                    android:fontFamily="@string/font_medium"
+                    android:text="@string/recently_rated"
+                    android:textColor="@color/colorOnPrimary" />
+
+                <include
+                    android:id="@+id/viewAllRecentlyRated"
+                    layout="@layout/view_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="center|end" />
+
+            </GridLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginVertical="5dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/reviewsEmptyListIndicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="77dp"
+                    android:text="@string/empty_watched_list_message"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorOnPrimary"
+                    android:textSize="13sp"
+                    android:visibility="gone" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/reviewsRV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="2"
+                    tools:listitem="@layout/item_reviews" />
+
+            </RelativeLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginVertical="5dp" />
+
+            <!-- Friend -->
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="25dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:elevation="2dp"
+                    android:fontFamily="@string/font_medium"
+                    android:text="@string/friends"
+                    android:textColor="@color/colorOnPrimary" />
+
+                <include
+                    android:id="@+id/viewAllFriends"
+                    layout="@layout/view_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="center|end" />
+
+            </GridLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="5dp" />
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/addFriendButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="13dp">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="@dimen/userProfileCardSmall"
+                            android:layout_height="@dimen/userProfileCardSmall"
+                            android:backgroundTint="@color/colorOnProfilePlaceholder"
+                            app:cardCornerRadius="65dp"
+                            app:cardElevation="25dp"
+                            app:strokeColor="@color/colorSecondaryDark"
+                            app:strokeWidth="2dp">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:scaleX="1.2"
+                                android:scaleY="1.2"
+                                android:src="@drawable/plus" />
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <TextView
+                            android:layout_width="@dimen/userProfileCardSmall"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:ellipsize="end"
+                            android:fontFamily="@string/font_light"
+                            android:maxLines="1"
+                            android:text="@string/add_friend"
+                            android:textAlignment="center"
+                            android:textColor="@color/colorOnMediumEmphasis"
+                            android:textSize="@dimen/textSizeBody" />
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/friendsRV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="4"
+                        tools:listitem="@layout/item_friend" />
+
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginBottom="5dp" />
+
+            <!-- Watchlist -->
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="25dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:elevation="2dp"
+                    android:fontFamily="@string/font_medium"
+                    android:text="@string/watch_list"
+                    android:textColor="@color/colorOnPrimary" />
+
+                <include
+                    android:id="@+id/viewAllWatchlist"
+                    layout="@layout/view_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_gravity="center|end" />
+
+            </GridLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="15dp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/watchlistEmptyListIndicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="112dp"
+                    android:text="@string/empty_list_message"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorOnPrimary"
+                    android:textSize="13sp"
+                    android:visibility="gone" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/watchlistRV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-10dp"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="4"
+                    tools:listitem="@layout/item_media_small" />
+
+            </RelativeLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="5dp" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/logOutButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="15dp"
+                android:background="?attr/selectableItemBackground"
+                android:backgroundTint="@color/colorSecondary"
+                android:clickable="true"
+                app:cardCornerRadius="15dp"
+                app:cardElevation="25dp">
+
+                <ProgressBar
+                    android:id="@+id/loadingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="2dp"
+                    android:indeterminateTint="@color/colorPrimary"
+                    android:scaleX="0.6"
+                    android:scaleY="0.6"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/logOutLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginVertical="15dp"
+                    android:fontFamily="@string/font_medium"
+                    android:text="@string/logout"
+                    android:textColor="@color/colorOnSecondary"
+                    android:textSize="@dimen/textSizeMovieLabels" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

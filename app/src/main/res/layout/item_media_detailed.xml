@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="25dp"
+    android:paddingBottom="35dp"
+    android:paddingHorizontal="10dp"
+    android:clickable="true"
+    android:background="@color/colorPrimary"
+    android:elevation="1dp"
+    android:foreground="?attr/selectableItemBackground">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/mediaImagePosterContainer"
+        android:layout_width="109dp"
+        android:layout_height="160dp"
+        android:layout_marginEnd="10dp"
+        android:elevation="10dp"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="@id/mediaGroupDetails"
+        app:layout_constraintEnd_toStartOf="@id/mediaGroupDetails"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/mediaGroupDetails">
+
+        <ImageView
+            android:id="@+id/mediaImagePoster"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            tools:src="@drawable/spoderman" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mediaGroupDetails"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/mediaImagePosterContainer"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/mediaTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:ellipsize="end"
+
+            android:fontFamily="@string/font_medium"
+            android:maxLines="1"
+            android:textColor="@color/colorOnPrimary"
+            android:textSize="@dimen/textSizeMovieLabels"
+            app:layout_constraintBottom_toTopOf="@id/mediaCertDurationGenre"
+            app:layout_constraintEnd_toStartOf="@id/watchedIndicator"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="@string/sample_title" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/watchedIndicator"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:enabled="true"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:padding="0dp"
+            android:text="@string/watched_indicator"
+            android:textColor="@color/colorOnPrimary"
+            android:textSize="@dimen/textSizeSmallest"
+            app:cornerRadius="10dp"
+            app:layout_constraintBottom_toBottomOf="@id/mediaTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/mediaTitle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="@color/colorSecondary" />
+
+        <TextView
+            android:id="@+id/mediaCertDurationGenre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:ellipsize="end"
+            android:fontFamily="@string/font_medium"
+            android:maxLines="1"
+            android:textColor="@color/colorOnMediumEmphasis"
+            android:textSize="@dimen/textSizeBody"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mediaTitle"
+            tools:text="R | 1h 5m | 2012" />
+
+        <TextView
+            android:id="@+id/mediaImdbRatingLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@string/font_medium"
+            android:text="@string/imdbWithColon"
+            android:textColor="@color/colorOnMediumEmphasis"
+            android:textSize="@dimen/textSizeBody"
+            app:layout_constraintBottom_toTopOf="@id/mediaPersonalRatingLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mediaCertDurationGenre" />
+
+        <TextView
+            android:id="@+id/mediaImdbRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:fontFamily="@string/font_medium"
+            android:textColor="@color/colorOnMediumEmphasis"
+            android:textSize="@dimen/textSizeBody"
+            app:layout_constraintBottom_toBottomOf="@id/mediaImdbRatingLabel"
+            app:layout_constraintStart_toEndOf="@id/mediaImdbRatingLabel"
+            app:layout_constraintTop_toTopOf="@id/mediaImdbRatingLabel"
+            tools:text="7.7" />
+
+        <ImageView
+            android:id="@+id/mediaImdbStar"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/textSizeBody"
+            android:src="@drawable/star"
+            app:layout_constraintBottom_toBottomOf="@id/mediaImdbRatingLabel"
+            app:layout_constraintStart_toEndOf="@id/mediaImdbRating"
+            app:layout_constraintTop_toTopOf="@id/mediaImdbRatingLabel"
+            app:tint="@color/colorSecondaryLight" />
+
+        <TextView
+            android:id="@+id/mediaPersonalRatingLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@string/font_medium"
+            android:text="@string/your_rating"
+            android:textColor="@color/colorOnMediumEmphasis"
+            android:textSize="@dimen/textSizeBody"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mediaImdbRatingLabel" />
+
+        <RatingBar
+            android:id="@+id/mediaPersonalRating"
+            style="?android:attr/ratingBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:theme="@style/RatingBar"
+            app:layout_constraintBottom_toBottomOf="@id/mediaPersonalRatingLabel"
+
+            app:layout_constraintStart_toEndOf="@id/mediaPersonalRatingLabel"
+            app:layout_constraintTop_toTopOf="@id/mediaPersonalRatingLabel"
+            app:tint="@color/colorSecondaryLight"
+            tools:rating="4.5" />
+
+        <TextView
+            android:id="@+id/mediaBriefSypnosis"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:ellipsize="end"
+            android:lineSpacingExtra="5dp"
+            android:maxLines="3"
+            android:textColor="@color/colorOnMediumEmphasis"
+            android:textSize="@dimen/textSizeBody"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/mediaPersonalRatingLabel"
+            tools:text="@string/sample_sypnosis" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

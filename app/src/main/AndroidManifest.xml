@@ -16,7 +16,7 @@
         android:theme="@style/Theme.Movie_logger"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.MainActivity"
+            android:name=".presentation.main_activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,8 +24,24 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".presentation.auth.AuthPromptActivity"
+            android:parentActivityName=".presentation.main_activity.MainActivity" />
+        <activity
+            android:name="com.xcape.movie_logger.presentation.login.LoginActivity"
+            android:parentActivityName=".presentation.auth.AuthPromptActivity" />
+        <activity
+            android:name="com.xcape.movie_logger.presentation.sign_up.SignUpActivity"
+            android:parentActivityName=".presentation.auth.AuthPromptActivity" />
+        <activity
             android:name=".presentation.trending.TrendingActivity"
-            android:parentActivityName=".presentation.MainActivity" />
+            android:parentActivityName=".presentation.main_activity.MainActivity" />
+        <activity
+            android:name=".presentation.watchlist.WatchlistActivity"
+            android:parentActivityName=".presentation.main_activity.MainActivity" />
+        <activity
+            android:name=".presentation.search.SearchActivity"
+            android:parentActivityName=".presentation.main_activity.MainActivity"
+            android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".presentation.movie_details.MovieActivity"
             android:parentActivityName=".presentation.trending.TrendingActivity"

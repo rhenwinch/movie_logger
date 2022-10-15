@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent"
+    android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@id/mediaImagePosterContainer"
+        android:layout_width="146dp"
+        android:layout_height="202dp"
+        android:layout_gravity="center"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toTopOf="@id/mediaTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@id/mediaImagePoster"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            tools:src="@drawable/spoderman" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-110dp"
+        android:background="@drawable/rounded_bottom_sheet"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/movieMargin">
+
+        <TextView
+            android:id="@id/mediaTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:layout_marginTop="135dp"
+            android:fontFamily="@string/font_medium"
+            android:textColor="@color/colorOnPrimary"
+            android:textSize="@dimen/textSizeMovieHeader_24sp"
+            tools:text="@string/sample_title" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="55dp"
+            android:fontFamily="@string/font_medium"
+            android:text="@string/rate_this"
+            android:textColor="@color/colorOnPrimary"
+            android:textSize="@dimen/textSizeMovieLabels" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <RatingBar
+                android:id="@+id/mediaRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:elevation="10dp"
+                android:maxHeight="40dp"
+                android:minHeight="6dp"
+                android:progressDrawable="@drawable/custom_rating_bar"
+                android:numStars="5"
+                android:rating="0.0"
+                android:theme="@style/RatingBar" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:fontFamily="@string/font_light"
+                android:textColor="@color/colorOnPrimary"
+                android:text="@string/equal"
+                android:textSize="@dimen/textSizeMovieLabels"/>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ratingBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorSecondary"
+                android:paddingHorizontal="10dp"
+                android:gravity="center"
+                android:fontFamily="@string/font_light"
+                android:imeOptions="actionNext"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:textColor="@color/colorOnPrimary"
+                android:textCursorDrawable="@null"
+                android:textSize="@dimen/textSizeMovieLabels"
+                android:text="@string/rating_placeholder" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/ratingErrorText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:visibility="gone"
+            tools:text="Error: Invalid value given"
+            android:textColor="@color/colorOnError" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:fontFamily="@string/font_medium"
+            android:text="@string/leave_a_comment"
+            android:textColor="@color/colorOnPrimary"
+            android:textSize="@dimen/textSizeMovieLabels" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorPrimary"
+            android:elevation="10dp"
+            app:endIconMode="clear_text"
+            app:hintAnimationEnabled="false"
+            app:hintEnabled="false">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/commentBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/add_your_comment"
+                android:imeOptions="actionSend"
+                android:inputType="textMultiLine"
+                android:textColor="@color/colorOnMediumEmphasis"
+                android:textColorHint="@color/colorOnMediumEmphasis"
+                android:textCursorDrawable="@null"
+                android:textSize="@dimen/textSizeBody" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/formSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/colorOnPrimary"
+            android:layout_marginVertical="35dp"
+            android:text="@string/add_review" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="239dp"
+    android:fitsSystemWindows="true"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    <com.google.android.material.appbar.CollapsingToolbarLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:contentScrim="#000E1824"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+        app:toolbarId="@id/movieToolbar">
+
+        <ImageView
+            android:id="@+id/mediaImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:foreground="@drawable/item_movie_overlay_labeled"
+            android:scaleType="centerCrop"
+            android:transitionName="movieImageScaled"
+            app:layout_collapseMode="parallax"
+            tools:src="@drawable/spoderman" />
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/movieToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="bottom"
+            app:layout_collapseMode="pin"
+            app:navigationIcon="@drawable/left_arrow_2"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+</com.google.android.material.appbar.AppBarLayout>
