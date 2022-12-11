@@ -8,7 +8,7 @@
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="3dp"
+        android:layout_height="@dimen/dp3"
         android:layout_marginVertical="10dp"
         android:layout_gravity="center"
         android:src="@drawable/dragger" />
@@ -17,7 +17,7 @@
         android:id="@+id/addToWatchedList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
+        android:paddingTop="@dimen/dp5"
         android:paddingVertical="15dp"
         android:paddingHorizontal="10dp"
         android:orientation="horizontal"
@@ -42,13 +42,13 @@
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
-        android:layout_height="2dp" />
+        android:layout_height="@dimen/dp2" />
 
     <LinearLayout
         android:id="@+id/deleteItem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="5dp"
+        android:paddingTop="@dimen/dp5"
         android:paddingVertical="15dp"
         android:paddingHorizontal="15dp"
         android:orientation="horizontal"
@@ -73,6 +73,6 @@
 
     <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
-        android:layout_height="2dp" />
+        android:layout_height="@dimen/dp2" />
 
 </LinearLayout>

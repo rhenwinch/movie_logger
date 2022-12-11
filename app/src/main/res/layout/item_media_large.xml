@@ -5,93 +5,20 @@
     android:layout_height="330dp">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/itemMovieLargeFront"
+        android:id="@+id/itemMovieLarge"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardCornerRadius="10dp"
-        app:cardElevation="2dp">
+        app:cardElevation="@dimen/dp2">
 
         <ImageView
-            android:id="@+id/movieImageFront"
+            android:id="@+id/movieImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:src="@drawable/spoderman"
             android:scaleType="fitXY"
             android:foreground="@drawable/item_movie_overlay_light" />
-
-    </com.google.android.material.card.MaterialCardView>
-
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/itemMovieLargeBack"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="2dp">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/movieImageBack"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:src="@drawable/spoderman"
-                android:scaleType="fitXY"
-                android:foreground="@drawable/item_movie_back_overlay" />
-
-
-            <ImageButton
-                android:id="@+id/movieCardBackButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/transparent"
-                android:src="@drawable/left_arrow_2"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/movieTitleBack"
-                android:layout_width="208dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginStart="13dp"
-                android:fontFamily="@string/font_black"
-                android:text="@string/sample_item"
-                android:textSize="15sp"
-                android:textColor="@color/colorOnPrimary"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/movieCardBackButton" />
-
-            <TextView
-                android:id="@+id/movieSypnosisLabelBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginStart="13dp"
-                android:fontFamily="@string/font_medium"
-                android:text="@string/sypnosis"
-                android:textColor="@color/colorOnPrimary"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/movieTitleBack" />
-
-            <TextView
-                android:id="@+id/movieSypnosisBodyBack"
-                android:layout_width="208dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginStart="13dp"
-                android:fontFamily="@string/font_light"
-                android:text="@string/sample_sypnosis"
-                android:textColor="@color/colorOnPrimary"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/movieSypnosisLabelBack" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
 

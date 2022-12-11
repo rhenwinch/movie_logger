@@ -29,8 +29,6 @@ class ReviewsViewHolder(binding: ItemReviewsBinding) : BaseViewHolder<WatchedMed
             .load(item.mediaInfo?.gallery?.poster)
             .fit()
             .centerInside()
-            .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-            .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
             .into(mediaImage)
 
         mediaTitleWithYear.text = titleWithYear

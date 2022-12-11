@@ -11,7 +11,6 @@ import com.squareup.picasso.Picasso
 import com.xcape.movie_logger.databinding.ItemMediaDetailedBinding
 import com.xcape.movie_logger.domain.model.media.MediaInfo
 import com.xcape.movie_logger.presentation.common.BaseViewHolder
-import com.xcape.movie_logger.presentation.common.OnMediaClickListener
 import com.xcape.movie_logger.presentation.common.setOnSingleClickListener
 import com.xcape.movie_logger.presentation.watchlist.WatchlistMediaClickListener
 

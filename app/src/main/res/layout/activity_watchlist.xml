@@ -55,7 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="15dp"
-                android:layout_marginStart="5dp">
+                android:layout_marginStart="@dimen/dp5">
 
                 <TextView
                     android:id="@+id/sortedByLabel"
@@ -90,7 +90,7 @@
                     android:id="@+id/sortTypeChosen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="2dp"
+                    android:layout_marginStart="@dimen/dp2"
                     android:rotation="180"
                     android:src="@drawable/up_arrow_2"
                     app:layout_constraintBottom_toBottomOf="@id/filterTypeChosen"

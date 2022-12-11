@@ -19,7 +19,7 @@
             android:id="@+id/movieDurationIcon"
             android:layout_width="9dp"
             android:layout_height="match_parent"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="@dimen/dp8"
             tools:ignore="ContentDescription" />
 
         <TextView
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginHorizontal="37dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="@dimen/dp5"
         android:fontFamily="@string/font_medium"
         tools:text="@string/sample_title"
         android:textAlignment="center"
@@ -81,7 +81,7 @@
                 android:id="@+id/movieRatingLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="@dimen/dp5"
                 android:fontFamily="@string/font_light"
                 android:text="@string/ave_personal_rating"
                 android:textAlignment="center"
@@ -150,7 +150,7 @@
                 android:id="@+id/movieRatingImdbLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="@dimen/dp5"
                 android:fontFamily="@string/font_light"
                 android:text="@string/imdb"
                 android:textAlignment="center"

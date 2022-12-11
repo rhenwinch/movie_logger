@@ -16,14 +16,14 @@
         app:cardCornerRadius="65dp"
         app:cardElevation="25dp"
         app:strokeColor="@color/colorSecondaryDark"
-        app:strokeWidth="2dp">
+        app:strokeWidth="@dimen/dp2">
 
         <ImageView
             android:id="@+id/friendProfileImage"
             android:layout_width="@dimen/userProfileCardSmall"
             android:layout_height="@dimen/userProfileCardSmall"
             android:scaleType="centerCrop"
-            tools:src="@drawable/profile_placeholder" />
+            android:src="@drawable/profile_placeholder" />
 
     </com.google.android.material.card.MaterialCardView>
 
@@ -31,7 +31,7 @@
         android:id="@+id/friendUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="@dimen/dp5"
         android:textAlignment="center"
         android:maxLines="1"
         android:ellipsize="end"

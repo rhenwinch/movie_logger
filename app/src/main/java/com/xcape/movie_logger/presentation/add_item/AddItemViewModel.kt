@@ -5,10 +5,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.xcape.movie_logger.domain.model.media.MediaInfo
 import com.xcape.movie_logger.domain.model.media.WatchedMedia
-import com.xcape.movie_logger.domain.repository.local.WatchedMediasRepository
-import com.xcape.movie_logger.domain.repository.local.WatchlistRepository
-import com.xcape.movie_logger.domain.repository.remote.MovieRemoteRepository
-import com.xcape.movie_logger.domain.use_cases.RatingValidator
+import com.xcape.movie_logger.domain.repository.remote.MediaRepository
+import com.xcape.movie_logger.domain.repository.remote.WatchedMediasRepository
+import com.xcape.movie_logger.domain.repository.remote.WatchlistRepository
+import com.xcape.movie_logger.domain.use_cases.firebase.Authenticator
+import com.xcape.movie_logger.domain.use_cases.form_validators.RatingValidator
 import com.xcape.movie_logger.domain.utils.Resource
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -19,9 +20,10 @@ import java.util.*
 
 //@HiltViewModel
 class AddItemViewModel @AssistedInject constructor(
-    private val remoteRepository: MovieRemoteRepository,
-    private val localWatchlistRepository: WatchlistRepository,
-    private val localWatchedRepository: WatchedMediasRepository,
+    private val auth: Authenticator,
+    private val remoteRepository: MediaRepository,
+    private val watchlistRepository: WatchlistRepository,
+    private val watchedMediasRepository: WatchedMediasRepository,
     @Assisted private val mediaId: String?
 ) : ViewModel() {
 
@@ -152,7 +154,7 @@ class AddItemViewModel @AssistedInject constructor(
         return flow {
             try {
                 // Check if it is in cache first
-                val localResult = localWatchlistRepository.getWatchlistMediaByMediaId(mediaId!!)
+                val localResult = watchlistRepository.getWatchlistMediaByMediaId(mediaId!!)
                 if(localResult != null) {
                     emit(localResult.mediaInfo)
                 }
@@ -169,25 +171,23 @@ class AddItemViewModel @AssistedInject constructor(
         }
     }
 
-    private suspend fun removeFromWatchlist(mediaId: String) {
-        localWatchlistRepository.deleteWatchlistMediaById(mediaId)
+    private fun removeFromWatchlist(mediaId: String) {
+        watchlistRepository.deleteWatchlistMediaById(mediaId)
     }
 
-    private suspend fun addItemMedia(
+    private fun addItemMedia(
         media: MediaInfo?,
         comment: String?,
         rating: Float
     ): Boolean {
         media?.let {
-            // Remove item from watchlist if it was in there
-            println("Deleting")
+            // Remove item fromUserId watchlist if it was in there
             removeFromWatchlist(it.id)
-            println("Deleted")
 
 
-            println("Adding")
             val review = WatchedMedia(
                 id = it.id,
+                ownerId = auth.loggedInUser!!.uid,
                 addedOn = Date(),
                 dateReleased = it.dateReleased,
                 comments = comment,
@@ -196,8 +196,7 @@ class AddItemViewModel @AssistedInject constructor(
                 mediaInfo = it
             )
 
-            localWatchedRepository.insertWatchedMedia(review)
-            println("Added")
+            watchedMediasRepository.insertWatchedMedia(review)
             return true
         }
         return false

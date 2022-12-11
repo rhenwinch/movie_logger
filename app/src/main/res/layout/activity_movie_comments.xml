@@ -43,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@string/font_medium"
-                android:layout_marginEnd="7dp"
+                android:layout_marginEnd="@dimen/dp7"
                 android:text="@string/add"
                 android:textSize="15sp"
                 android:textColor="@color/colorOnMediumEmphasis" />

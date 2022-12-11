@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.ItemTouchHelper.*
 import androidx.recyclerview.widget.RecyclerView
 import com.xcape.movie_logger.domain.model.media.MediaInfo
-import com.xcape.movie_logger.presentation.home.TopMoviesAdapter
+import com.xcape.movie_logger.presentation.home.adapter.TopMoviesAdapter
 
 class SwipeCard(
     private val itemList: MutableList<MediaInfo>,

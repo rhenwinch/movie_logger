@@ -22,10 +22,10 @@ class NotificationsViewHolder(
         position: Int?,
         listener: ClickListener?
     ) {
-        if(item == null)
+        if(item?.from == null)
             return
 
-        val profilePictureLink = item.from?.imageProfile
+        val profilePictureLink = item.from.imageProfile
 
         if (!profilePictureLink.isNullOrEmpty()) {
             Picasso.get()
@@ -38,7 +38,7 @@ class NotificationsViewHolder(
                 .into(profilePicture)
         }
 
-        username.text = item.from?.username
+        username.text = item.from.username
         message.text = item.message
     }
 

@@ -31,7 +31,7 @@
             <ImageView
                 android:layout_width="65dp"
                 android:layout_height="65dp"
-                android:elevation="1dp"
+                android:elevation="@dimen/dp1"
                 android:src="@drawable/play"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

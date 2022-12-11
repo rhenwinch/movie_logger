@@ -3,10 +3,10 @@ package com.xcape.movie_logger.presentation.trending
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.xcape.movie_logger.domain.repository.remote.MovieRemoteRepository
+import com.xcape.movie_logger.domain.repository.remote.MediaRepository
 import com.xcape.movie_logger.domain.utils.Resource
-import com.xcape.movie_logger.domain.utils.Functions.getCurrentTimestamp
-import com.xcape.movie_logger.domain.utils.Functions.needsUpdate
+import com.xcape.movie_logger.common.Functions.getCurrentTimestamp
+import com.xcape.movie_logger.common.Functions.needsUpdate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
@@ -20,7 +20,7 @@ const val TOP_TV = "tv"
 
 @HiltViewModel
 class TrendingViewModel @Inject constructor(
-    private val repository: MovieRemoteRepository
+    private val repository: MediaRepository
 ) : ViewModel() {
     // UI States
     private val _trendingUIState = MutableStateFlow(TrendingUIState())
@@ -52,7 +52,7 @@ class TrendingViewModel @Inject constructor(
                 }
             }
 
-            // Subscribe to latest events from our ui action callback
+            // Subscribe to latest events fromUserId our ui action callback
             launch {
                 actionStateFlow.collectLatest { event ->
                     when(event) {

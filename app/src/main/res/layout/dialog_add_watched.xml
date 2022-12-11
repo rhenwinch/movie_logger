@@ -69,7 +69,7 @@
                 android:layout_gravity="center"
                 android:elevation="10dp"
                 android:maxHeight="40dp"
-                android:minHeight="6dp"
+                android:minHeight="@dimen/dp6"
                 android:progressDrawable="@drawable/custom_rating_bar"
                 android:numStars="5"
                 android:rating="0.0"
@@ -106,7 +106,7 @@
             android:id="@+id/ratingErrorText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="@dimen/dp5"
             android:visibility="gone"
             tools:text="Error: Invalid value given"
             android:textColor="@color/colorOnError" />

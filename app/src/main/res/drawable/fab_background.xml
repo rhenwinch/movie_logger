@@ -9,6 +9,6 @@
 
     <!-- here set the width and color of your border -->
     <stroke
-        android:width="5dp"
+        android:width="@dimen/dp5"
         android:color="?attr/colorPrimaryVariant" />
 </shape>

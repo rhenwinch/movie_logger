@@ -3,7 +3,8 @@ package com.xcape.movie_logger.presentation.watched_list
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.xcape.movie_logger.domain.model.media.WatchedMedia
-import com.xcape.movie_logger.domain.repository.local.WatchedMediasRepository
+import com.xcape.movie_logger.domain.repository.remote.WatchedMediasRepository
+import com.xcape.movie_logger.presentation.common.MediaSorter
 import com.xcape.movie_logger.presentation.watchlist.SortType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -12,8 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WatchedMediasViewModel @Inject constructor(
-    private val localRepository: WatchedMediasRepository
-) : ViewModel() {
+    private val watchlistRepository: WatchedMediasRepository
+) : ViewModel(), MediaSorter<WatchedMedia> {
     val state: StateFlow<WatchedMediasUIState>
     val watchedMediaData: Flow<List<WatchedMedia>>
     val accept: (WatchedMediasUIAction) -> Unit
@@ -42,6 +43,10 @@ class WatchedMediasViewModel @Inject constructor(
                 initialValue = WatchedMediasUIState()
             )
 
+        viewModelScope.launch {
+
+        }
+
         watchedMediaData = getSortedAddedMediasFromWatchedList(SortType.DESCENDING.ordinal)
 
         accept = { action ->
@@ -52,9 +57,9 @@ class WatchedMediasViewModel @Inject constructor(
     private fun getSortedPopularMediasFromWatchedList(sortType: Int): Flow<List<WatchedMedia>> {
         return when(sortType) {
             // When chosen sort type is latest
-            SortType.DESCENDING.ordinal -> localRepository.getMostPopularWatchedMedias()
+            SortType.DESCENDING.ordinal -> getGreatestWatchedMedias { it.rating }
             // When chosen sort type is outdated
-            SortType.ASCENDING.ordinal -> localRepository.getLeastPopularWatchedMedias()
+            SortType.ASCENDING.ordinal -> getLeastWatchedMedias { it.rating }
             else -> flowOf(emptyList())
         }
     }
@@ -62,9 +67,9 @@ class WatchedMediasViewModel @Inject constructor(
     private fun getSortedReleasedMediasFromWatchedList(sortType: Int): Flow<List<WatchedMedia>> {
         return when(sortType) {
             // When chosen sort type is latest
-            SortType.DESCENDING.ordinal -> localRepository.getRecentlyReleasedWatchedMedias()
+            SortType.DESCENDING.ordinal -> getGreatestWatchedMedias { it.dateReleased }
             // When chosen sort type is outdated
-            SortType.ASCENDING.ordinal -> localRepository.getOldestReleasedWatchedMedias()
+            SortType.ASCENDING.ordinal -> getLeastWatchedMedias { it.dateReleased }
             else -> flowOf(emptyList())
         }
     }
@@ -72,14 +77,28 @@ class WatchedMediasViewModel @Inject constructor(
     private fun getSortedAddedMediasFromWatchedList(sortType: Int): Flow<List<WatchedMedia>> {
         return when(sortType) {
             // When chosen sort type is latest
-            SortType.DESCENDING.ordinal -> localRepository.getLatestWatchedMedias()
+            SortType.DESCENDING.ordinal -> getGreatestWatchedMedias { it.addedOn }
             // When chosen sort type is outdated
-            SortType.ASCENDING.ordinal -> localRepository.getOldestWatchedMedias()
+            SortType.ASCENDING.ordinal -> getLeastWatchedMedias { it.addedOn }
             else -> flowOf(emptyList())
         }
     }
 
     private suspend fun deleteWatchedListMediaById(mediaId: String) {
-        localRepository.deleteWatchedMediaById(mediaId)
+        watchlistRepository.deleteWatchedMediaById(mediaId)
     }
+
+    override fun <R : Comparable<R>> getGreatestWatchedMedias(selector: (WatchedMedia) -> R?): Flow<List<WatchedMedia>> {
+        return callbackFlow {
+            watchlistRepository.getLatestWatchedMedias().collect { trySend(it.sortedByDescending(selector)) }
+        }
+    }
+
+    override fun <R : Comparable<R>> getLeastWatchedMedias(selector: (WatchedMedia) -> R?): Flow<List<WatchedMedia>> {
+        return callbackFlow {
+            watchlistRepository.getLatestWatchedMedias().collect { trySend(it.sortedBy(selector)) }
+        }
+    }
+
+
 }

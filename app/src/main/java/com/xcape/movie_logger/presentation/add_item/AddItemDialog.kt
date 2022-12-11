@@ -22,7 +22,7 @@ import com.squareup.picasso.Picasso
 import com.xcape.movie_logger.databinding.DialogAddWatchedBinding
 import com.xcape.movie_logger.presentation.common.OnDialogDismissListener
 import com.xcape.movie_logger.domain.model.media.MediaInfo
-import com.xcape.movie_logger.domain.use_cases.InvalidRating
+import com.xcape.movie_logger.domain.use_cases.form_validators.InvalidRating
 import com.xcape.movie_logger.presentation.common.setOnSingleClickListener
 import com.xcape.movie_logger.presentation.movie_details.MEDIA_ID
 import dagger.hilt.android.AndroidEntryPoint
@@ -106,7 +106,7 @@ class AddItemDialog : BottomSheetDialogFragment() {
                     mediaTitle.text = details
 
                     Picasso.get()
-                        .load(it.gallery?.poster?.replace("_V1_", "_SL450_"))
+                        .load(it.gallery.poster.replace("_V1_", "_SL450_"))
                         .fit()
                         .centerInside()
                         .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)

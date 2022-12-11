@@ -26,8 +26,8 @@
                 android:id="@+id/statisticsButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginVertical="2dp"
-                android:layout_marginEnd="2dp"
+                android:layout_marginVertical="@dimen/dp2"
+                android:layout_marginEnd="@dimen/dp2"
                 app:cardCornerRadius="10dp">
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -59,7 +59,7 @@
         <com.google.android.material.divider.MaterialDivider
             android:id="@+id/searchDivider"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="@dimen/dp2"
             android:layout_marginTop="25dp"
             android:layout_marginBottom="17dp" />
 
@@ -67,13 +67,94 @@
             android:id="@+id/suggestedMediaContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="15dp"
+                android:layout_marginBottom="15dp"
+                android:fontFamily="@string/font_regular"
+                android:letterSpacing="0.4"
+                android:text="@string/filters"
+                android:textAllCaps="true"
+                android:textColor="@color/colorOnPrimary"
+                android:textSize="@dimen/textSizeSmallest" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp">
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/movieFilterButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    app:cardCornerRadius="@dimen/dp5"
+                    app:cardElevation="@dimen/filterTypeEnabled">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="20sp"
+                        android:paddingVertical="@dimen/dp5"
+                        android:text="@string/movie"
+                        android:textColor="@color/colorOnPrimary"
+                        android:textSize="14sp" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/tvShowFilterButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="15dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    app:cardCornerRadius="@dimen/dp5"
+                    app:cardElevation="@dimen/filterTypeEnabled">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="20sp"
+                        android:paddingVertical="@dimen/dp5"
+                        android:text="@string/tv_show"
+                        android:textColor="@color/colorOnPrimary"
+                        android:textSize="14sp" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/userFilterButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    app:cardCornerRadius="@dimen/dp5"
+                    app:cardElevation="@dimen/dp1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="20sp"
+                        android:paddingVertical="@dimen/dp5"
+                        android:text="@string/user"
+                        android:textColor="@color/colorOnPrimary"
+                        android:textSize="14sp" />
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
                 android:fontFamily="@string/font_regular"
                 android:letterSpacing="0.4"
@@ -81,6 +162,15 @@
                 android:textAllCaps="true"
                 android:textColor="@color/colorOnPrimary"
                 android:textSize="@dimen/textSizeSmallest" />
+
+            <TextView
+                android:id="@+id/suggestionsListIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/font_regular"
+                android:text="@string/empty_suggestions_list"
+                android:textColor="@color/colorOnMediumEmphasis"
+                android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/suggestedMediaRecyclerView"
@@ -108,40 +198,41 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <RelativeLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:elevation="@dimen/dp2"
+                android:orientation="vertical">
 
-                <include
-                    android:id="@+id/searchLoadingContainer"
-                    layout="@layout/item_loading_layout_no_bg"
+                <TextView
+                    android:id="@+id/searchIndicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:fontFamily="@string/font_regular"
+                    android:letterSpacing="0.4"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorOnPrimary"
+                    android:textSize="@dimen/textSizeSmallest"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/recommended" />
+
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="gone" />
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toTopOf="@+id/gridLayout"
+                    app:layout_constraintTop_toBottomOf="@id/searchIndicator">
 
-                <LinearLayout
-                    android:id="@+id/searchResultsLayoutContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:elevation="2dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/searchIndicator"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:layout_marginBottom="28dp"
-                        android:fontFamily="@string/font_regular"
-                        android:letterSpacing="0.4"
-                        android:textAllCaps="true"
-                        android:textColor="@color/colorOnPrimary"
-                        android:textSize="@dimen/textSizeSmallest"
-                        tools:text="@string/recommended" />
+                    <include
+                        android:id="@+id/searchLoadingContainer"
+                        layout="@layout/item_loading_layout_no_bg" />
 
                     <androidx.core.widget.NestedScrollView
+                        android:id="@+id/searchResultsLayoutContainer"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_marginTop="28dp"
                         android:scrollbars="none">
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -150,14 +241,103 @@
                             android:layout_height="match_parent"
                             android:orientation="vertical"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            tools:itemCount="3"
+                            tools:itemCount="1"
                             tools:listitem="@layout/item_search" />
 
                     </androidx.core.widget.NestedScrollView>
 
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/gridLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:columnCount="3"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                    <LinearLayout
+                        android:id="@+id/previousPageBtn"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="?attr/selectableItemBackground"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:paddingTop="10dp">
+
+                        <ImageView
+                            android:id="@+id/previousPageImg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:scaleX="1.2"
+                            android:scaleY="1.2"
+                            android:src="@drawable/left_arrow"
+                            app:tint="@color/colorOnMediumEmphasis" />
+                        
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/pageIndicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:paddingTop="10dp">
+
+                        <TextView
+                            android:id="@+id/pageNumber"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:textColor="@color/colorOnPrimary"
+                            android:textSize="14sp"
+                            tools:text="1" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:fontFamily="@string/font_regular"
+                            android:letterSpacing="0.4"
+                            android:text="@string/page"
+                            android:textAllCaps="true"
+                            android:textColor="@color/colorOnMediumEmphasis"
+                            android:textSize="@dimen/textSizeSmallest" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/nextPageBtn"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="?attr/selectableItemBackground"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:paddingTop="10dp">
+
+                        <ImageView
+                            android:id="@+id/nextPageImg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:scaleX="1.2"
+                            android:scaleY="1.2"
+                            android:src="@drawable/right_arrow"
+                            app:tint="@color/colorOnPrimary" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
-            </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>
 

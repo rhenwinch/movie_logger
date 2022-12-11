@@ -9,10 +9,10 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="48dp"
         android:layout_height="48dp"
-        app:strokeWidth="2dp"
+        app:strokeWidth="@dimen/dp2"
         app:strokeColor="@color/colorSecondaryDark"
         app:cardCornerRadius="30dp"
-        app:cardElevation="2dp"
+        app:cardElevation="@dimen/dp2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
@@ -28,11 +28,11 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="39dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginStart="@dimen/dp4"
+        android:layout_marginTop="@dimen/dp1"
         android:background="@color/transparent"
         app:cardCornerRadius="10dp"
-        app:cardElevation="1dp"
+        app:cardElevation="@dimen/dp1"
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -41,7 +41,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="6dp">
+            android:layout_marginStart="@dimen/dp6">
 
             <TextView
                 android:id="@+id/reactionCommentHeadline"

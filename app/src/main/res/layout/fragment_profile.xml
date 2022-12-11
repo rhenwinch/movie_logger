@@ -34,9 +34,10 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:strokeColor="@color/colorSecondaryDark"
-                    app:strokeWidth="2dp">
+                    app:strokeWidth="@dimen/dp2">
 
                     <ImageView
+                        android:id="@id/profilePicture"
                         style="@style/ProfilePicturePlaceholderIcon"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -52,7 +53,7 @@
                     android:background="?attr/selectableItemBackground"
                     android:backgroundTint="@color/primary_1dp_elevation"
                     android:clickable="true"
-                    android:elevation="7dp"
+                    android:elevation="@dimen/dp7"
                     app:cardCornerRadius="0dp"
                     app:cardElevation="25dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -106,7 +107,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
-                    android:elevation="2dp"
+                    android:elevation="@dimen/dp2"
                     android:fontFamily="@string/font_medium"
                     android:text="@string/recently_rated"
                     android:textColor="@color/colorOnPrimary" />
@@ -123,8 +124,8 @@
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginVertical="5dp" />
+                android:layout_height="@dimen/dp2"
+                android:layout_marginVertical="@dimen/dp5" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -154,8 +155,8 @@
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginVertical="5dp" />
+                android:layout_height="@dimen/dp2"
+                android:layout_marginVertical="@dimen/dp5" />
 
             <!-- Friend -->
             <GridLayout
@@ -168,7 +169,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
-                    android:elevation="2dp"
+                    android:elevation="@dimen/dp2"
                     android:fontFamily="@string/font_medium"
                     android:text="@string/friends"
                     android:textColor="@color/colorOnPrimary" />
@@ -185,8 +186,8 @@
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="5dp" />
+                android:layout_height="@dimen/dp2"
+                android:layout_marginTop="@dimen/dp5" />
 
             <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
@@ -215,7 +216,7 @@
                             app:cardCornerRadius="65dp"
                             app:cardElevation="25dp"
                             app:strokeColor="@color/colorSecondaryDark"
-                            app:strokeWidth="2dp">
+                            app:strokeWidth="@dimen/dp2">
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -230,7 +231,7 @@
                         <TextView
                             android:layout_width="@dimen/userProfileCardSmall"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="@dimen/dp5"
                             android:ellipsize="end"
                             android:fontFamily="@string/font_light"
                             android:maxLines="1"
@@ -246,7 +247,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:itemCount="4"
                         tools:listitem="@layout/item_friend" />
@@ -257,8 +258,8 @@
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginBottom="5dp" />
+                android:layout_height="@dimen/dp2"
+                android:layout_marginBottom="@dimen/dp5" />
 
             <!-- Watchlist -->
             <GridLayout
@@ -271,7 +272,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
-                    android:elevation="2dp"
+                    android:elevation="@dimen/dp2"
                     android:fontFamily="@string/font_medium"
                     android:text="@string/watch_list"
                     android:textColor="@color/colorOnPrimary" />
@@ -288,8 +289,8 @@
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="5dp"
+                android:layout_height="@dimen/dp2"
+                android:layout_marginTop="@dimen/dp5"
                 android:layout_marginBottom="15dp" />
 
             <RelativeLayout
@@ -321,9 +322,9 @@
 
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
+                android:layout_height="@dimen/dp2"
                 android:layout_marginTop="15dp"
-                android:layout_marginBottom="5dp" />
+                android:layout_marginBottom="@dimen/dp5" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/logOutButton"
@@ -343,7 +344,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginVertical="2dp"
+                    android:layout_marginVertical="@dimen/dp2"
                     android:indeterminateTint="@color/colorPrimary"
                     android:scaleX="0.6"
                     android:scaleY="0.6"

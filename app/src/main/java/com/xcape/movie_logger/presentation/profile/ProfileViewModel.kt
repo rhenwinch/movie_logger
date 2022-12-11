@@ -4,82 +4,68 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.xcape.movie_logger.domain.model.media.WatchedMedia
+import com.xcape.movie_logger.domain.model.media.WatchlistMedia
 import com.xcape.movie_logger.domain.model.user.User
-import com.xcape.movie_logger.domain.repository.local.LocalUserRepository
-import com.xcape.movie_logger.domain.repository.remote.AuthRepository
-import com.xcape.movie_logger.domain.repository.remote.RemoteUserRepository
+import com.xcape.movie_logger.domain.repository.remote.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import org.checkerframework.checker.units.qual.g
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-    private val localUserRepository: LocalUserRepository,
-    private val remoteUserRepository: RemoteUserRepository
+    private val usersRepository: UsersRepository,
+    private val friendsRepository: FriendsRepository,
+    private val watchlistRepository: WatchlistRepository,
+    private val watchedMediasRepository: WatchedMediasRepository
 ) : ViewModel() {
-
-    val state: StateFlow<ProfileUIState>
-    val accept: (ProfileUIAction) -> Unit
-
     private val _userData = MutableLiveData<User?>()
     val userData: LiveData<User?> = _userData
 
-    private val _friends = MutableLiveData<List<User>>()
+    private val _friends = MutableLiveData<List<User>>(emptyList())
     val friends: LiveData<List<User>> = _friends
 
+    private val _reviews = MutableStateFlow<List<WatchedMedia>>(emptyList())
+    val reviews: StateFlow<List<WatchedMedia>> = _reviews
+    private val _watchlist = MutableStateFlow<List<WatchlistMedia>>(emptyList())
+    val watchlist: StateFlow<List<WatchlistMedia>> = _watchlist
+
     init {
-        val actionStateFlow = MutableSharedFlow<ProfileUIAction>()
-
-        val isSigningOut = actionStateFlow
-            .filterIsInstance<ProfileUIAction.SignOut>()
-            .distinctUntilChanged()
-
-        state = isSigningOut.map { signOut ->
-            var state = ProfileUIState()
-
-            if(signOut.isSigningOut) {
-                signOutCurrentUser()
-                state = state.copy(isSignedOut = true)
-            }
-
-            return@map state
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = ProfileUIState()
-        )
-
         viewModelScope.launch {
             launch { getCurrentUser().collect { _userData.value = it } }
             launch { getLatestFriends().collect { _friends.value = it } }
-        }
-
-        accept = { action ->
-            viewModelScope.launch { actionStateFlow.emit(action) }
+            launch { getLatestReviews().collect { _reviews.value = it } }
+            launch { getLatestWatchlist().collect { _watchlist.value = it } }
         }
     }
 
-    private suspend fun signOutCurrentUser() {
-        authRepository.signOut()
+    fun onEvent(event: ProfileUIAction) {
+        when(event) {
+            is ProfileUIAction.SignOut -> signOutCurrentUser()
+        }
+    }
+
+    private fun signOutCurrentUser() {
+        viewModelScope.launch {
+            authRepository.signOut()
+        }
     }
 
     private fun getCurrentUser(): Flow<User> {
-        return localUserRepository.getCurrentUser()
+        return usersRepository.getLiveUser()
     }
 
     private fun getLatestFriends(): Flow<List<User>> {
-        try {
-            val friendsList = remoteUserRepository.getLatestFriends()
+        return friendsRepository.getLatestFriends()
+    }
 
-            viewModelScope.launch {
-                friendsList.collect { localUserRepository.updateFriends(it) }
-            }
-        }
-        catch (_: Exception) {}
+    private fun getLatestReviews(): Flow<List<WatchedMedia>> {
+        return watchedMediasRepository.getLatestWatchedMedias()
+    }
 
-        return localUserRepository.getLatestFriendsList()
+    private fun getLatestWatchlist(): Flow<List<WatchlistMedia>> {
+        return watchlistRepository.getLatestWatchlistMedias()
     }
 }

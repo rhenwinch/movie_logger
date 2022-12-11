@@ -7,7 +7,6 @@ import com.xcape.movie_logger.domain.model.media.MediaInfo
 import com.xcape.movie_logger.domain.model.media.WatchlistMedia
 import com.xcape.movie_logger.presentation.common.BaseViewHolder
 import com.xcape.movie_logger.presentation.common.CustomAdapterActions
-import com.xcape.movie_logger.presentation.common.OnMediaClickListener
 import com.xcape.movie_logger.presentation.watchlist.ViewType
 import com.xcape.movie_logger.presentation.watchlist.WatchlistMediaClickListener
 import com.xcape.movie_logger.presentation.watchlist.viewholder.WatchlistCompactViewHolder

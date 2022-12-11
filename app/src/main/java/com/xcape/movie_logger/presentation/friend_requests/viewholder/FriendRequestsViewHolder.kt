@@ -26,7 +26,7 @@ class FriendRequestsViewHolder(
         if(item == null)
             return
 
-        val profilePictureLink = item.from?.imageProfile
+        val profilePictureLink = item.imageProfile
 
         if (!profilePictureLink.isNullOrEmpty()) {
             Picasso.get()
@@ -39,7 +39,7 @@ class FriendRequestsViewHolder(
                 .into(profilePicture)
         }
 
-        username.text = item.from?.username
+        username.text = item.username
     }
 
     companion object {

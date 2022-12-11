@@ -11,7 +11,7 @@ import com.xcape.movie_logger.domain.model.media.BoxOfficeMedia
 import com.xcape.movie_logger.presentation.common.BaseViewHolder
 import com.xcape.movie_logger.presentation.common.OnMediaClickListener
 import com.xcape.movie_logger.presentation.common.setOnSingleClickListener
-import com.xcape.movie_logger.domain.utils.Functions
+import com.xcape.movie_logger.common.Functions
 
 class BoxOfficeViewHolder(
     binding: ItemVpMediaDetailedBinding

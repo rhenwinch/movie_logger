@@ -39,7 +39,7 @@ import com.xcape.movie_logger.presentation.movie_details.MEDIA_ID
 import com.xcape.movie_logger.presentation.movie_details.MovieActivity
 import com.xcape.movie_logger.presentation.trending.adapters.TrendingBoxOfficeAdapter
 import com.xcape.movie_logger.presentation.trending.adapters.TrendingPagingAdapter
-import com.xcape.movie_logger.domain.utils.Functions.toByteArray
+import com.xcape.movie_logger.common.Functions.toByteArray
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

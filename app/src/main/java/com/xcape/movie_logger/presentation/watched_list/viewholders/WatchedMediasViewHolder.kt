@@ -26,7 +26,6 @@ class WatchedMediasViewHolder(
         if(item == null)
             return
 
-
         Picasso.get()
             .load(item.gallery.poster.replace("_V1_", "_SL450_"))
             .fit()

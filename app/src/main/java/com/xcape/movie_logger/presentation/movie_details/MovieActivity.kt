@@ -6,7 +6,8 @@ import android.view.Menu
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.liveData
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
@@ -16,12 +17,11 @@ import com.xcape.movie_logger.domain.model.media.MediaInfo
 import com.xcape.movie_logger.presentation.components.custom_extensions.OnLoadingProgressListener
 import com.xcape.movie_logger.presentation.components.custom_extensions.activate
 import com.xcape.movie_logger.presentation.components.custom_extensions.deactivate
-import com.xcape.movie_logger.domain.utils.Functions.parseCast
-import com.xcape.movie_logger.domain.utils.Functions.parseDate
-import com.xcape.movie_logger.domain.utils.Functions.toBitmap
+import com.xcape.movie_logger.common.Functions.parseCast
+import com.xcape.movie_logger.common.Functions.parseDate
+import com.xcape.movie_logger.common.Functions.toBitmap
+import com.xcape.movie_logger.presentation.common.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 
 const val MEDIA_ID = "media_id"
 const val MEDIA_ITEM = "media_item"
@@ -37,7 +37,7 @@ class MovieActivity : AppCompatActivity(), OnLoadingProgressListener {
     // View models
     private val movieViewModel: MovieViewModel by viewModels()
 
-    private var isMediaAlreadyAdded: MenuState? = null
+    private var isMediaInDB = MediaState.IN_WATCHED_LIST
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +51,7 @@ class MovieActivity : AppCompatActivity(), OnLoadingProgressListener {
             val mediaId = it.getStringExtra(MEDIA_ID)
             val mediaCategory = it.getStringExtra(MEDIA_CATEGORY)
             val mediaItem = it.getSerializableExtra(MEDIA_ITEM)
-            val data = if(mediaItem == null) movieViewModel.mediaData else flowOf(mediaItem as MediaInfo)
+            val data = if(mediaItem == null) movieViewModel.mediaData else liveData { mediaItem as MediaInfo }
 
             setSupportActionBar(binding.movieToolbarLayout.movieToolbar)
             // Get a support ActionBar corresponding to this toolbar and enable the Up button
@@ -64,17 +64,12 @@ class MovieActivity : AppCompatActivity(), OnLoadingProgressListener {
                 mediaCategory = mediaCategory!!
             )
 
-            binding.bindState(
-                uiState = movieViewModel.state,
-                mediaData = data,
-                uiActions = movieViewModel.accept
+            binding.bindViewModel(
+                mediaState = movieViewModel.mediaState,
+                mediaData = data
             )
         }
         setContentView(binding.root)
-    }
-
-    override fun onRetry() {
-        retryFetchingData(onRetry = movieViewModel.accept)
     }
 
     override fun onBackPressed() {
@@ -88,51 +83,44 @@ class MovieActivity : AppCompatActivity(), OnLoadingProgressListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        if(isMediaAlreadyAdded == MenuState.ON_WATCHLIST) {
+        if(isMediaInDB == MediaState.IN_WATCHLIST) {
             menuInflater.inflate(R.menu.on_watchlist_menu, menu)
         }
-        else if(isMediaAlreadyAdded == null || isMediaAlreadyAdded == MenuState.NOT_ON_ANY) {
+        else if(isMediaInDB == MediaState.NOT_IN_ANY) {
             menuInflater.inflate(R.menu.not_watched_menu, menu)
         }
 
         return super.onCreateOptionsMenu(menu)
     }
 
-    private fun ActivityMovieBinding.bindState(
-        uiState: StateFlow<MediaUIState>,
-        mediaData: Flow<MediaInfo?>,
-        uiActions: (MediaUIAction) -> Unit
-    ) {
-        val isInWatchlist = uiState
-            .map { it.isAlreadyInDatabase }
-            .distinctUntilChanged()
+    override fun onRetry() {
+        movieViewModel.retryFetch()
+    }
 
-        lifecycleScope.launch {
-            isInWatchlist.collectLatest {
-                isMediaAlreadyAdded = it
-                invalidateOptionsMenu()
-            }
+    private fun ActivityMovieBinding.bindViewModel(
+        mediaState: LiveData<MediaState>,
+        mediaData: LiveData<MediaInfo?>
+    ) {
+        mediaState.observe(this@MovieActivity) {
+            isMediaInDB = it
+            invalidateOptionsMenu()
         }
 
-        bindMenu(itemClickCallback = uiActions)
+        bindMenu()
         bindData(data = mediaData)
     }
     
-    private fun ActivityMovieBinding.bindMenu(itemClickCallback: (MediaUIAction) -> Unit) {
+    private fun ActivityMovieBinding.bindMenu() {
         val toolbar = movieToolbarLayout.movieToolbar
 
         toolbar.setOnMenuItemClickListener {
             when(it.itemId) {
                 R.id.addToWatchlist -> {
-                    // Remove click state first from Remove action
-                    removeFromWatchlist(isClicked = false, onRemove = itemClickCallback)
-                    addToWatchlist(onAdd = itemClickCallback)
+                    movieViewModel.saveInWatchlist()
                     true
                 }
                 R.id.onWatchlist -> {
-                    // Remove click state first from Add action
-                    addToWatchlist(isClicked = false, onAdd = itemClickCallback)
-                    removeFromWatchlist(onRemove = itemClickCallback)
+                    movieViewModel.removeInWatchlist()
                     true
                 }
                 else -> super.onOptionsItemSelected(it)
@@ -140,27 +128,22 @@ class MovieActivity : AppCompatActivity(), OnLoadingProgressListener {
         }
     }
 
-    private fun ActivityMovieBinding.bindData(data: Flow<MediaInfo?>) {
+    private fun ActivityMovieBinding.bindData(data: LiveData<MediaInfo?>) {
         val loadingBar = movieLoadingContainer.loadingBar
         val loadingContainer = movieLoadingContainer.root
         loadingBar.activate(container = loadingContainer)
 
-        lifecycleScope.launch {
-            // Bind data
-            launch {
-                data.collect { media ->
-                    if(media == null) {
-                        loadingBar.deactivate(
-                            container = loadingContainer,
-                            causeIsError = true,
-                            listener = this@MovieActivity
-                        )
-                    }
-                    else {
-                        binding.bindItemText(media)
-                        loadingBar.deactivate(container = loadingContainer)
-                    }
-                }
+        data.observe(this@MovieActivity) { media ->
+            if(media == null) {
+                loadingBar.deactivate(
+                    container = loadingContainer,
+                    causeIsError = true,
+                    listener = this@MovieActivity
+                )
+            }
+            else {
+                binding.bindItemText(media)
+                loadingBar.deactivate(container = loadingContainer)
             }
         }
     }
@@ -229,7 +212,7 @@ class MovieActivity : AppCompatActivity(), OnLoadingProgressListener {
                 .into(trailerPreview)
 
             it.gallery.trailer?.let {
-                movieTrailerLayout.trailerPreviewContainer.setOnClickListener { _ ->
+                movieTrailerLayout.trailerPreviewContainer.setOnSingleClickListener {
                     val trailerDialog =
                         TrailerDialog.newInstance(it.encodings[0].playUrl)
                     trailerDialog.show(
@@ -241,18 +224,4 @@ class MovieActivity : AppCompatActivity(), OnLoadingProgressListener {
 
         }
     }
-
-    private fun retryFetchingData(
-        onRetry: (MediaUIAction.Retry) -> Unit
-    ) = onRetry(MediaUIAction.Retry(isClicked = true))
-
-    private fun addToWatchlist(
-        isClicked: Boolean = true,
-        onAdd: (MediaUIAction.AddToWatchlist) -> Unit
-    ) = onAdd(MediaUIAction.AddToWatchlist(isClicked = isClicked))
-
-    private fun removeFromWatchlist(
-        isClicked: Boolean = true,
-        onRemove: (MediaUIAction.RemoveFromWatchlist) -> Unit
-    ) = onRemove(MediaUIAction.RemoveFromWatchlist(isClicked = isClicked))
 }

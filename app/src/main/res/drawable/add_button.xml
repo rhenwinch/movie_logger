@@ -8,9 +8,9 @@
 
     <item
         android:drawable="@drawable/plus"
-        android:width="7dp"
-        android:height="7dp"
+        android:width="@dimen/dp7"
+        android:height="@dimen/dp7"
         android:gravity="center"
-        android:bottom="3dp"/>
+        android:bottom="@dimen/dp3"/>
 
 </layer-list>

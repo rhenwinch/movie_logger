@@ -20,7 +20,6 @@ import com.xcape.movie_logger.presentation.common.OnDialogDismissListener
 import com.xcape.movie_logger.domain.model.media.WatchlistMedia
 import com.xcape.movie_logger.presentation.add_item.ADD_ITEM_DIALOG_TAG
 import com.xcape.movie_logger.presentation.add_item.AddItemDialog
-import com.xcape.movie_logger.presentation.common.OnMediaClickListener
 import com.xcape.movie_logger.presentation.common.setOnSingleClickListener
 import com.xcape.movie_logger.presentation.media_settings.MEDIA_SETTINGS_DIALOG_TAG
 import com.xcape.movie_logger.presentation.media_settings.MediaSettingsDialog
@@ -30,8 +29,7 @@ import com.xcape.movie_logger.presentation.movie_details.MEDIA_CATEGORY
 import com.xcape.movie_logger.presentation.movie_details.MEDIA_ID
 import com.xcape.movie_logger.presentation.movie_details.MovieActivity
 import com.xcape.movie_logger.presentation.watchlist.adapter.WatchlistAdapter
-import com.xcape.movie_logger.domain.utils.Functions.toByteArray
-import com.xcape.movie_logger.presentation.common.OnMediaLongClickListener
+import com.xcape.movie_logger.common.Functions.toByteArray
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.*

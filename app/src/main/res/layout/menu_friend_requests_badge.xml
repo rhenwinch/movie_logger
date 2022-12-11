@@ -15,7 +15,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
-        android:layout_height="8dp"
+        android:layout_height="@dimen/dp8"
         android:backgroundTint="@color/colorSecondary"
         app:cardCornerRadius="25dp"
         android:layout_marginStart="-8dp"
@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="6sp"
-            android:paddingHorizontal="3dp"
+            android:paddingHorizontal="@dimen/dp3"
             android:textColor="@color/colorOnSecondary"
             android:textAlignment="center"
             tools:text="99+"

@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/homeScrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/homeToolbar"
@@ -29,10 +31,9 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_marginStart="15dp"
-                    android:text="@string/home"
-                    android:textAppearance="@style/page_title"
                     android:fontFamily="@string/font_black"
-                    />
+                    android:text="@string/home"
+                    android:textAppearance="@style/page_title" />
 
             </com.google.android.material.appbar.MaterialToolbar>
 
@@ -47,10 +48,10 @@
                 android:layout_height="76dp"
                 android:layout_marginTop="28dp"
                 android:clickable="true"
-                app:layout_constraintTop_toBottomOf="@id/homeHeadline"
-                app:layout_constraintStart_toStartOf="parent"
+                app:cardCornerRadius="10dp"
                 app:layout_constraintEnd_toStartOf="@id/trendingButton"
-                app:cardCornerRadius="10dp">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/homeHeadline">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -62,26 +63,25 @@
                         android:layout_height="18dp"
                         android:layout_marginTop="16dp"
                         android:src="@drawable/no_fill_heart"
-                        app:tint="@color/colorOnPrimary"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintBottom_toTopOf="@id/favoriteTextView"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:tint="@color/colorOnPrimary" />
 
                     <TextView
                         android:id="@+id/favoriteTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/watch_list"
-                        android:textSize="12sp"
-                        android:textColor="@color/colorOnPrimary"
+                        android:layout_marginTop="@dimen/dp8"
                         android:fontFamily="@string/font_regular"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/favoriteIconView"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        android:text="@string/watch_list"
+                        android:textColor="@color/colorOnPrimary"
+                        android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/favoriteIconView" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -94,10 +94,10 @@
                 android:layout_height="76dp"
                 android:layout_marginTop="28dp"
                 android:clickable="true"
-                app:layout_constraintTop_toBottomOf="@id/homeHeadline"
-                app:layout_constraintStart_toEndOf="@id/favoriteButton"
+                app:cardCornerRadius="10dp"
                 app:layout_constraintEnd_toStartOf="@id/statisticsButton"
-                app:cardCornerRadius="10dp">
+                app:layout_constraintStart_toEndOf="@id/favoriteButton"
+                app:layout_constraintTop_toBottomOf="@id/homeHeadline">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -109,26 +109,25 @@
                         android:layout_height="18dp"
                         android:layout_marginTop="16dp"
                         android:src="@drawable/trending"
-                        app:tint="@color/colorOnPrimary"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintBottom_toTopOf="@id/trendingTextView"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:tint="@color/colorOnPrimary" />
 
                     <TextView
                         android:id="@+id/trendingTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/trending"
-                        android:textSize="12sp"
-                        android:textColor="@color/colorOnPrimary"
+                        android:layout_marginTop="@dimen/dp8"
                         android:fontFamily="@string/font_regular"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/trendingIconView"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        android:text="@string/trending"
+                        android:textColor="@color/colorOnPrimary"
+                        android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/trendingIconView" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -141,10 +140,10 @@
                 android:layout_height="76dp"
                 android:layout_marginTop="28dp"
                 android:clickable="true"
-                app:layout_constraintTop_toBottomOf="@id/homeHeadline"
-                app:layout_constraintStart_toEndOf="@id/trendingButton"
+                app:cardCornerRadius="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:cardCornerRadius="10dp">
+                app:layout_constraintStart_toEndOf="@id/trendingButton"
+                app:layout_constraintTop_toBottomOf="@id/homeHeadline">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -156,33 +155,66 @@
                         android:layout_height="18dp"
                         android:layout_marginTop="16dp"
                         android:src="@drawable/stats"
-                        app:tint="@color/colorOnPrimary"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintBottom_toTopOf="@id/statisticTextView"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:tint="@color/colorOnPrimary" />
 
                     <TextView
                         android:id="@+id/statisticTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/statistics"
-                        android:textSize="12sp"
-                        android:textColor="@color/colorOnPrimary"
+                        android:layout_marginTop="@dimen/dp8"
                         android:fontFamily="@string/font_regular"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/statisticIconView"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        android:text="@string/statistics"
+                        android:textColor="@color/colorOnPrimary"
+                        android:textSize="12sp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/statisticIconView" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="45dp"
+                android:orientation="vertical"
+                android:layout_marginBottom="@dimen/bottomNavBarHeight"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/trendingButton">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:fontFamily="@string/font_black"
+                    android:text="@string/news_feed"
+                    android:textColor="@color/colorOnPrimary"
+                    android:textSize="@dimen/textSizeFragmentHeaders" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/postsRV"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="2"
+                    tools:listitem="@layout/item_user_post" />
+
+                <ProgressBar
+                    android:id="@id/loadingBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible" />
+            </LinearLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

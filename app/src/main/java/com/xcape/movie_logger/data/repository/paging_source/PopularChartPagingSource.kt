@@ -4,7 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.xcape.movie_logger.domain.model.media.PopularChartMedia
 import com.xcape.movie_logger.domain.utils.Resource
-import com.xcape.movie_logger.domain.utils.Constants.PAGE_SIZE
+import com.xcape.movie_logger.common.Constants.PAGE_SIZE
 
 // A paging source for Trending Fragment's popular lists
 class PopularChartPagingSource (

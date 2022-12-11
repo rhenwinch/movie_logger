@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
+import com.xcape.movie_logger.R
 import com.xcape.movie_logger.databinding.ItemFriendBinding
 import com.xcape.movie_logger.domain.model.user.User
 import com.xcape.movie_logger.presentation.common.BaseViewHolder
@@ -21,13 +22,14 @@ class FriendsViewHolder(binding: ItemFriendBinding) : BaseViewHolder<User>(bindi
         if(item == null)
             return
 
-        Picasso.get()
-            .load(item.imageProfile)
-            .fit()
-            .centerInside()
-            .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-            .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
-            .into(friendProfileImage)
+        if(item.imageProfile != null) {
+            Picasso.get()
+                .load(item.imageProfile)
+                .placeholder(R.drawable.profile_placeholder)
+                .fit()
+                .centerInside()
+                .into(friendProfileImage)
+        }
 
         friendUsername.text = item.username
     }

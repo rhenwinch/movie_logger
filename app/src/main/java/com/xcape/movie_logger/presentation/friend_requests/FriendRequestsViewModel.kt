@@ -5,8 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.xcape.movie_logger.domain.model.user.FriendRequest
-import com.xcape.movie_logger.domain.repository.local.LocalUserRepository
-import com.xcape.movie_logger.domain.repository.remote.RemoteUserRepository
+import com.xcape.movie_logger.domain.repository.remote.FriendsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -14,8 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FriendRequestsViewModel @Inject constructor(
-    private val localUserRepository: LocalUserRepository,
-    private val remoteUserRepository: RemoteUserRepository
+    private val friendsRepository: FriendsRepository
 ) : ViewModel() {
     private val _friendRequests = MutableLiveData<List<FriendRequest>>()
     val friendRequests: LiveData<List<FriendRequest>> = _friendRequests
@@ -29,15 +27,6 @@ class FriendRequestsViewModel @Inject constructor(
     }
 
     private fun getLatestFriendRequests(): Flow<List<FriendRequest>> {
-        try {
-            val friendRequests = remoteUserRepository.getLatestFriendRequests()
-
-            viewModelScope.launch {
-                friendRequests.collect { localUserRepository.updateFriendRequests(it) }
-            }
-        }
-        catch (_: Exception) {}
-
-        return localUserRepository.getLatestFriendRequests()
+        return friendsRepository.getLatestFriendRequests()
     }
 }

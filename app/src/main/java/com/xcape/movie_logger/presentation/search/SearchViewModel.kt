@@ -1,131 +1,118 @@
 package com.xcape.movie_logger.presentation.search
 
+import android.util.Log
 import androidx.lifecycle.*
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import com.xcape.movie_logger.domain.model.media.MediaInfo
 import com.xcape.movie_logger.domain.model.media.SuggestedMedia
-import com.xcape.movie_logger.domain.repository.remote.MovieRemoteRepository
+import com.xcape.movie_logger.domain.repository.remote.MediaRepository
+import com.xcape.movie_logger.common.Constants
 import com.xcape.movie_logger.domain.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 const val LAST_SEARCH_QUERY = "last_search_query"
-const val LAST_QUERY_SCROLLED = "last_query_scrolled"
+const val LAST_PAGE_SCROLLED = "last_page_scrolled"
 const val DEFAULT_QUERY = ""
+const val DEFAULT_PAGE = 1
+const val PAGE_LIMIT = 10
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val repository: MovieRemoteRepository,
+    private val remoteMediaRepository: MediaRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+    private val initialQuery: String = savedStateHandle[LAST_SEARCH_QUERY] ?: DEFAULT_QUERY
+    private val lastPageScrolled: Int = savedStateHandle[LAST_PAGE_SCROLLED] ?: DEFAULT_PAGE
 
-    val state: StateFlow<SearchUIState>
-    val searchResultsData: Flow<PagingData<MediaInfo>>
     private val _suggestedQueries: MutableLiveData<List<SuggestedMedia>> = MutableLiveData(emptyList())
     val suggestedQueries: LiveData<List<SuggestedMedia>> = _suggestedQueries
-    val accept: (SearchUIAction) -> Unit
+
+    private val _searchResults: MutableLiveData<List<MediaInfo>> = MutableLiveData()
+    val searchResults: LiveData<List<MediaInfo>> = _searchResults
+
+    private val _state = MutableStateFlow(SearchUIState())
+    val state: StateFlow<SearchUIState> = _state
 
     init {
-        val initialQuery: String = savedStateHandle[LAST_SEARCH_QUERY] ?: DEFAULT_QUERY
-        val lastQueryScrolled: String = savedStateHandle[LAST_QUERY_SCROLLED] ?: DEFAULT_QUERY
-        val actionStateFlow = MutableSharedFlow<SearchUIAction>()
+        // Get recommended medias fromUserId remote API
+        searchMedia(queryString = initialQuery,
+            page = lastPageScrolled)
+    }
 
-        val searches = actionStateFlow
-            .filterIsInstance<SearchUIAction.Search>()
-            .onStart { emit(SearchUIAction.Search(query = initialQuery)) }
+    fun onEvent(event: SearchUIAction) {
+        when(event) {
+            is SearchUIAction.Typing -> _state.update {
+                suggestQueries(event.charactersTyped)
 
-        val charactersTyped = actionStateFlow
-            .filterIsInstance<SearchUIAction.Typing>()
-            .distinctUntilChanged()
-            .shareIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
-                replay = 1
-            )
-            .onStart { emit(SearchUIAction.Typing(charactersTyped = initialQuery)) }
+                it.copy(lastCharactersTyped = event.charactersTyped)
+            }
+            is SearchUIAction.FocusOnSearchBox -> _state.update {
+                it.copy(isTyping = event.isFocused)
+            }
+            is SearchUIAction.ChangePage -> _state.update {
+                searchMedia(_state.value.query, page = event.currentPage)
 
-        val searchBoxFocusOnSearchBox = actionStateFlow
-            .filterIsInstance<SearchUIAction.FocusOnSearchBox>()
-            .distinctUntilChanged()
-            .shareIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
-                replay = 1
-            )
-            .onStart { emit(SearchUIAction.FocusOnSearchBox(isFocused = false)) }
+                it.copy(lastPageQueried = event.currentPage)
+            }
+            is SearchUIAction.Filter -> _state.update {
+                it.copy(filters = event.type)
+            }
+            is SearchUIAction.Search -> _state.update {
+                searchMedia(event.query, page = lastPageScrolled)
 
-        val queriesScrolled = actionStateFlow
-            .filterIsInstance<SearchUIAction.Scroll>()
-            .distinctUntilChanged()
-            .shareIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
-                replay = 1
-            )
-            .onStart { emit(SearchUIAction.Scroll(currentQuery = lastQueryScrolled)) }
-
-        state = combine(
-            combine(searches, queriesScrolled, ::Pair),
-            combine(charactersTyped, searchBoxFocusOnSearchBox, ::Pair),
-            ::Pair
-        ).map { (firstSet, secondSet) ->
-            SearchUIState(
-                query = firstSet.first.query,
-                lastQueryScrolled = firstSet.second.currentQuery,
-                lastCharactersTyped = secondSet.first.charactersTyped,
-                isTyping = secondSet.second.isFocused,
-                hasNotSearchedBefore = firstSet.first.query == initialQuery,
-                hasNotScrolledForCurrentSearch = firstSet.first.query != firstSet.second.currentQuery
-            )
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
-            initialValue = SearchUIState()
-        )
-
-        viewModelScope.launch {
-            charactersTyped
-                .collectLatest {
-                    _suggestedQueries.postValue(suggestQueries(it.charactersTyped))
-                }
-        }
-
-        searchResultsData = searches
-            .flatMapLatest {
-                searchMedia(
-                    queryString = it.query,
-                    recommendedMediasOnly = state.value.hasNotSearchedBefore
+                it.copy(
+                    query = event.query,
+                    lastPageQueried = lastPageScrolled,
+                    hasNotSearchedBefore = event.query == initialQuery,
+                    totalResults = -1
                 )
             }
-            .cachedIn(viewModelScope)
-
-        accept = { action ->
-            viewModelScope.launch { actionStateFlow.emit(action) }
         }
     }
 
     override fun onCleared() {
         savedStateHandle[LAST_SEARCH_QUERY] = state.value.query
-        savedStateHandle[LAST_QUERY_SCROLLED] = state.value.lastQueryScrolled
+        savedStateHandle[LAST_PAGE_SCROLLED] = state.value.lastPageQueried
         super.onCleared()
     }
 
     private fun searchMedia(
         queryString: String,
-        recommendedMediasOnly: Boolean
-    ): Flow<PagingData<MediaInfo>> {
-        return repository.getSearchResultsStream(queryString, recommendedMediasOnly)
+        page: Int
+    ) {
+        viewModelScope.launch {
+            _state.update { it.copy(isLoading = true) }
+            when(val result = remoteMediaRepository.searchMedia(
+                    queryString,
+                    page = page,
+                    limit = PAGE_LIMIT,
+                    filters = _state.value.filters
+            )) {
+                is Resource.Success -> {
+                    _searchResults.value = result.data!!.data!!
+
+                    _state.update {
+                        it.copy(maxPages = result.data.totalPages,
+                        isLoading = false,
+                        totalResults = result.data.totalResults)
+                    }
+                }
+                is Resource.Error -> {
+                    _state.update { it.copy(isLoading = null) }
+                    Log.e(Constants.APP_TAG, result.message ?: "Unknown Error")
+                }
+            }
+        }
     }
 
-    private suspend fun suggestQueries(queryString: String): List<SuggestedMedia> {
-        return when(val result = repository.getSuggestedMedias(queryString)) {
-            is Resource.Success -> result.data ?: emptyList()
-            is Resource.Error -> emptyList()
+    private fun suggestQueries(queryString: String) {
+        viewModelScope.launch {
+            when(val result = remoteMediaRepository.getSuggestedMedias(queryString)) {
+                is Resource.Success -> _suggestedQueries.value = result.data ?: emptyList()
+                is Resource.Error -> _suggestedQueries.value = emptyList()
+            }
         }
     }
 }

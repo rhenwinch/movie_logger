@@ -8,6 +8,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.xcape.movie_logger.databinding.ActivityAuthPromptBinding
+import com.xcape.movie_logger.presentation.common.setOnSingleClickListener
 import com.xcape.movie_logger.presentation.login.IS_LOGGED_IN
 import com.xcape.movie_logger.presentation.login.IS_NOT_SIGNED_UP
 import com.xcape.movie_logger.presentation.login.LoginActivity
@@ -56,15 +57,15 @@ class AuthPromptActivity : AppCompatActivity() {
     }
 
     private fun ActivityAuthPromptBinding.setupButtons() {
-        notNowButton.setOnClickListener {
+        notNowButton.setOnSingleClickListener {
             onBackPressed()
         }
 
-        loginButton.setOnClickListener {
+        loginButton.setOnSingleClickListener {
             launchActivityResultContract(loginActivityContract, LoginActivity::class.java)
         }
 
-        signUpButton.setOnClickListener {
+        signUpButton.setOnSingleClickListener {
             launchActivityResultContract(signUpActivityContract, SignUpActivity::class.java)
         }
     }

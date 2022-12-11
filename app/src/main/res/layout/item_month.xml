@@ -6,7 +6,7 @@
     android:layout_marginHorizontal="@dimen/itemCalendarMargins"
     android:foreground="?android:attr/selectableItemBackground"
     android:clickable="true"
-    android:padding="1dp" >
+    android:padding="@dimen/dp1" >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
             android:layout_width="32dp"
             android:layout_height="15dp"
             android:backgroundTint="@color/colorSecondaryLight"
-            app:cardCornerRadius="3dp"
+            app:cardCornerRadius="@dimen/dp3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +31,7 @@
             android:text="@string/sample_month"
             android:textColor="@color/colorOnSecondary"
             android:textSize="13sp"
-            android:elevation="2dp"
+            android:elevation="@dimen/dp2"
             app:layout_constraintBottom_toBottomOf="@id/selectedMonth"
             app:layout_constraintEnd_toEndOf="@id/selectedMonth"
             app:layout_constraintStart_toStartOf="@id/selectedMonth"

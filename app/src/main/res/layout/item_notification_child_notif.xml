@@ -8,7 +8,8 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_margin="@dimen/dp5"
+        android:clickable="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -22,13 +23,14 @@
                 android:layout_width="66dp"
                 android:layout_height="66dp"
                 android:backgroundTint="@color/colorOnMediumEmphasis"
+                android:clickable="true"
                 app:cardCornerRadius="65dp"
                 app:cardElevation="26dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:strokeColor="@color/colorSecondaryDark"
-                app:strokeWidth="2dp">
+                app:strokeWidth="@dimen/dp2">
 
                 <ImageView
                     android:id="@+id/profilePicture"
@@ -45,6 +47,7 @@
                 android:orientation="vertical"
                 android:paddingStart="15dp"
                 android:paddingEnd="0dp"
+                android:gravity="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/profileCardView"
@@ -54,7 +57,7 @@
                     android:id="@+id/username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_gravity="start"
                     android:fontFamily="@string/font_black"
                     android:textColor="@color/colorOnPrimary"
                     android:textSize="15sp"
@@ -64,6 +67,8 @@
                     android:id="@+id/message"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:maxLines="2"
                     android:ellipsize="end"
                     android:fontFamily="@string/font_regular"
                     android:textColor="@color/colorOnPrimary"

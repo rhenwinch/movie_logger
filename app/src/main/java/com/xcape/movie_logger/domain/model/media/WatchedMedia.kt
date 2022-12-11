@@ -1,19 +1,18 @@
 package com.xcape.movie_logger.domain.model.media
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity(tableName = "watched_list")
 data class WatchedMedia(
-    @PrimaryKey(autoGenerate = true) val uniqueId: Long = 0L,
-    @ColumnInfo(name = "media_id") val id: String = "",
-    @ColumnInfo(name = "added_on") val addedOn: Date? = null,
-    @ColumnInfo(name = "date_released") val dateReleased: String = "",
-    @ColumnInfo(name = "comments") val comments: String? = null,
-    @ColumnInfo(name = "rating") val rating: Double = 0.0,
-    @ColumnInfo(name = "title") val title: String = "",
+    val id: String = "",
+    val ownerId: String = "",
+    val addedOn: Date? = null,
+    val dateReleased: String = "",
+    val comments: String? = null,
+    val rating: Double = 0.0,
+    val title: String = "",
+    val likes: MutableList<String> = mutableListOf(),
+    val userJournalPhoto: String? = null,
+    val friendTags: List<String> = listOf(),
 
-    @ColumnInfo(name = "media_data") val mediaInfo: MediaInfo? = null,
+    val mediaInfo: MediaInfo? = null,
 )

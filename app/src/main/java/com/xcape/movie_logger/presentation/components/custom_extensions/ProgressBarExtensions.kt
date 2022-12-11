@@ -22,14 +22,15 @@ fun ProgressBar.activate(container: View? = null) {
 fun ProgressBar.deactivate(
     container: View? = null,
     causeIsError: Boolean = false,
-    listener: OnLoadingProgressListener? = null
+    listener: OnLoadingProgressListener? = null,
+    animate: Boolean = true
 ) {
     this.animate()
         .scaleX(0F)
         .scaleY(0F)
         .setDuration(600)
         .setListener(object: AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator?) {
+            override fun onAnimationEnd(animation: Animator) {
                 if(causeIsError) {
                     val retryViewContainer: LinearLayout = container!!.findViewById(R.id.retryViewContainer)
                     val retryButton: Button = container.findViewById(R.id.retryButton)
@@ -43,18 +44,21 @@ fun ProgressBar.deactivate(
                     }
                     return
                 }
-                else {
+                else if(animate) {
                     container?.let {
                         it.animate()
                             .alpha(0F)
                             .setDuration(800)
                             .setListener(object : AnimatorListenerAdapter() {
-                                override fun onAnimationEnd(animation: Animator?) {
+                                override fun onAnimationEnd(animation: Animator) {
                                     container.visibility = View.GONE
                                     super.onAnimationEnd(animation)
                                 }
                             })
                     }
+                }
+                else {
+                    container?.visibility = View.GONE
                 }
 
                 super.onAnimationEnd(animation)

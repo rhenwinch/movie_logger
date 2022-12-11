@@ -2,8 +2,8 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:innerRadius="0dp"
     android:shape="ring"
-    android:thickness="3dp"
+    android:thickness="@dimen/dp3"
     android:useLevel="false">
-    <size android:width="6dp" />
+    <size android:width="@dimen/dp6" />
     <solid android:color="@color/colorSecondary"/>
 </shape>

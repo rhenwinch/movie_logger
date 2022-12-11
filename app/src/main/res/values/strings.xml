@@ -118,4 +118,12 @@
     <string name="decline">Decline</string>
     <string name="notifications">Notifications</string>
     <string name="friend_requests">Friend Requests</string>
+    <string name="like">Like</string>
+    <string name="filters">Filters</string>
+    <string name="movie">Movie</string>
+    <string name="tv_show">TV Show</string>
+    <string name="user">User</string>
+    <string name="empty_suggestions_list">Start typing to see suggestions...</string>
+    <string name="page">Page</string>
+    <string name="news_feed">News feed!</string>
 </resources>

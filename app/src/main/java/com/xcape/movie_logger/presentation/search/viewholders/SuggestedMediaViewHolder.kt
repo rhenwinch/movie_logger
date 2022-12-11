@@ -6,6 +6,7 @@ import com.xcape.movie_logger.databinding.ItemSuggestedKeywordBinding
 import com.xcape.movie_logger.domain.model.media.SuggestedMedia
 import com.xcape.movie_logger.presentation.common.BaseViewHolder
 import com.xcape.movie_logger.presentation.common.OnMediaClickListener
+import com.xcape.movie_logger.presentation.common.setOnSingleClickListener
 import com.xcape.movie_logger.presentation.search.OnSuggestionClickListener
 
 class SuggestedMediaViewHolder(
@@ -27,7 +28,7 @@ class SuggestedMediaViewHolder(
         if(listener == null)
             return
 
-        rootView.setOnClickListener {
+        rootView.setOnSingleClickListener {
             (listener as OnSuggestionClickListener).onSuggestionClick(item.l)
         }
     }

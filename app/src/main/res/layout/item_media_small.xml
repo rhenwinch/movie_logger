@@ -15,20 +15,20 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         app:cardCornerRadius="10dp"
-        app:cardElevation="2dp">
+        app:cardElevation="@dimen/dp2">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/rankChangeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            android:elevation="2dp">
+            android:elevation="@dimen/dp2">
 
             <ImageView
                 android:id="@+id/rankChangeIndicator"
                 android:layout_width="20dp"
                 android:layout_height="24dp"
-                android:paddingHorizontal="5dp"
+                android:paddingHorizontal="@dimen/dp5"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
                 tools:src="@drawable/flat_arrow"

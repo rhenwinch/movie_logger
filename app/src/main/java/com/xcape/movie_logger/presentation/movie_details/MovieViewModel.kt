@@ -3,156 +3,109 @@ package com.xcape.movie_logger.presentation.movie_details
 import androidx.lifecycle.*
 import com.xcape.movie_logger.domain.model.media.MediaInfo
 import com.xcape.movie_logger.domain.model.media.WatchlistMedia
-import com.xcape.movie_logger.domain.repository.local.WatchedMediasRepository
-import com.xcape.movie_logger.domain.repository.local.WatchlistRepository
-import com.xcape.movie_logger.domain.repository.remote.MovieRemoteRepository
+import com.xcape.movie_logger.domain.repository.remote.MediaRepository
+import com.xcape.movie_logger.domain.repository.remote.WatchedMediasRepository
+import com.xcape.movie_logger.domain.repository.remote.WatchlistRepository
 import com.xcape.movie_logger.domain.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
-@OptIn(ExperimentalCoroutinesApi::class)
+enum class MediaState {
+    IN_WATCHED_LIST,
+    IN_WATCHLIST,
+    NOT_IN_ANY
+}
+
 @HiltViewModel
 class MovieViewModel @Inject constructor(
-    private val remoteRepository: MovieRemoteRepository,
-    private val localWatchlistRepository: WatchlistRepository,
-    private val localWatchedListRepository: WatchedMediasRepository,
+    private val remoteRepository: MediaRepository,
+    private val watchlistRepository: WatchlistRepository,
+    private val watchedListRepository: WatchedMediasRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private var _mediaData: MediaInfo? = null
+    private val queryId = savedStateHandle.get<String>(MEDIA_ID)
 
-    private val isInWatchlist: Flow<MenuState?>
-    val state: StateFlow<MediaUIState>
-    val mediaData: Flow<MediaInfo?>
-    val accept: (MediaUIAction) -> Unit
+    private val _mediaState = MutableLiveData(MediaState.NOT_IN_ANY)
+    val mediaState: LiveData<MediaState> = _mediaState
+
+    private val _mediaData = MutableLiveData<MediaInfo?>()
+    val mediaData: LiveData<MediaInfo?> = _mediaData
 
     init {
-        val actionStateFlow = MutableSharedFlow<MediaUIAction>()
-        val queryId = savedStateHandle.get<String>(MEDIA_ID)
-
-        val isRetrying = actionStateFlow
-            .filterIsInstance<MediaUIAction.Retry>()
-            .onStart { emit(MediaUIAction.Retry(isClicked = null)) }
-
-        val isRemovingFromWatchlist = actionStateFlow
-            .filterIsInstance<MediaUIAction.RemoveFromWatchlist>()
-            .onStart { emit(MediaUIAction.RemoveFromWatchlist(isClicked = false)) }
-
-        val isAddingToWatchlist = actionStateFlow
-            .filterIsInstance<MediaUIAction.AddToWatchlist>()
-            .shareIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
-                replay = 1
-            )
-            .distinctUntilChanged()
-            .onStart { emit(MediaUIAction.AddToWatchlist(isClicked = false)) }
-
-        mediaData = isRetrying
-            .flatMapLatest { retry ->
-                if(retry.isClicked == null || retry.isClicked == true) {
-                    queryId?.let { id ->
-                        getMedia(id)
-                    }!!
-                }
-                else {
-                    flowOf(_mediaData)
-                }
+        viewModelScope.launch {
+            _mediaData.value = queryId?.let { getMedia(it) }
+            _mediaState.value = if(isMediaAlreadyInWatchedList(queryId)) {
+                MediaState.IN_WATCHED_LIST
             }
-
-        isInWatchlist = combine(
-            isAddingToWatchlist,
-            isRemovingFromWatchlist,
-            ::Pair
-        ).flatMapLatest { (add, remove) ->
-            val isInWatchedList = isMediaAlreadyInWatchedList(queryId)
-            val isInWatchlist = isMediaAlreadyInWatchlist(queryId)
-
-            // If it is not in any of our repositories, add it.
-            if(!isInWatchlist && !isInWatchedList && add.isClicked) {
-                saveInWatchlist()
-                flowOf(MenuState.ON_WATCHLIST)
-            }
-            // If it is already in the watchlist, remove it.
-            else if(isInWatchlist && remove.isClicked) {
-                removeInWatchlist()
-                flowOf(MenuState.NOT_ON_ANY)
-            }
-            else if(isInWatchlist) {
-                flowOf(MenuState.ON_WATCHLIST)
-            }
-            else if(isInWatchedList) {
-                flowOf(MenuState.ON_WATCHED_LIST)
-            }
-            else flowOf(null)
-        }
-
-        state = isInWatchlist
-            .map { menuState ->
-                MediaUIState(isAlreadyInDatabase = menuState)
-            }.stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5000),
-                initialValue = MediaUIState()
-            )
-
-        accept = { action ->
-            viewModelScope.launch { actionStateFlow.emit(action) }
-        }
-    }
-
-    private fun getMedia(mediaId: String): Flow<MediaInfo?> {
-        return flow {
-            val mediaFromLocal = localWatchlistRepository.getWatchlistMediaByMediaId(mediaId = mediaId)
-            if(mediaFromLocal == null) {
-                when(val result = remoteRepository.getMedia(mediaId)) {
-                    is Resource.Success -> {
-                        _mediaData = result.data
-                        emit(result.data)
-                    }
-                    is Resource.Error -> {
-                        emit(null)
-                    }
-                }
+            else if(isMediaAlreadyInWatchlist(queryId)) {
+                MediaState.IN_WATCHLIST
             }
             else {
-                _mediaData = mediaFromLocal.mediaInfo
-                emit(mediaFromLocal.mediaInfo)
+                MediaState.NOT_IN_ANY
             }
         }
+
+    }
+
+    private suspend fun getMedia(mediaId: String): MediaInfo? {
+        val mediaFromLocal = watchlistRepository.getWatchlistMediaByMediaId(mediaId = mediaId)
+        return if(mediaFromLocal == null) {
+            when(val result = remoteRepository.getMedia(mediaId)) {
+                is Resource.Success -> { result.data }
+                is Resource.Error -> { null }
+            }
+        }
+        else { mediaFromLocal.mediaInfo }
     }
 
     private suspend fun isMediaAlreadyInWatchlist(movieId: String?): Boolean {
-        val watchlistMedia = movieId?.let { localWatchlistRepository.getWatchlistMediaByMediaId(it) }
+        val watchlistMedia = movieId?.let { watchlistRepository.getWatchlistMediaByMediaId(it) }
         return watchlistMedia != null
     }
 
     private suspend fun isMediaAlreadyInWatchedList(movieId: String?): Boolean {
-        val watchedMedia = movieId?.let { localWatchedListRepository.getWatchedMediaByMediaId(it) }
+        val watchedMedia = movieId?.let { watchedListRepository.getWatchedMediaByMediaId(it) }
         return watchedMedia != null
     }
 
-    private suspend fun saveInWatchlist() {
-        _mediaData?.let { media ->
-            val watchlistMedia = WatchlistMedia(
-                id = media.id,
-                addedOn = Date(),
-                dateReleased = media.dateReleased,
-                rating = media.rating,
-                title = media.title,
-                mediaInfo = media
-            )
+    fun saveInWatchlist() {
+        viewModelScope.launch {
+            if(_mediaState.value == MediaState.NOT_IN_ANY) {
+                _mediaData.value?.let {
+                    val watchlistMedia = WatchlistMedia(
+                        id = it.id,
+                        addedOn = Date(),
+                        dateReleased = it.dateReleased,
+                        rating = it.rating,
+                        title = it.title,
+                        mediaInfo = it
+                    )
 
-            localWatchlistRepository.insertWatchlistMedia(watchlistMedia)
+                    watchlistRepository.insertWatchlistMedia(watchlistMedia)
+                    _mediaState.value = MediaState.IN_WATCHLIST
+                }
+            }
         }
     }
 
-    private suspend fun removeInWatchlist() {
-        _mediaData?.let { media ->
-            localWatchlistRepository.deleteWatchlistMediaById(media.id)
+    fun removeInWatchlist() {
+        viewModelScope.launch {
+            if(_mediaState.value == MediaState.IN_WATCHLIST) {
+                _mediaData.value?.let { media ->
+                    watchlistRepository.deleteWatchlistMediaById(media.id)
+                    _mediaState.value = MediaState.NOT_IN_ANY
+                }
+            }
+        }
+    }
+
+    fun retryFetch() {
+        viewModelScope.launch {
+            if (queryId != null) {
+                getMedia(queryId)
+            }
         }
     }
 }

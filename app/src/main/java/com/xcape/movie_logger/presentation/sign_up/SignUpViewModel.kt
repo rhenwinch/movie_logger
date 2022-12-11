@@ -3,9 +3,9 @@ package com.xcape.movie_logger.presentation.sign_up
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.xcape.movie_logger.domain.repository.remote.AuthRepository
-import com.xcape.movie_logger.domain.use_cases.EmailValidator
-import com.xcape.movie_logger.domain.use_cases.PasswordValidator
-import com.xcape.movie_logger.domain.use_cases.UsernameValidator
+import com.xcape.movie_logger.domain.use_cases.form_validators.EmailValidator
+import com.xcape.movie_logger.domain.use_cases.form_validators.PasswordValidator
+import com.xcape.movie_logger.domain.use_cases.form_validators.UsernameValidator
 import com.xcape.movie_logger.domain.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*

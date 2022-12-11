@@ -37,7 +37,7 @@ class FriendRequestsAdapter(
     }
 
     override fun <T : Any> getItemPositionByProperty(property: T): Int {
-        return friendRequestsList.indexOfFirst { property == it.from?.userId }
+        return friendRequestsList.indexOfFirst { property == it.fromUserId }
     }
 
     override fun submitList(newList: List<FriendRequest>, isForced: Boolean) {
@@ -86,7 +86,7 @@ class FriendRequestComparator(
         val oldItem = oldList[oldItemPosition]
         val newItem = newList[newItemPosition]
 
-        return oldItem.from?.userId == newItem.from?.userId
+        return oldItem.fromUserId == newItem.fromUserId
     }
 
 }

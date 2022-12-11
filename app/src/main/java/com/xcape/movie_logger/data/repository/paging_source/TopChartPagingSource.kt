@@ -4,13 +4,13 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.xcape.movie_logger.data.dto.toTopChart
 import com.xcape.movie_logger.domain.model.media.TopChartMedia
-import com.xcape.movie_logger.domain.repository.remote.MovieRemoteRepository
+import com.xcape.movie_logger.domain.repository.remote.MediaRepository
 import com.xcape.movie_logger.domain.utils.Resource
-import com.xcape.movie_logger.domain.utils.Constants.PAGE_SIZE
+import com.xcape.movie_logger.common.Constants.PAGE_SIZE
 
 class TopChartPagingSource (
     private val query: Resource<List<String>>,
-    private val repository: MovieRemoteRepository
+    private val repository: MediaRepository
 ) : PagingSource<List<String>, TopChartMedia>() {
     override fun getRefreshKey(state: PagingState<List<String>, TopChartMedia>): List<String>? {
         return null

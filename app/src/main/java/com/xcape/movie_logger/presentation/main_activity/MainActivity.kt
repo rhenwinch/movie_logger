@@ -10,12 +10,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.xcape.movie_logger.R
 import com.xcape.movie_logger.databinding.ActivityMainBinding
 import com.xcape.movie_logger.presentation.auth.AuthPromptActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -40,12 +42,14 @@ class MainActivity : AppCompatActivity() {
         binding.setupAuthPrompt(isAuthenticated = mainViewModel.isAuthenticated)
     }
 
-    private fun ActivityMainBinding.setupAuthPrompt(isAuthenticated: Boolean) {
-        if(!isAuthenticated) {
-            val intent = Intent(this@MainActivity, AuthPromptActivity::class.java)
+    private fun ActivityMainBinding.setupAuthPrompt(isAuthenticated: LiveData<Boolean>) {
+        isAuthenticated.observe(this@MainActivity) { auth ->
+            if(!auth) {
+                val intent = Intent(this@MainActivity, AuthPromptActivity::class.java)
 
-            root.doOnPreDraw {
-                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this@MainActivity).toBundle())
+                root.doOnPreDraw {
+                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this@MainActivity).toBundle())
+                }
             }
         }
     }

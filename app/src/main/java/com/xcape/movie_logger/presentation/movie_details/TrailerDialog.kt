@@ -133,7 +133,7 @@ class TrailerDialog : DialogFragment(), Player.Listener, ScreenProperties {
     }
 
     inner class DoubleTapGestures : GestureDetector.SimpleOnGestureListener() {
-        override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+        override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
             return if(mediaPlayer!!.isControllerFullyVisible) {
                 mediaPlayer!!.hideController()
                 true
@@ -177,7 +177,7 @@ class TrailerDialog : DialogFragment(), Player.Listener, ScreenProperties {
                     .rotation(65F)
                     .setDuration(450)
                     .setListener(object: AnimatorListenerAdapter() {
-                        override fun onAnimationStart(animation: Animator?) {
+                        override fun onAnimationStart(animation: Animator) {
                             forwardLabel.animate()
                                 .translationX(0F)
                                 .scaleX(1F)
@@ -188,7 +188,7 @@ class TrailerDialog : DialogFragment(), Player.Listener, ScreenProperties {
                             forwardIcon.visibility = View.VISIBLE
                             videoPlayer!!.seekTo(videoPlayer!!.currentPosition + secondsToSeek)
                         }
-                        override fun onAnimationEnd(animation: Animator?) {
+                        override fun onAnimationEnd(animation: Animator) {
                             forwardIcon.visibility = View.GONE
                             forwardIcon.rotation = 0F
 
@@ -211,7 +211,7 @@ class TrailerDialog : DialogFragment(), Player.Listener, ScreenProperties {
                     .rotation(65F)
                     .setDuration(450)
                     .setListener(object: AnimatorListenerAdapter() {
-                        override fun onAnimationStart(animation: Animator?) {
+                        override fun onAnimationStart(animation: Animator) {
                             rewindLabel.animate()
                                 .translationX(0F)
                                 .scaleX(1F)
@@ -222,7 +222,7 @@ class TrailerDialog : DialogFragment(), Player.Listener, ScreenProperties {
                             rewindIcon.visibility = View.VISIBLE
                             videoPlayer!!.seekTo(videoPlayer!!.currentPosition - secondsToSeek)
                         }
-                        override fun onAnimationEnd(animation: Animator?) {
+                        override fun onAnimationEnd(animation: Animator) {
                             rewindIcon.visibility = View.GONE
                             rewindIcon.rotation = 0F
 

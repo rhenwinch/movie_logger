@@ -82,7 +82,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="@dimen/dp5"
             android:layout_marginHorizontal="25dp"
             android:orientation="horizontal">
 
@@ -91,7 +91,7 @@
                 android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawablePadding="5dp"
+                android:drawablePadding="@dimen/dp5"
                 android:textColor="@color/colorOnError"
                 app:drawableStartCompat="@drawable/cross"
                 app:drawableTint="@color/colorOnError"
@@ -135,7 +135,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="@dimen/dp5"
             android:layout_marginHorizontal="25dp"
             android:orientation="horizontal">
 
@@ -144,7 +144,7 @@
                 android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawablePadding="5dp"
+                android:drawablePadding="@dimen/dp5"
                 android:textColor="@color/colorOnError"
                 app:drawableStartCompat="@drawable/cross"
                 app:drawableTint="@color/colorOnError"
@@ -175,7 +175,7 @@
             android:layout_height="wrap_content"
             android:scaleX="0.6"
             android:scaleY="0.6"
-            android:layout_marginVertical="2dp"
+            android:layout_marginVertical="@dimen/dp2"
             android:layout_gravity="center"
             android:indeterminateTint="@color/colorPrimary"
             android:visibility="gone" />

@@ -3,6 +3,7 @@ package com.xcape.movie_logger.presentation.search
 import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.os.Bundle
 import android.os.Handler
@@ -18,21 +19,23 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.activity.viewModels
+import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.doOnPreDraw
+import androidx.core.widget.ImageViewCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.card.MaterialCardView
+import com.xcape.movie_logger.R
 import com.xcape.movie_logger.databinding.ActivitySearchBinding
 import com.xcape.movie_logger.domain.model.media.MediaInfo
 import com.xcape.movie_logger.domain.model.media.SuggestedMedia
@@ -44,7 +47,10 @@ import com.xcape.movie_logger.presentation.movie_details.MEDIA_ID
 import com.xcape.movie_logger.presentation.movie_details.MovieActivity
 import com.xcape.movie_logger.presentation.search.adapters.SearchResultsAdapter
 import com.xcape.movie_logger.presentation.search.adapters.SuggestedMediaAdapter
-import com.xcape.movie_logger.domain.utils.Functions.toByteArray
+import com.xcape.movie_logger.common.Functions.toByteArray
+import com.xcape.movie_logger.presentation.common.setOnSingleClickListener
+import com.xcape.movie_logger.presentation.components.custom_extensions.activate
+import com.xcape.movie_logger.presentation.components.custom_extensions.deactivate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -63,7 +69,7 @@ class SearchActivity : AppCompatActivity(), OnLoadingProgressListener, OnSuggest
 
     // Views
     private lateinit var loadingBar: ProgressBar
-    private lateinit var loadingBarContainer: View
+    private lateinit var loadingContainer: View
 
     // Constants
     private var backPressedTwice = false
@@ -79,7 +85,7 @@ class SearchActivity : AppCompatActivity(), OnLoadingProgressListener, OnSuggest
         setContentView(binding.root)
 
         loadingBar = binding.searchLoadingContainer.loadingBar
-        loadingBarContainer = binding.searchLoadingContainer.root
+        loadingContainer = binding.searchLoadingContainer.root
 
         // Get a support ActionBar corresponding to this toolbar and enable the Up button
         setSupportActionBar(binding.searchToolbar)
@@ -88,8 +94,7 @@ class SearchActivity : AppCompatActivity(), OnLoadingProgressListener, OnSuggest
 
         binding.bindState(
             uiState = searchViewModel.state,
-            uiActions = searchViewModel.accept,
-            searchResultsData = searchViewModel.searchResultsData,
+            searchResultsData = searchViewModel.searchResults,
             suggestedQueries = searchViewModel.suggestedQueries
         )
     }
@@ -145,7 +150,7 @@ class SearchActivity : AppCompatActivity(), OnLoadingProgressListener, OnSuggest
 
     override fun onSuggestionClick(item: String) {
         binding.searchBox.setText(item)
-        binding.updateSearchResults(searchViewModel.accept)
+        binding.updateSearchResults()
         binding.searchBoxFocusEraser()
     }
 
@@ -194,6 +199,7 @@ class SearchActivity : AppCompatActivity(), OnLoadingProgressListener, OnSuggest
         val dividerYLocation = layoutHeight - (coordinates[1] - statusBarHeight)
         val searchResultsBottomSheetBehavior = BottomSheetBehavior.from(searchResultsCardContainer)
         searchResultsBottomSheetBehavior.peekHeight = dividerYLocation
+
         searchResultsBottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -238,25 +244,33 @@ class SearchActivity : AppCompatActivity(), OnLoadingProgressListener, OnSuggest
         inputManager.hideSoftInputFromWindow(window?.decorView?.windowToken, 0)
     }
 
-    private fun ActivitySearchBinding.changeSearchIndicator(hasNotSearched: Boolean) {
+    private fun ActivitySearchBinding.changeSearchIndicator(
+        hasNotSearched: Boolean = true,
+        isLoading: Boolean = false,
+        hasErrors: Boolean = false,
+        resultsCount: Int = 0
+    ) {
         val recommendedText = "recommended"
-        val searchingText = "search results"
+        val loadingText = "searching"
+        val errorText = "error searching"
 
-        searchIndicator.text = if (hasNotSearched) {
-            recommendedText
-        }
-        else {
-            searchingText
-        }
+        searchIndicator.text =
+            if(isLoading)
+                loadingText
+            else if(hasErrors)
+                errorText
+            else if (hasNotSearched)
+                recommendedText
+            else
+                String.format("%d results found", resultsCount)
     }
 
     private fun ActivitySearchBinding.bindState(
         uiState: StateFlow<SearchUIState>,
-        uiActions: (SearchUIAction) -> Unit,
         suggestedQueries: LiveData<List<SuggestedMedia>>,
-        searchResultsData: Flow<PagingData<MediaInfo>>
+        searchResultsData: LiveData<List<MediaInfo>>
     ) {
-        val searchResultsAdapter = SearchResultsAdapter(this@SearchActivity)
+        val searchResultsAdapter = SearchResultsAdapter(listener = this@SearchActivity)
         val suggestedMediaAdapter = SuggestedMediaAdapter(this@SearchActivity)
 
         searchRecyclerView.adapter = searchResultsAdapter
@@ -271,23 +285,22 @@ class SearchActivity : AppCompatActivity(), OnLoadingProgressListener, OnSuggest
         bindSearchBox(
             suggestedQueriesAdapter = suggestedMediaAdapter,
             suggestedQueries = suggestedQueries,
-            uiState = uiState,
-            queryChangeCallback = uiActions
+            uiState = uiState
         )
+
+        bindFilters(uiState = uiState)
 
         bindSearchResults(
             searchResultsAdapter = searchResultsAdapter,
             searchResultsData = searchResultsData,
-            uiState = uiState,
-            scrollChangeCallback = uiActions
+            uiState = uiState
         )
     }
 
     private fun ActivitySearchBinding.bindSearchBox(
         suggestedQueriesAdapter: SuggestedMediaAdapter,
         suggestedQueries: LiveData<List<SuggestedMedia>>,
-        uiState: StateFlow<SearchUIState>,
-        queryChangeCallback: (SearchUIAction) -> Unit
+        uiState: StateFlow<SearchUIState>
     ) {
         // Search box text listener
         searchBox.addTextChangedListener {
@@ -298,14 +311,14 @@ class SearchActivity : AppCompatActivity(), OnLoadingProgressListener, OnSuggest
                 delay(500)
 
                 // Change the adapter of the results container and load the data
-                updateSuggestedKeywords(queryChangeCallback)
+                updateSuggestedKeywords()
             }
         }
 
         // Search box enter/key listener
         searchBox.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                updateSearchResults(queryChangeCallback)
+                updateSearchResults()
                 searchBoxFocusEraser()
                 true
             }
@@ -315,7 +328,7 @@ class SearchActivity : AppCompatActivity(), OnLoadingProgressListener, OnSuggest
         }
         searchBox.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                updateSearchResults(queryChangeCallback)
+                updateSearchResults()
                 searchBoxFocusEraser()
                 true
             }
@@ -326,7 +339,7 @@ class SearchActivity : AppCompatActivity(), OnLoadingProgressListener, OnSuggest
 
         // Search box isFocused listener
         searchBox.setOnFocusChangeListener { _, hasFocus ->
-            updateTypingStatus(queryChangeCallback)
+            updateTypingStatus()
 
             if (hasFocus) {
                 toggleSearchResultsContainer(false)
@@ -356,72 +369,217 @@ class SearchActivity : AppCompatActivity(), OnLoadingProgressListener, OnSuggest
         }
     }
 
-    private fun ActivitySearchBinding.updateSearchResults(onQuerySubmit: (SearchUIAction.Search) -> Unit) {
-        searchBox.text?.trim().let {
-            if (it?.isNotEmpty() == true) {
-                searchRecyclerView.scrollToPosition(0)
-                onQuerySubmit(SearchUIAction.Search(query = it.toString()))
+    private fun ActivitySearchBinding.bindFilters(uiState: StateFlow<SearchUIState>) {
+        val disabledFilterElevation = resources.getDimension(R.dimen.dp1)
+        val enabledFilterTint = resources.getDimension(R.dimen.filterTypeEnabled)
+
+        movieFilterButton.setOnSingleClickListener {
+            if(tvShowFilterButton.cardElevation != disabledFilterElevation) {
+                if(movieFilterButton.cardElevation == disabledFilterElevation) {
+                    updateFilters(SearchFilterType.MoviesAndTvShows)
+                    return@setOnSingleClickListener
+                }
+
+                updateFilters(SearchFilterType.TvShows)
+                return@setOnSingleClickListener
+            }
+
+            updateFilters(SearchFilterType.Movies)
+        }
+        tvShowFilterButton.setOnSingleClickListener {
+            if(movieFilterButton.cardElevation != disabledFilterElevation) {
+                if(tvShowFilterButton.cardElevation == disabledFilterElevation) {
+                    updateFilters(SearchFilterType.MoviesAndTvShows)
+                    return@setOnSingleClickListener
+                }
+
+                updateFilters(SearchFilterType.Movies)
+                return@setOnSingleClickListener
+            }
+
+            updateFilters(SearchFilterType.TvShows)
+        }
+        userFilterButton.setOnSingleClickListener {
+            updateFilters(SearchFilterType.UserProfiles)
+        }
+
+        val filterType = uiState
+            .map { it.filters }
+            .distinctUntilChanged()
+
+        lifecycleScope.launch {
+            filterType.collectLatest { type ->
+                println("Type is: $type")
+                when(type) {
+                    SearchFilterType.Movies -> {
+                        movieFilterButton.cardElevation = enabledFilterTint
+                        tvShowFilterButton.cardElevation = disabledFilterElevation
+                        userFilterButton.cardElevation = disabledFilterElevation
+                    }
+                    SearchFilterType.TvShows -> {
+                        movieFilterButton.cardElevation = disabledFilterElevation
+                        tvShowFilterButton.cardElevation = enabledFilterTint
+                        userFilterButton.cardElevation = disabledFilterElevation
+                    }
+                    SearchFilterType.MoviesAndTvShows -> {
+                        movieFilterButton.cardElevation = enabledFilterTint
+                        tvShowFilterButton.cardElevation = enabledFilterTint
+                        userFilterButton.cardElevation = disabledFilterElevation
+                    }
+                    SearchFilterType.UserProfiles -> {
+                        movieFilterButton.cardElevation = disabledFilterElevation
+                        tvShowFilterButton.cardElevation = disabledFilterElevation
+                        userFilterButton.cardElevation = enabledFilterTint
+                    }
+                }
             }
         }
-    }
-
-    private fun ActivitySearchBinding.updateSuggestedKeywords(onSuggestionQueryChange: (SearchUIAction.Typing) -> Unit) {
-        searchBox.text?.trim().let {
-            if (it?.isNotEmpty() == true) {
-                onSuggestionQueryChange(SearchUIAction.Typing(charactersTyped = it.toString()))
-            }
-        }
-    }
-
-    private fun ActivitySearchBinding.updateTypingStatus(onSearchBoxFocusChange: (SearchUIAction.FocusOnSearchBox) -> Unit) {
-        onSearchBoxFocusChange(SearchUIAction.FocusOnSearchBox(searchBox.hasFocus()))
     }
 
     private fun ActivitySearchBinding.bindSearchResults(
         searchResultsAdapter: SearchResultsAdapter,
-        searchResultsData: Flow<PagingData<MediaInfo>>,
-        uiState: StateFlow<SearchUIState>,
-        scrollChangeCallback: (SearchUIAction.Scroll) -> Unit
+        searchResultsData: LiveData<List<MediaInfo>>,
+        uiState: StateFlow<SearchUIState>
     ) {
-        searchRecyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                // If the y coordinate is not on the initial position anymore
-                if(dy != 0)
-                    scrollChangeCallback(SearchUIAction.Scroll(currentQuery = uiState.value.query))
-            }
-        })
-
-        val userHasSearched = uiState
+        val userHasNotSearched = uiState
             .map { it.hasNotSearchedBefore }
             .distinctUntilChanged()
 
-        val hasNotScrolledForCurrentSearch = uiState
-            .map { it.hasNotScrolledForCurrentSearch }
+        val currentPage = uiState
+            .map { it.lastPageQueried }
             .distinctUntilChanged()
 
-        val shouldScrollToTop = hasNotScrolledForCurrentSearch
+        val totalPagesToSurf = uiState
+            .map { it.maxPages }
+            .distinctUntilChanged()
+
+        val totalResultsObtained = uiState
+            .map { it.totalResults }
+            .distinctUntilChanged()
+
+        val isLoading = uiState
+            .map { it.isLoading }
             .distinctUntilChanged()
 
         lifecycleScope.launch {
-            userHasSearched.collect { hasSearched ->
-                changeSearchIndicator(hasSearched)
+            // Search indicator collector
+            launch {
+                userHasNotSearched.combine(totalResultsObtained) { hasNotSearched, results ->
+                    // -1 results means it is searching
+                    if(results == -1) {
+                        changeSearchIndicator(isLoading = true)
+                    }
+                    else {
+                        changeSearchIndicator(hasNotSearched = hasNotSearched, resultsCount = results)
+                    }
+                }.collect()
+            }
+
+            // Page number collector
+            launch {
+                currentPage.combine(totalPagesToSurf) { pageCount, maxPages ->
+                    pageNumber.text = pageCount.toString()
+
+                    if(pageCount <= 1) {
+                        previousPageImg.setTint(R.color.colorOnMediumEmphasis)
+                        previousPageBtn.isClickable = false
+                    }
+                    else if(pageCount == 2) {
+                        previousPageImg.setTint(R.color.colorOnPrimary)
+                        previousPageBtn.isClickable = true
+                    }
+
+                    if(pageCount >= maxPages) {
+                        nextPageImg.setTint(R.color.colorOnMediumEmphasis)
+                        nextPageBtn.isClickable = false
+                    }
+                    else {
+                        nextPageImg.setTint(R.color.colorOnPrimary)
+                        nextPageBtn.isClickable = true
+                    }
+                }.collect()
+            }
+
+            // Loading collector
+            launch {
+                isLoading.collect {
+                    when(it) {
+                        null -> {
+                            loadingBar.deactivate(
+                                container = loadingContainer,
+                                causeIsError = true,
+                                listener = this@SearchActivity
+                            )
+                            changeSearchIndicator(hasErrors = true)
+                        }
+                        true -> {
+                            searchResultsLayoutContainer.visibility = View.GONE
+                            loadingBar.activate(container = loadingContainer)
+                        }
+                        false -> {
+                            loadingBar.deactivate(container = loadingContainer, animate = false)
+                            searchResultsLayoutContainer.visibility = View.VISIBLE
+                        }
+                    }
+                }
             }
         }
 
-        lifecycleScope.launch {
-            searchResultsData.collectLatest(searchResultsAdapter::submitData)
-        }
+        nextPageBtn.setOnSingleClickListener { updatePage(goingNext = true) }
+        previousPageBtn.setOnSingleClickListener { updatePage(goingNext = false) }
 
-        lifecycleScope.launch {
-            shouldScrollToTop.collect { shouldScroll ->
-                if (shouldScroll)
-                    searchRecyclerView.scrollToPosition(0)
+        searchResultsData.observe(this@SearchActivity) { data ->
+            searchRecyclerView.scrollToPosition(0)
+            searchResultsAdapter.submitList(data ?: emptyList())
+        }
+    }
+
+    private fun ActivitySearchBinding.updateSearchResults() {
+        searchBox.text?.trim().let {
+            if (it?.isNotEmpty() == true) {
+                searchRecyclerView.scrollToPosition(0)
+                searchViewModel.onEvent(SearchUIAction.Search(query = it.toString()))
             }
         }
+    }
+
+    private fun ActivitySearchBinding.updateSuggestedKeywords() {
+        searchBox.text?.trim().let {
+            if (it?.isNotEmpty() == true) {
+                searchViewModel.onEvent(SearchUIAction.Typing(charactersTyped = it.toString()))
+            }
+        }
+    }
+
+    private fun ActivitySearchBinding.updateTypingStatus() {
+        searchViewModel.onEvent(SearchUIAction.FocusOnSearchBox(searchBox.hasFocus()))
+    }
+
+    private fun ActivitySearchBinding.updatePage(goingNext: Boolean) {
+        val pageNumber = pageNumber.text.toString().toInt()
+        if(goingNext) {
+            searchViewModel.onEvent(SearchUIAction.ChangePage(pageNumber + 1))
+        }
+        // Clicked previous button
+        else {
+            searchViewModel.onEvent(SearchUIAction.ChangePage(pageNumber - 1))
+        }
+    }
+
+    private fun updateFilters(filterType: SearchFilterType) {
+        searchViewModel.onEvent(SearchUIAction.Filter(filterType))
     }
 
     private fun getStatusBarHeight(): Int {
         val statusBarHeightId = Resources.getSystem().getIdentifier("status_bar_height", "dimen", "android")
         return Resources.getSystem().getDimensionPixelSize(statusBarHeightId)
+    }
+
+    private fun ImageView.setTint(@ColorRes color: Int?) {
+        if (color == null) {
+            ImageViewCompat.setImageTintList(this, null)
+        } else {
+            ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(ContextCompat.getColor(context, color)))
+        }
     }
 }

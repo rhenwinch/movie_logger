@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.snackbar.Snackbar
 import com.xcape.movie_logger.databinding.ActivityLoginBinding
-import com.xcape.movie_logger.domain.utils.Functions.px
+import com.xcape.movie_logger.common.Functions.px
 import com.xcape.movie_logger.presentation.components.custom_extensions.activate
 import com.xcape.movie_logger.presentation.components.custom_extensions.deactivate
 import com.xcape.movie_logger.presentation.common.setOnSingleClickListener

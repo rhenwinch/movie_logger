@@ -2,22 +2,32 @@ package com.xcape.movie_logger.data.repository.remote
 
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FieldValue.arrayRemove
+import com.google.firebase.firestore.FieldValue.arrayUnion
+import com.xcape.movie_logger.data.local.dao.FCMCredentialsDao
 import com.xcape.movie_logger.domain.model.user.User
-import com.xcape.movie_logger.domain.repository.local.LocalUserRepository
 import com.xcape.movie_logger.domain.repository.remote.AuthRepository
-import com.xcape.movie_logger.domain.repository.remote.RemoteUserRepository
-import com.xcape.movie_logger.domain.use_cases.Authenticator
+import com.xcape.movie_logger.domain.repository.remote.UsersRepository
+import com.xcape.movie_logger.domain.use_cases.firebase.Authenticator
 import com.xcape.movie_logger.domain.utils.Resource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.collect
 import java.lang.NullPointerException
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
     private val authenticator: Authenticator,
-    private val localUserRepository: LocalUserRepository,
-    private val remoteUserRepository: RemoteUserRepository
+    private val usersRepository: UsersRepository,
+    private val fcmCredentialsDao: FCMCredentialsDao
 ) : AuthRepository {
-    override fun isUserAlreadyAuthenticated(): Boolean
-        = authenticator.currentUser != null
+    override fun getAuthUser(): FirebaseUser? {
+        return authenticator.loggedInUser
+    }
+
+    override fun getCurrentAuthUser(): Flow<FirebaseUser?>
+        = authenticator.currentUser
 
     override suspend fun signUp(
         email: String,
@@ -33,13 +43,12 @@ class AuthRepositoryImpl @Inject constructor(
 
             val user = User(
                 userId = userId,
-                username = username
+                username = username,
+                fcmToken = listOf(fcmCredentialsDao.getToken().token)
                 //lastUpdated = Calendar.getInstance().time
             )
 
-            remoteUserRepository.saveUser(userId = userId, user = user)
-            localUserRepository.saveUser(user = user)
-
+            usersRepository.saveUser(userId = userId, user = user)
             Resource.Success(true)
         }
         catch (e: Exception) {
@@ -53,8 +62,9 @@ class AuthRepositoryImpl @Inject constructor(
             val uid = authenticator.signIn(email = email, password = password)?.user?.uid
                 ?: return Resource.Error(data = false, message = "Something went wrong")
 
-            val user = remoteUserRepository.getUser(uid)!!
-            localUserRepository.saveUser(user)
+            val user = usersRepository.getUser(uid)!!
+            // Add FCM Token of this App Device
+            usersRepository.updateUserField(user.userId, "fcmToken", arrayUnion(fcmCredentialsDao.getToken().token))
             Resource.Success(data = true)
         }
         catch (e: FirebaseAuthInvalidCredentialsException) {
@@ -75,8 +85,9 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun signOut(): Resource<Boolean> {
         return try {
+            // Remove FCM Token of this device from DB
+            usersRepository.updateUserField(authenticator.loggedInUser?.uid, "fcmToken", arrayRemove(fcmCredentialsDao.getToken().token))
             authenticator.signOut()
-            localUserRepository.removeUser()
             Resource.Success(data = true)
         }
         catch (e: Exception) {

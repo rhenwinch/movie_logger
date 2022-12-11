@@ -9,6 +9,7 @@ import com.xcape.movie_logger.databinding.ItemSearchBinding
 import com.xcape.movie_logger.domain.model.media.MediaInfo
 import com.xcape.movie_logger.presentation.common.BaseViewHolder
 import com.xcape.movie_logger.presentation.common.OnMediaClickListener
+import com.xcape.movie_logger.presentation.common.setOnSingleClickListener
 
 class SearchResultsViewHolder(
     binding: ItemSearchBinding
@@ -45,7 +46,7 @@ class SearchResultsViewHolder(
         if(listener == null)
             return
 
-        searchMovieThumbnailContainer.setOnClickListener { _ ->
+        searchMovieThumbnailContainer.setOnSingleClickListener {
             (listener as OnMediaClickListener).onMediaClick(
                 mediaCategory = "search-results",
                 mediaId = item.id,
@@ -53,7 +54,7 @@ class SearchResultsViewHolder(
                 mediaImageCard = searchMovieThumbnailContainer
             )
         }
-        searchCardBase.setOnClickListener { _ ->
+        searchCardBase.setOnSingleClickListener {
             (listener as OnMediaClickListener).onMediaClick(
                 mediaCategory = "search-results",
                 mediaId = item.id,

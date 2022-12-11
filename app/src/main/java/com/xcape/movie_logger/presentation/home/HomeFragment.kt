@@ -4,31 +4,48 @@ import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.xcape.movie_logger.R
 import com.xcape.movie_logger.databinding.FragmentHomeBinding
 import com.xcape.movie_logger.domain.model.media.MediaInfo
-
+import com.xcape.movie_logger.domain.model.media.WatchedMedia
+import com.xcape.movie_logger.domain.model.user.Post
+import com.xcape.movie_logger.domain.model.user.User
+import com.xcape.movie_logger.presentation.common.setOnSingleClickListener
 import com.xcape.movie_logger.presentation.components.custom_components.StackingLayoutManager
 import com.xcape.movie_logger.presentation.components.custom_components.SwipeCard
-import com.xcape.movie_logger.presentation.common.setOnSingleClickListener
+import com.xcape.movie_logger.presentation.components.custom_extensions.activate
+import com.xcape.movie_logger.presentation.components.custom_extensions.deactivate
 import com.xcape.movie_logger.presentation.components.setupToolbar
-import com.xcape.movie_logger.presentation.watchlist.WatchlistActivity
+import com.xcape.movie_logger.presentation.home.adapter.PostsAdapter
+import com.xcape.movie_logger.presentation.home.adapter.TopMoviesAdapter
+import com.xcape.movie_logger.presentation.home.viewholder.PostInteractListener
 import com.xcape.movie_logger.presentation.search.SearchActivity
 import com.xcape.movie_logger.presentation.trending.TrendingActivity
+import com.xcape.movie_logger.presentation.watchlist.WatchlistActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), Toolbar.OnMenuItemClickListener, PostInteractListener {
     private var _binding: FragmentHomeBinding? = null // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
 
     private val homeViewModel: HomeViewModel by viewModels()
+
+    private val postsAdapter = PostsAdapter(listener = this@HomeFragment)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,35 +55,23 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        val toolbarListener = Toolbar.OnMenuItemClickListener {
-            when (it?.itemId) {
-                R.id.searchButton -> {
-                    val intent = Intent(requireContext(), SearchActivity::class.java)
-                    val options = ActivityOptions.makeSceneTransitionAnimation(requireActivity())
-
-                    // start the new activity
-                    startActivity(intent, options.toBundle())
-                    true
-                }
-                else -> false
-            }
-        }
-
         binding.homeToolbar.setupToolbar(
             this,
             requireActivity(),
             withNavigationUp = false,
-            listener = toolbarListener,
+            listener = this,
         )
 
-        setupButtons()
+        binding.bindNewsFeedData(
+            postsData = homeViewModel.posts,
+            postOwnersData = homeViewModel.postOwners
+        )
+
+        binding.bindTopWatchedMovies(topMovies = homeViewModel.topMovies)
+
+        binding.setupButtons()
 
         return view
-    }
-
-    override fun onResume() {
-        super.onResume()
-        homeViewModel.initializeCredentials()
     }
 
     override fun onDestroyView() {
@@ -74,32 +79,68 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.searchButton -> {
+                val intent = Intent(requireContext(), SearchActivity::class.java)
+                val options = ActivityOptions.makeSceneTransitionAnimation(requireActivity())
 
-        val homeTopMovieRV = binding.homeHeadline.homeHeadlinerMovies
-        val listOfMovies = populateAdapter()
-        val stackedLayoutManager = StackingLayoutManager(activity?.applicationContext)
-        val homeTopMovieAdapter = TopMoviesAdapter(activity?.applicationContext, listOfMovies)
-
-        homeTopMovieRV.adapter = homeTopMovieAdapter
-        homeTopMovieRV.layoutManager = stackedLayoutManager
-
-        val simpleItemTouchCallback = SwipeCard(listOfMovies, homeTopMovieAdapter)
-
-        val itemTouchHelper = ItemTouchHelper(simpleItemTouchCallback)
-        itemTouchHelper.attachToRecyclerView(homeTopMovieRV)
+                // start the new activity
+                startActivity(intent, options.toBundle())
+                true
+            }
+            else -> false
+        }
     }
 
-    private fun setupButtons() {
-        binding.favoriteButton.setOnSingleClickListener {
+    override fun onLike(
+        ownerId: String,
+        mediaId: String,
+        position: Int,
+        isDisliking: Boolean
+    ) {
+        //postsAdapter.modifyLikeOnPost(position = position, isDisliking = isDisliking)
+        homeViewModel.onEvent(
+            event = HomeUIAction.Like(
+                ownerId = ownerId,
+                postId = mediaId,
+                isDisliking = isDisliking
+            )
+        )
+    }
+
+    override fun onRate(
+        mediaId: String,
+        position: Int,
+        isUnrating: Boolean
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onWatchlist(
+        mediaId: String,
+        position: Int,
+        isRemoving: Boolean
+    ) {
+        val item = postsAdapter.getItem(position) ?: return
+
+        homeViewModel.onEvent(
+            event = HomeUIAction.AddToWatchlist(
+                post = item,
+                isRemoving = isRemoving
+            )
+        )
+    }
+
+    private fun FragmentHomeBinding.setupButtons() {
+        favoriteButton.setOnSingleClickListener {
             val intent = Intent(requireContext(), WatchlistActivity::class.java)
             val options = ActivityOptions.makeSceneTransitionAnimation(requireActivity())
 
             // start the new activity
             startActivity(intent, options.toBundle())
         }
-        binding.trendingButton.setOnSingleClickListener {
+        trendingButton.setOnSingleClickListener {
             val intent = Intent(requireContext(), TrendingActivity::class.java)
             val options = ActivityOptions.makeSceneTransitionAnimation(requireActivity())
 
@@ -108,18 +149,45 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun populateAdapter(): MutableList<MediaInfo> {
+    private fun FragmentHomeBinding.bindNewsFeedData(
+        postsData: StateFlow<List<Post>>,
+        postOwnersData: StateFlow<List<User>>
+    ) {
+        postsRV.itemAnimator = null
+        postsRV.adapter = postsAdapter
+        homeScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, _, scrollY, _, _ ->
+            if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
+                // If user is at bottom
+                loadingBar.activate()
+                return@OnScrollChangeListener
+            }
+            loadingBar.deactivate()
+        })
 
-        //listOfMovies.add(Movie("https://m.media-amazon.com/images/M/MV5BZWMyYzFjYTYtNTRjYi00OGExLWE2YzgtOGRmYjAxZTU3NzBiXkEyXkFqcGdeQXVyMzQ0MzA0NTM@._V1_.jpg", "Spiderman: No way home", "\"Spider-Man\" centers on student Peter Parker (Tobey Maguire) who, after being bitten by a genetically-altered spider, gains superhuman strength and the spider-like ability to cling to any surface. He vows to use his abilities to fight crime, coming to understand the words of his beloved Uncle Ben: \"With great power comes great responsibility.\""))
-        //listOfMovies.add(Movie("https://m.media-amazon.com/images/M/MV5BZjhmZTlkOTAtYTE0Yi00Yjg2LTg5M2UtNWNmNTZkZGM4ODRmXkEyXkFqcGdeQXVyMTI4NjgxNTk5._V1_.jpg","Spiderman: Lotus", "yes"))
-        //listOfMovies.add(Movie("https://m.media-amazon.com/images/M/MV5BZDEyN2NhMjgtMjdhNi00MmNlLWE5YTgtZGE4MzNjMTRlMGEwXkEyXkFqcGdeQXVyNDUyOTg3Njg@._V1_.jpg", "Spiderman 1", "yes"))
-        //listOfMovies.add(Movie("https://m.media-amazon.com/images/M/MV5BNTk4ODQ1MzgzNl5BMl5BanBnXkFtZTgwMTMyMzM4MTI@._V1_.jpg"))
-        //listOfMovies.add(Movie("https://m.media-amazon.com/images/M/MV5BMjMyOTM4MDMxNV5BMl5BanBnXkFtZTcwNjIyNzExOA@@._V1_.jpg"))
-        //listOfMovies.add(Movie("https://m.media-amazon.com/images/M/MV5BMjMwNDkxMTgzOF5BMl5BanBnXkFtZTgwNTkwNTQ3NjM@._V1_.jpg"))
-        //listOfMovies.add(Movie("https://m.media-amazon.com/images/M/MV5BOTA5NDYxNTg0OV5BMl5BanBnXkFtZTgwODE5NzU1MTE@._V1_.jpg"))
-        //listOfMovies.add(Movie("https://m.media-amazon.com/images/M/MV5BYTk3MDljOWQtNGI2My00OTEzLTlhYjQtOTQ4ODM2MzUwY2IwXkEyXkFqcGdeQXVyNTIzOTk5ODM@._V1_.jpg"))
+        lifecycleScope.launch {
+            combine(
+                postsData,
+                postOwnersData,
+                ::Pair
+            ).collectLatest { (posts, owners) ->
+                postsAdapter.submitPosts(owners, posts)
+            }
+        }
+    }
 
-        return mutableListOf()
+    private fun FragmentHomeBinding.bindTopWatchedMovies(topMovies: StateFlow<List<WatchedMedia>>) {
+        val homeTopMovieRV = homeHeadline.homeHeadlinerMovies
+        val stackedLayoutManager = StackingLayoutManager()
+        val homeTopMovieAdapter = TopMoviesAdapter()
+
+        homeTopMovieRV.adapter = homeTopMovieAdapter
+        homeTopMovieRV.layoutManager = stackedLayoutManager
+
+        lifecycleScope.launch {
+            topMovies.collectLatest {
+                homeTopMovieAdapter.submitList(it)
+            }
+        }
     }
 
 }
